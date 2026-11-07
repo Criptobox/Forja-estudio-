@@ -1,57 +1,51 @@
-# FORJA STUDIO — Mobile-first Web Designer
+# Estilos · Tinta
 
-**Esta carpeta es el proyecto nuevo para GitHub.** `index.html` en la raíz abre FORJA Studio directamente. No hay que buscar una página dentro de `web/`.
+Biblioteca UI/UX y constructor visual multipantalla. Proyecto web móvil-first, PWA y envoltorio Android.
 
-## Vista incluida
-Interfaz móvil de FORJA con las pantallas del concepto aprobado: bienvenida, inicio, agente, proceso de creación, resultado, lista de pantallas, editor, componentes, estilos, preview responsive, proyectos, biblioteca/diseños y exportación.
+## Publicar en GitHub Pages
 
-## Ejecutar
-- Abre `index.html` en un navegador moderno.
-- Para GitHub Pages: sube TODO el contenido de este ZIP a la raíz del repositorio y configura Pages para publicar desde `main` / `(root)`.
-- URL resultante: `https://USUARIO.github.io/REPOSITORIO/`
+1. Crea o abre el repositorio donde guardarás el proyecto.
+2. Descomprime este ZIP en tu dispositivo/PC.
+3. Sube **todo el contenido de esta carpeta a la raíz del repositorio**. No subas el ZIP como un único archivo y no metas la carpeta completa dentro de otra carpeta.
+4. Asegúrate de incluir también `.github/` (puede estar oculta en algunos exploradores).
+5. En GitHub entra en **Settings → Pages** y selecciona **GitHub Actions** como método de publicación.
+6. En **Actions**, espera a que terminen correctamente los workflows. El sitio se publica desde `web/`.
 
-## Estructura
+## Entradas de la aplicación
+
+- `web/index.html`: portada publicada (Tinta).
+- `web/crear.html`: constructor Tinta.
+- `web/biblioteca.html`: biblioteca clásica.
+- `web/agente.html`: editor/agente clásico y proyectos.
+- `ABRIR-TINTA-ACTUAL.html`: vista autónoma para abrir localmente; no es la raíz del código fuente.
+
+## Estructura principal
+
 ```text
-FORJA-STUDIO/
-├── index.html                 # Entrada principal de FORJA
-├── assets/
-│   ├── forja.css
-│   ├── forja.js
-│   └── plus-jakarta-sans.woff2
-├── README.md
-├── ROADMAP.md
-└── Estilos-original/           # Proyecto recibido, conservado íntegramente
-    ├── web/
-    ├── app/
-    ├── design-library/
-    ├── tests/
-    └── ...
+.github/workflows/   Publicación y pruebas de GitHub Actions
+app/                 Aplicación Android (Gradle/Kotlin)
+design-library/      Catálogo y documentación de componentes
+web/                 Aplicación web/PWA publicada en GitHub Pages
+tests/               Pruebas automatizadas
+tools/              Scripts de sincronización, catálogo y empaquetado
+docs/                Documentación, análisis y roadmap
 ```
 
-## Interacciones disponibles en este prototipo
-- Navegación inferior entre áreas.
-- Inicio con texto de brief y accesos rápidos.
-- Flujo visual de creación y resultado de ejemplo.
-- Agente conversacional de demostración.
-- Lista de pantallas del proyecto.
-- Editor visual con acciones de interfaz.
-- Biblioteca de componentes con búsqueda.
-- Personalización de paleta, temas y radios.
-- Vista previa con selector móvil/tablet/escritorio.
-- Gestión de proyectos de muestra.
-- Selección de formato de exportación.
+## Desarrollo y comprobaciones
 
-## Límites explícitos
-Este ZIP implementa la interfaz frontend. **No afirma tener todavía un modelo conectado ni generación real**. El LLM/DeepSeek Harness, la voz STT/TTS, Playwright, el guardado persistente y el exportador real se integrarán en fases posteriores. Los botones que necesitan esos servicios muestran mensajes indicando que están pendientes.
+Requisitos: Python 3.12, Node.js 22 y npm.
 
-## Diseño visual
-- Carbón: `#100F18`
-- Superficies: `#1A1925`, `#242230`
-- Naranja principal: `#FF790D`
-- Violeta: `#8E38FF`
-- Tarjetas redondeadas, sombras y brillos discretos.
-- Mobile-first, safe-area y navegación inferior fija.
-- Tipografía Plus Jakarta Sans incluida localmente, sin depender de Google Fonts.
+```bash
+python tools/sync-tinta-entry.py --check
+for f in web/js/*.js web/sw.js; do node --check "$f"; done
+cd tests
+npm ci
+npx playwright install chromium
+npm test
+```
 
-## Proyecto anterior
-`Estilos-original/` contiene el proyecto recibido y se conserva como base para la integración posterior. No se reemplazaron sus archivos ni se modificó su punto de entrada.
+La publicación automática ejecuta las pruebas antes de desplegar `web/`. Consulta `LEEME-SUBIR-A-GITHUB.md` para las instrucciones de actualización y caché PWA, y `docs/` para el alcance y las funciones documentadas.
+
+## Alcance de esta entrega
+
+Este paquete conserva el proyecto Estilos/Tinta recibido, su estructura Android, biblioteca, editor, recursos, pruebas y workflows. No incorpora un backend de IA ni afirma que el agente esté conectado a un proveedor de modelos.
