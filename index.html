@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#100d1b">
+<meta name="description" content="FORJA STUDIO — estudio de diseño web con inteligencia artificial">
+<title>FORJA STUDIO</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<div class="app-shell">
+  <div class="status"><span>9:41</span><span>◖◖◖　 5G　 ▰</span></div>
+  <header class="topbar" id="topbar"><button class="icon-btn back hidden" id="backBtn" aria-label="Volver">‹</button><div class="brand"><span class="brand-mark">F</span><span>FORJA <b>STUDIO</b><small>IA WEB DESIGN</small></span></div><div class="top-actions"><button class="icon-btn" aria-label="Notificaciones">♧</button><button class="avatar">◉</button></div></header>
+  <main id="screens">
+    <section class="screen welcome active" data-screen="welcome">
+      <div class="welcome-art"><div class="orb orb-a"></div><div class="orb orb-b"></div><div class="big-mark">F</div></div>
+      <div class="welcome-copy"><div class="welcome-title">FORJA<br><span>STUDIO</span></div><p>Tu estudio de diseño web<br>con inteligencia artificial</p>
+      <div class="benefits"><div><i>⌂</i><span>Crea sitios y apps<br>con solo una idea</span></div><div><i>▣</i><span>Diseños profesionales<br>adaptados a móvil</span></div><div><i>✦</i><span>Edita, prueba y publica<br>sin complicaciones</span></div></div>
+      <button class="primary full" data-go="home">Comenzar <b>→</b></button><button class="text-btn" data-go="home">Iniciar sesión</button></div>
+    </section>
+
+    <section class="screen" data-screen="home">
+      <div class="greeting"><h1>Hola, ¿qué vamos a crear?</h1><p>Describe tu idea o usa tu voz</p></div>
+      <div class="prompt-card"><textarea id="idea" placeholder="Quiero una tienda móvil de tecnología, con tarjetas redondeadas, negro, blanco y naranja..."></textarea><div class="prompt-actions"><button class="mic" title="Voz">🎙</button><button class="send" id="startBuild">➜</button></div></div>
+      <div class="section-heading"><b>O elige una opción rápida</b></div>
+      <div class="quick-grid">
+        <button class="quick" data-idea="Una tienda online moderna"><span>🛍️</span>Tienda online</button><button class="quick" data-idea="Una aplicación móvil premium"><span>▯</span>App móvil</button>
+        <button class="quick" data-idea="Una landing page de producto"><span>🟧</span>Landing page</button><button class="quick" data-idea="Un sitio empresarial profesional"><span>🏢</span>Sitio empresarial</button>
+      </div>
+      <button class="wide-row" data-go="projects">Ver mis proyectos <span>›</span></button>
+      <div class="section-heading"><b>Inspiración para empezar</b><a data-go="components">Ver todo</a></div>
+      <div class="inspiration"><div class="inspire-card purple"><span>✦</span><b>Dashboard<br>minimalista</b><small>UI · 6 pantallas</small></div><div class="inspire-card orange"><span>◈</span><b>Shop<br>premium</b><small>E-commerce · 5 pantallas</small></div></div>
+    </section>
+
+    <section class="screen" data-screen="agent">
+      <div class="agent-head"><div class="agent-orb">F</div><div><h2>Agente FORJA</h2><small><i class="online"></i> En línea</small></div><span class="push-right">♧</span></div>
+      <div class="chat" id="chat">
+        <div class="bubble user">Necesito una tienda móvil de tecnología, con tarjetas redondeadas, negro, blanco y naranja. Que tenga varias pantallas.</div>
+        <div class="bot-line"><div class="mini-mark">F</div><div class="bubble bot">¡Perfecto! Voy a crear tu aplicación paso a paso.<br><br><b>▣ Plan del proyecto:</b><br>• 5 pantallas principales<br>• Estilo moderno y limpio<br>• Colores: negro, blanco y naranja<br>• Componentes responsive<br><br>¿Comienzo a construirla?</div></div>
+        <div class="suggested"><b>Pantallas propuestas (5)</b><div class="thumb-row"><div class="mini-screen">⌕<br>Shop</div><div class="mini-screen">▦<br>Grid</div><div class="mini-screen">◈<br>Item</div><div class="mini-screen">🛒<br>Cart</div><div class="mini-screen">◉<br>User</div></div><div class="suggest-actions"><button class="primary" id="confirmBuild">Sí, crear ahora</button><button class="secondary" data-go="screens">Ajustar plan</button></div></div>
+      </div>
+      <div class="chat-input"><input id="chatInput" placeholder="Escribe o habla..."><button class="mic">🎙</button><button id="chatSend" class="send small-send">➤</button></div>
+    </section>
+
+    <section class="screen" data-screen="progress">
+      <div class="center-title"><h2>Creando tu proyecto</h2><p>FORJA está trabajando en tu idea</p></div>
+      <div class="progress-logo"><span>F</span><div class="progress-ring"></div></div>
+      <h2 class="progress-label">Construyendo... <b id="percent">62%</b></h2>
+      <div class="task-list"><div class="done">✓ <span>Analizando tu idea</span></div><div class="done">✓ <span>Definiendo diseño y estilo</span></div><div class="done">✓ <span>Seleccionando componentes</span></div><div class="current">◉ <span>Creando pantallas (3/5)</span></div><div>○ <span>Aplicando responsive</span></div><div>○ <span>Preparando vista previa</span></div></div>
+      <div class="tip">💡 <span><b>Tip:</b> Puedes seguir la creación en tiempo real.</span></div>
+      <button class="primary full" id="finishBuild">Ver resultado</button>
+    </section>
+
+    <section class="screen" data-screen="result">
+      <div class="center-title"><div class="success-icon">✓</div><h2>Tu proyecto está listo ✨</h2><p>Tu idea ya tomó forma. ¡Échale un vistazo!</p></div>
+      <div class="device-preview"><div class="device-status">9:41　 ▴ ▰</div><div class="shop-nav"><b>◢ TechStore</b><span>🛒</span></div><div class="searchbar">⌕ Buscar productos...</div><div class="hero-shop"><small>TECNOLOGÍA</small><h2>Sin límites</h2><p>Descubre lo último en gadgets</p><button>Ver ofertas →</button></div><div class="category-row"><span>▯<small>Móviles</small></span><span>▣<small>Laptops</small></span><span>◉<small>Audio</small></span><span>⌘<small>Gaming</small></span></div><h4>Ofertas destacadas</h4><div class="product-row"><div>🎧<small>Auriculares</small></div><div>⌚<small>Smart watch</small></div></div></div>
+      <div class="action-row"><button class="secondary" data-go="editor">Editar proyecto</button><button class="primary" data-go="screens">Ver pantallas</button></div>
+    </section>
+
+    <section class="screen" data-screen="screens">
+      <div class="page-heading"><h2>Pantallas del proyecto</h2><p>5 pantallas · Tienda online</p></div>
+      <div class="screen-list">
+        <button class="screen-item" data-go="preview"><span class="screen-thumb">🛍️</span><span><b>Inicio</b><small>Página principal con banner y categorías</small></span><i>›</i></button>
+        <button class="screen-item" data-go="preview"><span class="screen-thumb orange-bg">▦</span><span><b>Catálogo</b><small>Listado de productos con filtros</small></span><i>›</i></button>
+        <button class="screen-item" data-go="preview"><span class="screen-thumb">◈</span><span><b>Detalle</b><small>Vista de producto, galería y compra</small></span><i>›</i></button>
+        <button class="screen-item" data-go="preview"><span class="screen-thumb orange-bg">🛒</span><span><b>Carrito</b><small>Productos seleccionados y pago</small></span><i>›</i></button>
+        <button class="screen-item" data-go="preview"><span class="screen-thumb">◉</span><span><b>Perfil</b><small>Cuenta de usuario y pedidos</small></span><i>›</i></button>
+      </div>
+      <button class="primary full bottom-action" data-go="editor">Editar todas</button>
+    </section>
+
+    <section class="screen" data-screen="editor">
+      <div class="editor-tabs"><button class="selected">Diseño</button><button data-go="style">Estilo</button><button>Ajustes</button></div>
+      <div class="editor-canvas">
+        <div class="device-preview compact" id="editorPreview">
+          <div class="device-status">9:41　 ▴ ▰</div><div class="shop-nav"><b>◢ TechStore</b><span>🛒</span></div><div class="searchbar">⌕ Buscar productos...</div>
+          <div class="hero-shop"><small>TECNOLOGÍA</small><h2>Sin límites</h2><p>Descubre lo último en gadgets</p><button>Ver ofertas →</button></div>
+          <div class="category-row"><span>▯<small>Móviles</small></span><span>▣<small>Laptops</small></span><span>◉<small>Audio</small></span><span>⌘<small>Gaming</small></span></div><h4>Ofertas destacadas</h4><div class="product-row"><div>🎧</div><div>⌚</div></div>
+          <div class="added-components" id="addedComponents"><div class="editor-empty">＋<b>Tu composición empieza aquí</b><small>Añade elementos desde la biblioteca</small></div></div>
+        </div>
+      </div>
+      <div class="editor-selection" id="editorSelection"><span>Selecciona un componente para editarlo</span><small>Los elementos que añadas aparecerán en esta vista previa.</small></div>
+      <div class="editor-toolbar"><button id="moveUp">↑<small>Subir</small></button><button id="duplicateBlock">▣<small>Duplicar</small></button><button id="editBlock">✎<small>Editar</small></button><button id="deleteBlock">⌫<small>Eliminar</small></button></div>
+      <button class="primary full" data-go="components">＋ Añadir componente</button>
+    </section>
+
+    <section class="screen" data-screen="components">
+      <div class="library-head">
+        <div class="page-heading"><h2>Biblioteca de diseño</h2><p>Elementos listos para combinar en tus proyectos</p></div>
+        <span class="library-count" id="libraryCount">24 recursos</span>
+      </div>
+      <div class="library-search"><span>⌕</span><input id="componentSearch" placeholder="Buscar tarjetas, botones, menús..."><button id="clearSearch" aria-label="Limpiar búsqueda">×</button></div>
+      <div class="library-categories" id="libraryCategories">
+        <button class="lib-filter active" data-category="Todos">Todos <b>24</b></button>
+        <button class="lib-filter" data-category="Tarjetas">Tarjetas</button>
+        <button class="lib-filter" data-category="Botones">Botones</button>
+        <button class="lib-filter" data-category="Navegación">Navegación</button>
+        <button class="lib-filter" data-category="Banners">Banners</button>
+        <button class="lib-filter" data-category="Formularios">Formularios</button>
+        <button class="lib-filter" data-category="Datos">Datos</button>
+      </div>
+      <div class="library-toolbar"><b id="libraryTitle">Explorar componentes</b><button id="favoritesOnly">♡ Favoritos</button></div>
+      <div class="component-grid library-grid" id="componentGrid">
+        <button class="component library-card" data-name="Tarjeta producto" data-category="Tarjetas" data-tags="ecommerce producto tienda" data-desc="Tarjeta de producto con imagen, precio, valoración y acción de compra." data-style="product"><span class="component-art product-demo"><i>⌚</i><em>TOP VENTAS</em><b>Smart Watch Pro</b><small>★★★★★　$89.00</small><strong>＋ Añadir</strong></span><span class="component-meta"><b>Tarjeta producto</b><small>Tarjetas · E-commerce</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Tarjeta estadística" data-category="Tarjetas" data-tags="dashboard metricas estadisticas" data-desc="Métrica destacada con variación porcentual y lectura rápida." data-style="stat"><span class="component-art stat-demo"><small>INGRESOS TOTALES</small><b>$24,680</b><em>↗ 12.8% este mes</em><i>▂ ▄ ▃ ▆ ▅ ▇</i></span><span class="component-meta"><b>Tarjeta estadística</b><small>Tarjetas · Dashboard</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Tarjeta perfil" data-category="Tarjetas" data-tags="usuario avatar perfil social" data-desc="Perfil compacto con avatar, rol y acción de seguimiento." data-style="profile"><span class="component-art profile-demo"><i>👩🏽‍🚀</i><b>Alex Morgan</b><small>Product Designer</small><strong>Seguir</strong></span><span class="component-meta"><b>Tarjeta perfil</b><small>Tarjetas · Usuario</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Tarjeta glass" data-category="Tarjetas" data-tags="glassmorphism cristal premium" data-desc="Contenedor translúcido con borde sutil y fondo difuminado." data-style="glass"><span class="component-art glass-demo"><b>✦ Premium</b><small>Experiencia exclusiva</small><strong>Descubrir →</strong></span><span class="component-meta"><b>Tarjeta glass</b><small>Tarjetas · Premium</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Botón principal" data-category="Botones" data-tags="cta primario accion" data-desc="Acción principal de alto contraste para la tarea más importante." data-style="primary"><span class="component-art button-demo"><strong>Continuar →</strong></span><span class="component-meta"><b>Botón principal</b><small>Botones · CTA</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Botones sociales" data-category="Botones" data-tags="social login google apple" data-desc="Acciones secundarias para autenticación o compartir." data-style="social"><span class="component-art social-demo"><b>G</b><b></b><b>f</b></span><span class="component-meta"><b>Botones sociales</b><small>Botones · Acceso</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Botón flotante" data-category="Botones" data-tags="fab flotante accion rapida" data-desc="Acción rápida persistente para crear o añadir contenido." data-style="fab"><span class="component-art fab-demo"><b>＋</b><small>Acción rápida</small></span><span class="component-meta"><b>Botón flotante</b><small>Botones · FAB</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Barra inferior" data-category="Navegación" data-tags="bottom navigation tabs movil" data-desc="Navegación inferior de cinco destinos con estado activo." data-style="bottom"><span class="component-art bottom-demo"><b>⌂　▦　♡　▤　◉</b><small>Inicio　Explorar　Guardado</small></span><span class="component-meta"><b>Barra inferior</b><small>Navegación · Móvil</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Barra superior" data-category="Navegación" data-tags="header topbar menu" data-desc="Encabezado con marca, título y acciones contextuales." data-style="top"><span class="component-art top-demo"><b>◢ FORJA</b><i>⌕　◉</i></span><span class="component-meta"><b>Barra superior</b><small>Navegación · Header</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Pestañas segmentadas" data-category="Navegación" data-tags="tabs selector segmentado" data-desc="Selector compacto para cambiar entre vistas relacionadas." data-style="tabs"><span class="component-art tabs-demo"><b>Resumen</b><i>Actividad</i><i>Historial</i></span><span class="component-meta"><b>Pestañas segmentadas</b><small>Navegación · Tabs</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Banner promocional" data-category="Banners" data-tags="promo oferta ecommerce hero" data-desc="Banner visual para comunicar campañas, ofertas o lanzamientos." data-style="promo"><span class="component-art promo-demo"><small>OFERTA ESPECIAL</small><b>Hasta 40% OFF</b><em>Descubre la colección</em></span><span class="component-meta"><b>Banner promocional</b><small>Banners · Campaña</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Hero con imagen" data-category="Banners" data-tags="hero portada landing" data-desc="Bloque de portada con titular, descripción y llamada a la acción." data-style="hero"><span class="component-art hero-demo"><small>CREA ALGO EXTRAORDINARIO</small><b>Diseña sin<br>límites.</b><strong>Empezar ahora ↗</strong></span><span class="component-meta"><b>Hero con imagen</b><small>Banners · Landing</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Campo de búsqueda" data-category="Formularios" data-tags="input search buscar" data-desc="Campo de búsqueda con icono y texto de ayuda." data-style="search"><span class="component-art search-demo">⌕ <small>Buscar en la biblioteca...</small></span><span class="component-meta"><b>Campo de búsqueda</b><small>Formularios · Input</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Campo de texto" data-category="Formularios" data-tags="input texto formulario" data-desc="Entrada de texto con etiqueta, placeholder y estado enfocado." data-style="input"><span class="component-art input-demo"><small>Nombre completo</small><b>Escribe tu nombre</b></span><span class="component-meta"><b>Campo de texto</b><small>Formularios · Input</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Selector desplegable" data-category="Formularios" data-tags="select dropdown opciones" data-desc="Selector de opciones con indicador desplegable." data-style="select"><span class="component-art select-demo">Seleccionar categoría <b>⌄</b></span><span class="component-meta"><b>Selector desplegable</b><small>Formularios · Select</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Lista de actividad" data-category="Datos" data-tags="list timeline actividad feed" data-desc="Lista de eventos con iconos, descripción y tiempo." data-style="list"><span class="component-art list-demo"><b>●　Nuevo pedido <small>Hace 2 min</small></b><b>●　Pago recibido <small>Hace 1 h</small></b><b>●　Perfil actualizado <small>Ayer</small></b></span><span class="component-meta"><b>Lista de actividad</b><small>Datos · Lista</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Barra de progreso" data-category="Datos" data-tags="progress carga porcentaje" data-desc="Indicador de avance con porcentaje y estado." data-style="progress"><span class="component-art progress-demo"><b>Progreso del proyecto <i>72%</i></b><span><i></i></span><small>Queda poco para terminar</small></span><span class="component-meta"><b>Barra de progreso</b><small>Datos · Indicador</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Gráfico de barras" data-category="Datos" data-tags="chart analytics dashboard" data-desc="Gráfico compacto para comparar valores por periodo." data-style="chart"><span class="component-art chart-demo"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="component-meta"><b>Gráfico de barras</b><small>Datos · Analítica</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Etiqueta de estado" data-category="Datos" data-tags="badge status tag etiqueta" data-desc="Etiqueta pequeña para estados, categorías y notificaciones." data-style="badge"><span class="component-art badge-demo"><b>● Activo</b><b>En revisión</b><b>Completado ✓</b></span><span class="component-meta"><b>Etiqueta de estado</b><small>Datos · Badge</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Galería de imágenes" data-category="Tarjetas" data-tags="gallery fotos imagenes grid" data-desc="Composición de imágenes en mosaico para productos o portafolios." data-style="gallery"><span class="component-art gallery-demo"><i>◈</i><i>▧</i><i>▣</i></span><span class="component-meta"><b>Galería de imágenes</b><small>Tarjetas · Media</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Carrusel horizontal" data-category="Tarjetas" data-tags="carousel slider horizontal" data-desc="Carrusel desplazable para colecciones y recomendaciones." data-style="carousel"><span class="component-art carousel-demo"><i>‹</i><b>01</b><b>02</b><b>03</b><i>›</i></span><span class="component-meta"><b>Carrusel horizontal</b><small>Tarjetas · Slider</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Tarjeta de precio" data-category="Tarjetas" data-tags="pricing plan suscripcion" data-desc="Plan de suscripción con precio, características y acción." data-style="price"><span class="component-art price-demo"><small>PRO PLAN</small><b>$12<em>/mes</em></b><i>✓ Todo incluido</i><i>✓ Soporte prioritario</i></span><span class="component-meta"><b>Tarjeta de precio</b><small>Tarjetas · Pricing</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+        <button class="component library-card" data-name="Alerta contextual" data-category="Datos" data-tags="alert aviso notificacion" data-desc="Mensaje contextual para información, éxito, advertencia o error." data-style="alert"><span class="component-art alert-demo">✦ <span><b>Todo listo</b><small>Los cambios se guardaron correctamente.</small></span></span><span class="component-meta"><b>Alerta contextual</b><small>Datos · Feedback</small></span><span class="component-actions"><i class="fav">♡</i><i class="add-mini">＋</i></span></button>
+      </div>
+      <div class="empty-library hidden" id="emptyLibrary">No encontramos componentes con esa búsqueda.</div>
+      <div class="library-footer"><span id="addedCount">0 componentes añadidos</span><button id="showAll">Mostrar todos</button></div>
+      <div class="toast" id="toast">Componente añadido al proyecto</div>
+      <div class="component-detail hidden" id="componentDetail"><div class="detail-backdrop" data-close-detail></div><div class="detail-sheet"><div class="sheet-handle"></div><button class="detail-close" data-close-detail>×</button><div id="detailPreview" class="detail-preview"></div><h3 id="detailName">Componente</h3><p id="detailDesc"></p><div class="detail-meta"><span id="detailCategory">Categoría</span><span>Responsive</span><span>Personalizable</span></div><button class="primary full" id="detailAdd">＋ Añadir al proyecto</button></div></div>
+    </section>
+
+    <section class="screen" data-screen="style">
+      <div class="page-heading"><h2>Estilo del proyecto</h2><p>Personaliza la identidad visual</p></div>
+      <div class="editor-tabs"><button class="selected">Colores</button><button>Tipografía</button><button>Estilo</button></div>
+      <h3>Paleta del proyecto</h3><div class="swatches"><button style="--sw:#08080d" data-color="#08080d"></button><button style="--sw:#f7f7fb" data-color="#f7f7fb"></button><button style="--sw:#ff7800" data-color="#ff7800"></button><button class="add-swatch">＋</button></div>
+      <h3>Temas sugeridos</h3><div class="theme-grid"><button class="theme-swatch active" style="--a:#ff7800;--b:#ffb23e"></button><button class="theme-swatch" style="--a:#9c24ff;--b:#ec45b9"></button><button class="theme-swatch" style="--a:#00a5ff;--b:#5de5ff"></button><button class="theme-swatch" style="--a:#006b66;--b:#25c5aa"></button><button class="theme-swatch" style="--a:#1952bd;--b:#58a5ff"></button><button class="theme-swatch" style="--a:#79c900;--b:#d0ff47"></button></div>
+      <h3>Radio de esquinas</h3><div class="radius-options"><button>⌜</button><button>▢</button><button class="chosen">▢</button><button>▭</button></div>
+      <label class="range-label">Redondeado <b id="radiusValue">16 px</b></label><input type="range" min="4" max="30" value="16" id="radiusRange">
+      <button class="primary full" data-go="editor">Aplicar estilo</button>
+    </section>
+
+    <section class="screen" data-screen="preview">
+      <div class="page-heading"><h2>Vista previa</h2><p>Comprueba cómo se adapta a cada pantalla</p></div>
+      <div class="device-switch"><button class="active">▯</button><button>▭</button><button>▰</button></div>
+      <div class="preview-stage"><div class="device-preview compact"><div class="device-status">9:41　 ▴ ▰</div><div class="shop-nav"><b>◢ TechStore</b><span>🛒</span></div><div class="searchbar">⌕ Buscar productos...</div><div class="hero-shop"><small>TECNOLOGÍA</small><h2>Sin límites</h2><p>Descubre lo último en gadgets</p><button>Ver ofertas →</button></div><div class="category-row"><span>▯<small>Móviles</small></span><span>▣<small>Laptops</small></span><span>◉<small>Audio</small></span><span>⌘<small>Gaming</small></span></div><h4>Ofertas destacadas</h4><div class="product-row"><div>🎧</div><div>⌚</div></div></div></div>
+      <div class="action-row"><button class="secondary">↻ Actualizar</button><button class="secondary">⛶ Pantalla completa</button></div>
+    </section>
+
+    <section class="screen" data-screen="projects">
+      <div class="page-heading"><h2>Mis proyectos</h2><p>Todos tus diseños en un solo lugar</p></div>
+      <div class="searchbar">⌕ Buscar proyecto...</div><div class="filter-row"><button class="filter active">Todos</button><button class="filter">Recientes</button><button class="filter">Favoritos</button></div>
+      <div class="project-list"><button class="project-item" data-go="result"><span class="project-cover orange-cover">🛍️</span><span><b>TechStore</b><small>Hace 5 min · 5 pantallas</small></span><i>•••</i></button><button class="project-item"><span class="project-cover violet-cover">♥</span><span><b>App Fitness</b><small>Ayer · 4 pantallas</small></span><i>•••</i></button><button class="project-item"><span class="project-cover blue-cover">🍜</span><span><b>Restaurante</b><small>Hace 2 días · 6 pantallas</small></span><i>•••</i></button><button class="project-item"><span class="project-cover purple-cover">◈</span><span><b>Landing SaaS</b><small>Hace 3 días · 3 pantallas</small></span><i>•••</i></button></div>
+      <button class="fab" data-go="home">＋</button>
+    </section>
+
+    <section class="screen" data-screen="export">
+      <div class="center-title"><div class="success-icon">✓</div><h2>Proyecto listo</h2><p>Elige un formato de exportación</p></div>
+      <div class="export-options"><label><input type="radio" name="format" checked><span>〈/〉</span><b>HTML</b><small>Listo para publicar</small></label><label><input type="radio" name="format"><span>⚛</span><b>React</b><small>JSX + componentes</small></label><label><input type="radio" name="format"><span>≋</span><b>Tailwind</b><small>Con clases de estilo</small></label><label><input type="radio" name="format"><span>▣</span><b>ZIP</b><small>Proyecto completo</small></label></div>
+      <button class="primary full" id="exportBtn">Exportar</button><button class="secondary full publish">☁ Publicar en la web</button><p class="export-note" id="exportNote">La exportación de esta versión de demostración genera un paquete HTML local.</p>
+    </section>
+  </main>
+  <nav class="bottom-nav" id="bottomNav"><button data-go="home" class="active"><span>⌂</span><small>Inicio</small></button><button data-go="agent"><span>♙</span><small>Agente</small></button><button data-go="components"><span>✥</span><small>Diseños</small></button><button data-go="projects"><span>▣</span><small>Proyectos</small></button><button data-go="components"><span>▤</span><small>Biblioteca</small></button></nav>
+</div>
+<script src="assets/app.js"></script>
+</body></html>
