@@ -301,3 +301,190 @@ p{color:#c2b6d0}
 @media(min-width:600px){
   .app-shell{border:1px solid #a67bc044;box-shadow:0 0 0 5px #6b39821a,0 25px 90px #000b}
 }
+
+
+/* v0.7 — screen composition pass, based on the supplied FORJA reference */
+.status{
+  position:sticky;top:0;z-index:22;height:29px;
+  padding:6px 22px 0;
+  background:linear-gradient(90deg,#21102f,#160d22 58%,#100d19);
+  color:#fff;font-size:10px;letter-spacing:.35px;
+}
+.topbar{
+  position:sticky;top:29px;z-index:21;height:58px;
+  padding:0 17px;background:linear-gradient(90deg,#160f20f5,#100d19f5);
+  border-bottom:1px solid #b78bd52b;
+}
+.topbar .back{width:27px;flex:none}
+.top-actions .icon-btn{width:31px;height:31px;border-radius:50%;border:1px solid #9d83b45c;background:#21192d}
+.brand{font-size:12px;letter-spacing:.35px}
+.brand small{font-size:7px;letter-spacing:2.3px}
+main{padding:18px 18px 27px}
+.screen.active{min-height:calc(100dvh - 175px)}
+.text-btn{
+  display:block;margin:8px auto 0;padding:8px 14px;
+  color:#e8d9f2;background:transparent;border:0;
+  font:500 10px 'Plus Jakarta Sans',sans-serif;
+}
+.welcome{padding-bottom:18px}
+.welcome-art{
+  height:245px;margin:-18px -18px 0;
+  background:
+   radial-gradient(ellipse at 77% 84%,#5a1b8d88 0,transparent 48%),
+   radial-gradient(ellipse at 18% 20%,#37104f66 0,transparent 55%),
+   linear-gradient(145deg,#100b19,#130d20 65%,#21102f);
+}
+.welcome-art:before{
+  width:470px;height:155px;left:-116px;top:43px;
+  border:4px solid #a52cff;transform:rotate(-26deg);
+  box-shadow:0 0 9px #d24dff,0 0 24px #a32cff,0 0 48px #8422ff99;
+}
+.welcome-art:after{
+  width:460px;height:132px;left:-112px;top:61px;
+  border:3px solid #ff4e9a;transform:rotate(-26deg);
+  box-shadow:0 0 9px #ff4e9a,0 0 30px #ff4e9a99,0 0 50px #9a2cff66;
+}
+.big-mark{
+  top:91px;font-size:100px;z-index:1;
+  background:linear-gradient(145deg,#ff579d 0%,#ff7a16 48%,#9b36ff 90%);
+  color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 25px #a33cff88);
+}
+.welcome-copy{padding:0 1px}
+.welcome-title{font-size:29px;letter-spacing:2.4px}
+.welcome-title span{font-size:24px;letter-spacing:5px}
+.welcome-copy>p{font-size:12px;line-height:1.55;margin:13px 0 19px}
+.benefits{gap:9px;margin-bottom:19px}
+.benefits div{
+  min-height:65px;padding:9px 12px;border-radius:16px;
+  background:linear-gradient(105deg,#30223d,#211a2e 78%);
+  border:1px solid #9a7bab3d;
+  box-shadow:0 7px 16px #0004,inset 0 1px #ffffff12;
+  font-size:10px;
+}
+.benefits i{
+  width:39px;height:39px;border-radius:12px;
+  background:linear-gradient(145deg,#51236b,#351642);
+  border:1px solid #bd6fe655;color:#e7a4ff;
+  box-shadow:0 0 18px #9c32e833,inset 0 1px #ffffff1c;
+}
+.welcome .primary.full{height:48px;border-radius:25px;font-size:11px}
+.greeting{padding:8px 0 5px}
+.greeting h1{font-size:22px;line-height:1.2}
+.greeting p{font-size:11px;margin:5px 0 17px}
+.prompt-card{min-height:151px;border-radius:22px;padding:15px 15px 12px}
+.prompt-card textarea{height:82px;font-size:12px;line-height:1.6}
+.prompt-actions{gap:10px}
+.mic,.send{width:37px;height:37px}
+.section-heading{margin:20px 0 12px;font-size:11px}
+.quick-grid{gap:10px}
+.quick{height:111px;border-radius:18px;font-size:10px;gap:8px}
+.quick span{width:40px;height:40px;font-size:22px}
+.wide-row{margin-top:13px;min-height:61px;border-radius:16px;font-size:11px}
+.inspiration{gap:10px}
+.inspire-card{height:119px;border-radius:17px;padding:13px}
+.bottom-nav{height:75px;padding:8px 5px calc(8px + env(safe-area-inset-bottom))}
+.bottom-nav button{font-size:19px}
+.bottom-nav button small{font-size:8px}
+.page-heading{margin:7px 0 16px}
+.page-heading h2{font-size:19px}
+.page-heading p{font-size:11px}
+.searchbar{min-height:43px;padding:12px 14px;border-radius:24px;font-size:10px}
+.filter-row{gap:8px;margin:12px 0 16px}
+.filter{padding:8px 14px;border-radius:18px;font-size:9px}
+.project-list{gap:10px}
+.project-item{
+  min-height:91px;padding:11px 12px;border-radius:17px;gap:13px;
+}
+.project-cover{
+  width:67px;height:67px;flex:none;border-radius:13px;
+  font-size:25px;position:relative;overflow:hidden;
+}
+.project-item>span:nth-child(2){display:flex;flex-direction:column;gap:6px}
+.project-item>span:nth-child(2) b{font-size:11px}
+.project-item>span:nth-child(2) small{font-size:9px;color:#b8adca}
+.project-item>i{margin-left:auto;font-size:12px;letter-spacing:2px;color:#aaa0b5}
+.orange-cover{background:radial-gradient(circle at 75% 25%,#ffca7a,transparent 35%),linear-gradient(145deg,#ff8d19,#8a3408)}
+.violet-cover{background:radial-gradient(circle at 70% 20%,#e5a2ff,transparent 30%),linear-gradient(145deg,#b32eff,#43117b)}
+.blue-cover{background:radial-gradient(circle at 70% 20%,#8de8ff,transparent 30%),linear-gradient(145deg,#21b9e6,#123d73)}
+.purple-cover{background:radial-gradient(circle at 70% 20%,#e1a4ff,transparent 30%),linear-gradient(145deg,#9634ff,#37116c)}
+/* Library: make each specimen feel like a miniature designed artifact */
+.library-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.library-card{
+  min-height:226px;padding:10px;border-radius:18px;gap:8px;
+}
+.library-card .component-art{height:143px;border-radius:14px}
+.component-meta{padding:1px 2px 2px}
+.component-meta b{font-size:10px}
+.component-meta small{font-size:8px;margin-top:4px}
+.component-actions{right:10px;bottom:10px;gap:7px}
+.component-actions i{width:31px;height:31px;font-size:16px;background:#100d1bdc}
+.component-actions i.add-mini{background:linear-gradient(135deg,#ff9e23,#ff6900);box-shadow:0 4px 13px #ff720055}
+.component-art.product-demo{padding:12px;gap:5px}
+.product-demo>i{font-size:43px;align-self:center;filter:drop-shadow(0 8px 8px #0009)}
+.product-demo em{font-size:7px;padding:4px 7px}
+.product-demo>b{font-size:10px}
+.product-demo small{font-size:8px}
+.product-demo strong{font-size:8px;padding:6px 8px}
+.component-art.stat-demo{padding:15px;gap:8px}
+.stat-demo small{font-size:8px}
+.stat-demo>b{font-size:24px}
+.stat-demo em{font-size:9px}
+.stat-demo i{font-size:18px}
+.component-art.profile-demo>i{font-size:37px}
+.profile-demo>b{font-size:10px}
+.profile-demo small{font-size:8px}
+.profile-demo strong{font-size:8px;padding:5px 17px}
+.glass-demo{padding:16px!important}
+.glass-demo b{font-size:12px}
+.glass-demo small,.glass-demo strong{font-size:9px}
+.button-demo strong{padding:11px 23px;font-size:10px}
+.social-demo b{width:37px;height:37px;font-size:15px}
+.fab-demo b{width:46px;height:46px;font-size:28px}
+.fab-demo small{font-size:9px}
+.bottom-demo b{padding:11px 15px;font-size:15px}
+.bottom-demo small{font-size:8px}
+.top-demo b{font-size:12px}
+.top-demo i{font-size:15px}
+.tabs-demo>*{font-size:8px;padding:9px}
+.promo-demo{padding:16px!important}
+.promo-demo small{font-size:8px}
+.promo-demo b{font-size:20px}
+.promo-demo em{font-size:9px}
+.hero-demo{padding:15px!important}
+.hero-demo small{font-size:7px}
+.hero-demo b{font-size:20px}
+.hero-demo strong{font-size:8px}
+.search-demo small,.select-demo{font-size:9px}
+.input-demo{padding:15px!important}
+.input-demo small,.input-demo b{font-size:9px}
+.list-demo{padding:13px!important}
+.list-demo b{font-size:9px}
+.list-demo small{font-size:8px}
+.progress-demo>b{font-size:9px}
+.progress-demo>small{font-size:8px}
+.badge-demo b{font-size:8px;padding:7px 9px}
+.gallery-demo{padding:12px!important;gap:5px!important}
+.gallery-demo i{font-size:22px}
+.price-demo{padding:14px!important}
+.price-demo small,.price-demo i{font-size:8px}
+.price-demo>b{font-size:23px}
+.price-demo em{font-size:8px}
+.alert-demo{font-size:21px}
+.alert-demo b{font-size:10px}
+.alert-demo small{font-size:8px}
+.editor-canvas .device-preview.compact{width:84%;min-height:380px}
+.editor-toolbar{
+  border-radius:16px;padding:12px 8px;
+  background:linear-gradient(120deg,#2d223a,#1b1727);
+  box-shadow:0 8px 18px #0005,inset 0 1px #ffffff10;
+}
+.editor-toolbar button{font-size:19px;gap:5px}
+.editor-toolbar small{font-size:8px}
+@media(max-width:370px){
+  main{padding-left:14px;padding-right:14px}
+  .library-grid{gap:9px}
+  .library-card{min-height:205px;padding:8px}
+  .library-card .component-art{height:126px}
+  .welcome-art{height:220px}
+}
