@@ -73,6 +73,7 @@
 
     <section class="screen" data-screen="editor">
       <div class="editor-tabs"><button class="selected">Diseño</button><button data-go="style">Estilo</button><button>Ajustes</button></div>
+      <div class="page-manager"><div><small>PÁGINA ACTUAL</small><b id="currentPageName">Inicio</b></div><select id="pageSelect" aria-label="Cambiar página"><option>Inicio</option></select><button id="addPage">＋ Página</button></div>
       <div class="editor-canvas">
         <div class="device-preview compact" id="editorPreview">
           <div class="device-status">9:41　 ▴ ▰</div><div class="shop-nav"><b>◢ TechStore</b><span>🛒</span></div><div class="searchbar">⌕ Buscar productos...</div>
@@ -82,6 +83,16 @@
         </div>
       </div>
       <div class="editor-selection" id="editorSelection"><span>Selecciona un componente para editarlo</span><small>Los elementos que añadas aparecerán en esta vista previa.</small></div>
+      <div class="inspector-panel">
+        <div class="inspector-title"><b>Inspector de componente</b><small id="inspectorStatus">Sin selección</small></div>
+        <label>Nombre / etiqueta<input id="inspectName" placeholder="Selecciona un elemento"></label>
+        <div class="inspector-two">
+          <label>Fondo<input id="inspectColor" type="color" value="#30233f"></label>
+          <label>Radio <output id="inspectRadiusValue">10 px</output><input id="inspectRadius" type="range" min="0" max="28" value="10"></label>
+        </div>
+        <label>Espaciado interno <output id="inspectPaddingValue">8 px</output><input id="inspectPadding" type="range" min="0" max="28" value="8"></label>
+        <button class="secondary full" id="resetInspector">Restablecer estilo</button>
+      </div>
       <div class="editor-toolbar"><button id="moveUp">↑<small>Subir</small></button><button id="duplicateBlock">▣<small>Duplicar</small></button><button id="editBlock">✎<small>Editar</small></button><button id="deleteBlock">⌫<small>Eliminar</small></button></div>
       <button class="primary full" data-go="components">＋ Añadir componente</button>
     </section>

@@ -148,3 +148,34 @@ if(libraryGrid){
  window.FORJA_EDITOR={add};
  restore();
 })();
+
+
+// Multi-page project layer and component inspector.
+(()=>{
+ const stage=document.getElementById('addedComponents');if(!stage)return;
+ const pageSelect=document.getElementById('pageSelect'),pageName=document.getElementById('currentPageName');
+ const pagesKey='forja-project-pages-v1';let pages=[{name:'Inicio',html:''}],current=0;
+ try{const saved=JSON.parse(localStorage.getItem(pagesKey)||'null');if(Array.isArray(saved)&&saved.length)pages=saved}catch(e){}
+ function snapshot(){pages[current].html=stage.innerHTML;try{localStorage.setItem(pagesKey,JSON.stringify(pages))}catch(e){}}
+ function renderPreviewPage(){const target=document.querySelector('[data-screen="preview"] .device-preview');if(!target)return;let out=target.querySelector('.added-components-preview');if(!out){out=document.createElement('div');out.className='added-components-preview';target.appendChild(out)}out.innerHTML='';[...stage.querySelectorAll('.editable-component .inserted-art')].forEach(el=>out.appendChild(el.cloneNode(true)))}
+ function refreshPageUI(){pageSelect.innerHTML='';pages.forEach((pg,i)=>{const o=document.createElement('option');o.value=i;o.textContent=pg.name;pageSelect.appendChild(o)});pageSelect.value=String(current);pageName.textContent=pages[current].name;renderPreviewPage()}
+ function changePage(i){snapshot();current=i;stage.innerHTML=pages[current].html||'<div class="editor-empty">＋<b>Tu composición empieza aquí</b><small>Añade elementos desde la biblioteca</small></div>';document.getElementById('editorSelection').innerHTML='<span>Selecciona un componente para editarlo</span><small>Esta página tiene su propia composición.</small>';refreshPageUI();const first=stage.querySelector('.editable-component');if(first)first.click()}
+ pageSelect.addEventListener('change',()=>changePage(Number(pageSelect.value)));
+ document.getElementById('addPage').addEventListener('click',()=>{snapshot();const n=pages.length+1;pages.push({name:'Página '+n,html:'<div class="editor-empty">＋<b>Tu nueva página</b><small>Añade componentes desde la biblioteca</small></div>'});current=pages.length-1;changePage(current);});
+ const originalAdd=window.FORJA_EDITOR?.add;
+ if(originalAdd)window.FORJA_EDITOR.add=(name)=>{originalAdd(name);snapshot();renderPreviewPage()};
+ stage.addEventListener('click',e=>{const item=e.target.closest('.editable-component');if(!item)return;setTimeout(()=>{const art=item.querySelector('.inserted-art');if(!art)return;document.getElementById('inspectorStatus').textContent='Editando componente';document.getElementById('inspectName').value=item.querySelector('.editable-head b').textContent;document.getElementById('inspectColor').value=rgbToHex(getComputedStyle(art).backgroundColor)||'#30233f';document.getElementById('inspectRadius').value=parseInt(getComputedStyle(art).borderRadius)||10;document.getElementById('inspectRadiusValue').textContent=document.getElementById('inspectRadius').value+' px';document.getElementById('inspectPadding').value=parseInt(getComputedStyle(art).padding)||8;document.getElementById('inspectPaddingValue').textContent=document.getElementById('inspectPadding').value+' px'},0)});
+ function rgbToHex(rgb){const m=rgb.match(/\d+/g);if(!m||m.length<3)return '#30233f';return '#'+m.slice(0,3).map(x=>Number(x).toString(16).padStart(2,'0')).join('')}
+ function selectedItem(){return stage.querySelector('.editable-component.selected')}
+ function applyStyle(){const item=selectedItem();if(!item)return;const art=item.querySelector('.inserted-art');if(!art)return;art.style.backgroundColor=document.getElementById('inspectColor').value;art.style.borderRadius=document.getElementById('inspectRadius').value+'px';art.style.padding=document.getElementById('inspectPadding').value+'px';const label=document.getElementById('inspectName').value.trim();if(label)item.querySelector('.editable-head b').textContent=label;snapshot();renderPreviewPage()}
+ document.getElementById('inspectName').addEventListener('change',applyStyle);
+ document.getElementById('inspectColor').addEventListener('input',applyStyle);
+ document.getElementById('inspectRadius').addEventListener('input',e=>{document.getElementById('inspectRadiusValue').textContent=e.target.value+' px';applyStyle()});
+ document.getElementById('inspectPadding').addEventListener('input',e=>{document.getElementById('inspectPaddingValue').textContent=e.target.value+' px';applyStyle()});
+ document.getElementById('resetInspector').addEventListener('click',()=>{const item=selectedItem();if(!item)return;const art=item.querySelector('.inserted-art');art.removeAttribute('style');document.getElementById('inspectColor').value='#30233f';document.getElementById('inspectRadius').value=10;document.getElementById('inspectPadding').value=8;document.getElementById('inspectRadiusValue').textContent='10 px';document.getElementById('inspectPaddingValue').textContent='8 px';snapshot();renderPreviewPage()});
+ // Persist mutations from toolbar actions, including duplicate, move and delete.
+ ['moveUp','duplicateBlock','deleteBlock','editBlock'].forEach(id=>document.getElementById(id)?.addEventListener('click',()=>setTimeout(()=>{snapshot();renderPreviewPage()},30)));
+ // Restore saved pages, retaining the existing first-page content when no page data exists.
+ if(pages.length===1&&!pages[0].html){pages[0].html=stage.innerHTML}else{stage.innerHTML=pages[0].html||stage.innerHTML}
+ refreshPageUI();
+})();
