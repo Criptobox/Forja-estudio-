@@ -2,6 +2,8 @@
 
 Biblioteca UI/UX y constructor visual multipantalla. Proyecto web móvil-first, PWA y envoltorio Android.
 
+Versión Android: `versionCode 38`, `versionName 12.8`.
+
 ## Publicar en GitHub Pages
 
 1. Crea o abre el repositorio donde guardarás el proyecto.
