@@ -1,0 +1,28 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const code=fs.readFileSync(path.join(__dirname,'../web/js/tinta-provider-manager.js'),'utf8');
+let calls=[],nextModels={data:[{id:'model-ok'},{id:'model-bad'},{id:'model-ok'}]};
+const store=new Map(),localStorage={getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)};
+const context={URL,localStorage,AbortController,setTimeout,clearTimeout,Map,JSON,Array,String,Error,Date,fetch:async(url,opts)=>{calls.push({url,opts});if(url.endsWith('/models'))return {ok:true,text:async()=>JSON.stringify(nextModels)};const body=JSON.parse(opts.body);if(body.model==='model-bad')return {ok:false,status:400,statusText:'Bad Request',text:async()=>JSON.stringify({error:{message:'unsupported'}})};return {ok:true,text:async()=>JSON.stringify({choices:[{message:{content:'TINTA_OK'}}],model:body.model})};}};
+context.globalThis=context;vm.runInNewContext(code,context);
+(async()=>{
+ const M=context.TintaProviderManager;
+ assert.equal(M.cleanBase('https://api.example/v1/'),'https://api.example/v1');
+ assert.throws(()=>M.cleanBase('javascript:alert(1)'));
+ assert.throws(()=>M.cleanBase('https://api.example/v1?key=secret'));
+ const found=await M.discover({endpoint:'https://api.example/v1',key:'secret',authMode:'x-api-key'});
+ assert.equal(calls.at(-1).opts.headers['x-api-key'],'secret');
+ assert.deepEqual(Array.from(found.models),['model-ok','model-bad']);
+ const completion=await M.complete({endpoint:'https://api.example/v1',key:'secret',model:'model-ok',messages:[{role:'user',content:'hola'}],authMode:'bearer'});
+ assert.equal(completion,'TINTA_OK');assert.equal(calls.at(-1).opts.headers.Authorization,'Bearer secret');assert.equal(JSON.parse(calls.at(-1).opts.body).messages[0].content,'hola');
+ const ok=await M.testModel({endpoint:'https://api.example/v1',key:'secret',model:'model-ok',authMode:'api-key'});
+ assert.equal(calls.at(-1).opts.headers['api-key'],'secret');
+ assert.equal(ok.ok,true);assert.equal(ok.text,'TINTA_OK');
+ await assert.rejects(()=>M.testModel({endpoint:'https://api.example/v1',key:'secret',model:'model-bad'}),/HTTP 400/);
+ M.saveProvider({id:'p1',name:'test',endpoint:'https://api.example/v1',workingModels:['model-ok']});
+ M.rememberKey('p1','session-secret');
+ assert.equal(M.getKey('p1'),'session-secret');
+ assert.equal(M.list()[0].connected,true);
+ M.updateWorking('p1',['model-ok']);assert.deepEqual(Array.from(M.list()[0].workingModels),['model-ok']);
+ M.remove('p1');assert.equal(M.getKey('p1'),'');
+ console.log('16 comprobaciones del gestor de proveedores superadas.');
+})().catch(e=>{console.error(e);process.exit(1)});

@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const Core=require('../web/js/tinta-agent-core.js');
+const ctx={hasPalette:id=>id==='oceano',hasBlock:id=>id==='hero',roleOf:id=>'header',fieldCount:id=>id==='hero'?2:0};
+const good=Core.validatePlan([{type:'update_text',blockId:'hero',fieldIndex:1,value:'Nuevo título'}],ctx);
+assert.equal(good.ok,true);
+assert.equal(Core.validatePlan([{type:'update_text',blockId:'hero',fieldIndex:2,value:'Fuera de rango'}],ctx).ok,false);
+assert.equal(Core.validatePlan([{type:'set_palette',paletteId:'no-existe'}],ctx).ok,false);
+assert.equal(Core.validatePlan([{type:'add_component',blockId:'hero',role:'nav'}],ctx).ok,false);
+assert.equal(Core.validatePlan([{type:'set_palette',paletteId:'oceano',extra:'no'}],ctx).ok,false);
+assert.equal(Core.validatePlan([{type:'set_palette',paletteId:'oceano'}],ctx).ok,true);
+console.log('6 comprobaciones del contrato seguro 15.15 superadas.');

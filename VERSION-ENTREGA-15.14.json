@@ -1,0 +1,57 @@
+{
+  "release": "Estilos 15.14",
+  "base": "Estilos 15.13",
+  "focus": "Centro de conexiones IA: descubrimiento, autenticación y pruebas reales de modelos",
+  "service_worker": "tinta-2026.11.16",
+  "capabilities": [
+    "Conexiones múltiples con endpoint base configurable",
+    "Autenticación Bearer, x-api-key y api-key",
+    "Descubrimiento de modelos mediante ruta configurable",
+    "Prueba real secuencial de cada modelo mediante chat completions",
+    "Lista separada de modelos funcionales y fallidos",
+    "Alta manual de modelos para endpoints sin catálogo",
+    "Perfiles persistentes sin claves API; claves solo en memoria"
+  ],
+  "limitations": [
+    "Compatibilidad automática con catálogo tipo /models y chat tipo /chat/completions",
+    "La conexión directa depende de CORS y expone la clave al contexto del navegador",
+    "La clave no se guarda y debe reintroducirse tras recargar",
+    "Cada prueba consume una solicitud de la cuota del proveedor",
+    "El agente todavía no usa el modelo elegido como motor de conversación",
+    "No se probó en dispositivo Android físico ni con Playwright"
+  ],
+  "validation": {
+    "provider_manager": "13 checks passed",
+    "provider_ui": "16 checks passed",
+    "agent_structure": "18 checks passed",
+    "agent_runtime": "6 checks passed",
+    "hsl": "passed",
+    "editor_regressions": "14+14+13+12+15+12 checks passed",
+    "library": "11 checks passed",
+    "versions_precache": "52 checks passed",
+    "all_web_js_syntax": "41 files passed",
+    "duplicate_html_ids": "none",
+    "entry_sync": "passed",
+    "zip_integrity": "passed: 256 entries, ZipFile.testzip() returned None",
+    "full_suite": "not run; legacy tests require unavailable dependencies and run-all had a local port collision"
+  },
+  "files_sha256": {
+    "web/index.html": "681c4711a0edce924634292aca5237fb02be8d6d50f995ee45a813f9c9f5e91e",
+    "web/crear.html": "681c4711a0edce924634292aca5237fb02be8d6d50f995ee45a813f9c9f5e91e",
+    "web/sw.js": "2dcea7b90a13e92ce206ca7b3124e29be22b4e56f14923e41d330693c507bdff",
+    "web/js/crear.js": "b01a1f047114a50f4c92ea2a79e666d9ec0ebbcfddc653ef416241e0b5ee4735",
+    "web/js/tinta-provider-manager.js": "9b72edde6cedd4ef8c111fc60fb3935fce5b378fed6aa933516f839aca43ad29",
+    "web/js/tinta-agent-core.js": "7b76afe174930af279ab7159a9f345c9f150755ff3284102a0003e2222a391e5",
+    "web/js/tinta-palettes.js": "8f5fc54bea4f90772bf5536e0386ce3f0f0ac69837ced07fcaaf5e5e9d90a878",
+    "web/css/crear.css": "4b64066cc359d8fc9c608679817dba5f3c09313778796c845d727ad7fae90243",
+    "README.md": "5ed79f63b058c6ed36e8f6f368879855725418c6c16a8407a3879d9efeb5f92d",
+    "docs/ROADMAP.md": "85f0d09c65ff91179a79a72441764ace3c73119dee0c92cdf1815341c303590a",
+    "docs/ESTILOS-15.14-CENTRO-CONEXIONES-IA.md": "bd43abb4541e56ca7871eeb48445724cbfa11d231eea6094c73cdba09780ba42",
+    "docs/CHANGELOG-15.14.md": "f1e21e469b3fbddc84e38e0f4a5379904b4237261b366344e2ce10758be7e6a1",
+    "tests/tinta-provider-manager.cjs": "f8c6f1e5d2d7133d7e567c18d1c2248887b441d258effc77650f7d6daac82eb4",
+    "tests/tinta-provider-ui.cjs": "778fce796b232f5a23dae844a44816dc373fd081abc4b505a5fcac528de6e8b5",
+    "tests/tinta-agent-1511.cjs": "7d9577b927864189e06e60455f4fa3ab75765837c575595c8510b732b1b6ebda",
+    "tests/tinta-agent-1511-runtime.cjs": "04bfa1a2373c387daf41531f8452317fb7de87403886f7eacd78af9086a9de87",
+    "ABRIR-TINTA-15.14.html": "b3e19137935df08a90fd1e37a684d6a0b81ff0e6ce37f5770e91616e773ef2ad"
+  }
+}

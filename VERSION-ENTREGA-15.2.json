@@ -1,0 +1,24 @@
+{
+  "release": "Estilos 15.2",
+  "base": "Estilos 15.1",
+  "entry": "web/index.html",
+  "service_worker": "tinta-2026.11.4",
+  "features": [
+    "selección directa de capas",
+    "selección múltiple táctil y por teclado",
+    "inspector de composición",
+    "orden de capas",
+    "copiar, pegar y restablecer estilos",
+    "persistencia, historial y exportación HTML"
+  ],
+  "files_sha256": {
+    "web/index.html": "d851993e40d2a4cbed8d9492eb57ed5c875c8ee2d9a67e956536a90a1aa0c0de",
+    "web/crear.html": "d851993e40d2a4cbed8d9492eb57ed5c875c8ee2d9a67e956536a90a1aa0c0de",
+    "web/css/crear.css": "750ff178991f88043c37f821de5207c58fb3db4affa902f4a6981c6d3ad47446",
+    "web/js/crear.js": "a417acda8a41fa9f3f9174e8d511c889ac707f92d9b812cbd506f8cbc7d84737",
+    "web/sw.js": "b792ec08fbebfeec2f8082cd6817d8267a4b357719c10397a072d73dc6cd258c",
+    "docs/ESTILOS-15.2-EDITOR.md": "6e1fc4820e139e44bf94445e84c5cc2177ca5a3e79371e52f8de353c0350333e",
+    "tests/tinta-editor-152.cjs": "c69a9822d1a229b7960fd7fbe26ce4724486cb197952a75cd7775cec62329ea8",
+    "ABRIR-TINTA-ACTUAL.html": "9749d772115d9acd072f087eaefa534bfb662d8163604ed46155ce4a24c31f2c"
+  }
+}

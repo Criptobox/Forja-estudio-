@@ -1,0 +1,45 @@
+{
+  "release": "Estilos 15.11",
+  "base": "Estilos 15.10",
+  "service_worker": "tinta-2026.11.14",
+  "focus": "Agente interactivo de instrucciones para modificar el diseño existente",
+  "features": [
+    "panel de conversación dentro de la revisión",
+    "cambio de paleta mediante instrucciones naturales",
+    "añadir y quitar componentes por categoría desde el catálogo",
+    "sustituir cabecera o navegación cuando se identifica una alternativa",
+    "editar título principal y texto de acción",
+    "guardado en borrador e historial",
+    "actualización de la vista previa tras los cambios",
+    "rechazo explícito de instrucciones no reconocidas sin mutar el diseño"
+  ],
+  "known_limits": [
+    "intérprete local determinista; no hay LLM ni proveedor externo conectado",
+    "entendimiento limitado a los comandos implementados y coincidencias del catálogo",
+    "sin prueba visual automatizada en navegador real ni Android WebView"
+  ],
+  "tests": {
+    "new_static": 21,
+    "new_runtime": 6,
+    "regressions_previous": 111,
+    "version_checks": 50,
+    "total_reported": 188,
+    "full_suite": "No se declara aprobada; se ejecutaron las pruebas dirigidas indicadas, no la suite completa."
+  },
+  "files_sha256": {
+    "web/index.html": "9ba7af6475a46b2061fe099cccd5461d4978d45bc0f66c84fc78cc8555aeb598",
+    "web/crear.html": "9ba7af6475a46b2061fe099cccd5461d4978d45bc0f66c84fc78cc8555aeb598",
+    "web/css/crear.css": "8aa22ee0968891aa2a3d3003dd76b16620a23ee5a000a204cdee14bb76503725",
+    "web/js/crear.js": "fb8614ad3c67b469f8a5a62deff106dbf4563bd1e531e67699a542b3d4e7b0a0",
+    "web/sw.js": "b422842968314161f4d7f6520be0c8bb2766c9cfdce60fec61b81728db8ad210",
+    "README.md": "3f995526d6240ff0db5456f1a57763a96c757b7e06d19e9f967296c87e894df6",
+    "docs/ROADMAP.md": "65997c6b34be8f0dd6ffacb44abd69c6b870a9d9095f60883eeea3eddcd8c692",
+    "docs/ESTILOS-15.11-AGENTE-INTERACTIVO.md": "955bc7ba712c1499054b098244e069b972196ea49f13932a51565f21e48fd628",
+    "tests/tinta-agent-1511.cjs": "cf9c0132157304649f62be6d639ae017ff1a71cbb572ed65b809313b35dcc706",
+    "tests/tinta-agent-1511-runtime.cjs": "a560a3090c693b417fa17ae37270d5a6db30ca1404afa5cfb9177819655701de",
+    "tests/tinta-editor-159.cjs": "62cde1bf38f846729643ab7f3619f6214d395559e86ae6fdfee8896186191747",
+    "tests/tinta-editor-158.cjs": "13fe0ed3b8f2263a2593aaa542e80a16aeeedaa96a3e3e640d33e71678695180",
+    "tests/tinta-editor-157.cjs": "7ac5dc91668b62a327c9e25424c7d55a8b4dbc0128c3f57b2d76fb1d42b094be",
+    "tests/tinta-editor-156.cjs": "b2b44a0da5f36bb821a21ceaffb61b6e89477766076e0fcdb6cfe458a2258f2f"
+  }
+}

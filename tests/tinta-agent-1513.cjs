@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict');
+const Core=require('../web/js/tinta-agent-core.js');
+const ctx={hasPalette:id=>['oceano','rosa'].includes(id),hasBlock:id=>['b1','b2'].includes(id),roleOf:id=>({b1:'actions',b2:'header'})[id]};
+let p=Core.makePlan([{type:'set_palette',paletteId:'oceano'},{type:'add_component',blockId:'b1',role:'actions'}],['paleta','botón']);
+assert.equal(p.version,1);assert.equal(p.mode,'local-rules');assert.equal(Core.validatePlan(p.operations,ctx).ok,true);
+assert.equal(Core.validatePlan([{type:'set_palette',paletteId:'nope'}],ctx).ok,false);
+assert.equal(Core.validatePlan([{type:'add_component',blockId:'b1',role:'header'}],ctx).ok,false);
+assert.equal(Core.validatePlan([{type:'update_text',blockId:'b2',fieldIndex:0,value:'Hola'}],ctx).ok,true);
+assert.equal(Core.validatePlan([{type:'update_text',blockId:'b2',fieldIndex:0,value:'x'.repeat(101)}],ctx).ok,false);
+assert.equal(Core.validatePlan([{type:'remove_component',role:'__proto__'}],ctx).ok,false);
+assert.equal(Core.validatePlan([{type:'set_palette',paletteId:'oceano',extra:'bad'}],ctx).ok,false);
+assert.equal(Core.validatePlan([],ctx).ok,false);
+assert.equal(Core.validatePlan([{type:'__proto__'}],ctx).ok,false);
+assert.equal(Core.validatePlan(Array.from({length:13},()=>({type:'remove_component',role:'cards'})),ctx).ok,false);
+console.log('11 comprobaciones de operaciones del agente superadas.');

@@ -1,0 +1,39 @@
+{
+  "release": "Estilos 15.9",
+  "base": "Estilos 15.8",
+  "service_worker": "tinta-2026.11.12",
+  "features": [
+    "árbol jerárquico de capas internas con selección desde el panel",
+    "límite de 120 nodos y 7 niveles para proteger el rendimiento",
+    "movimiento con puntero/táctil",
+    "ajuste magnético de bordes y centros entre elementos hermanos con tolerancia de 7 px",
+    "resaltado visual del elemento de referencia durante el ajuste",
+    "persistencia del movimiento y registro en el historial general"
+  ],
+  "known_limits": [
+    "el ajuste magnético compara elementos hermanos del mismo contenedor",
+    "el resaltado de referencia no dibuja reglas continuas sobre el lienzo",
+    "los gestos táctiles pueden competir con el desplazamiento vertical según navegador y dispositivo",
+    "Playwright y Android WebView no se han validado físicamente"
+  ],
+  "tests": {
+    "new": "14 comprobaciones de 15.9 superadas",
+    "regressions": "97 comprobaciones dirigidas de 15.8, 15.7, 15.6, 15.5, 15.4, 15.2 y 15.1 superadas",
+    "versions": "50 comprobaciones de versión y precache superadas",
+    "full_suite": "No pasa completa: varios tests del repositorio dependen de módulos ausentes o aserciones antiguas ajenas a esta fase"
+  },
+  "files_sha256": {
+    "web/index.html": "59d627f4299527034a312f45999963ac89727e9f3dc5b29fa7f3164bb9325c4f",
+    "web/crear.html": "59d627f4299527034a312f45999963ac89727e9f3dc5b29fa7f3164bb9325c4f",
+    "web/css/crear.css": "e1732fa534295e149155f9e29008b6899bf8903ab802f4fc57cb8ee6826732e3",
+    "web/js/crear.js": "cc6bf63cb78868861b780bc4683c6321787b5b3e50b6f130955a7a8de2ea391f",
+    "web/sw.js": "1229703e442c328e2d6671948377c5a9f3eb2af7fc0b5b085766c26f9a039f9f",
+    "docs/ESTILOS-15.9-CAPAS-SNAP.md": "300a9fe109873f0ff4a6449eb535639d830f553748325bb3cd55bb80f9ff94bd",
+    "docs/ROADMAP.md": "b5fcc25ef0e149c142487cad122f6ac1a8514581899c94f2a21ba99b1353773f",
+    "README.md": "e6687294f256c5b8511fe6db08b5f99f4aec97d8914bf4cd1f05c5ffe684a62a",
+    "tests/tinta-editor-159.cjs": "366d77845bf6bc5f27df3e7ef15a56a37e295511249715b25777a6b1b8f0fa28",
+    "tests/tinta-editor-158.cjs": "f1b719063614d9894e2da54815f8a56db1c66b4b9a61d157e8af1b4378ee20e9",
+    "tests/tinta-editor-157.cjs": "0dfc330f0a06c1e23b4f733a2fc0af14d86f91c7a7516e7e9ba9b72d73966094",
+    "tests/tinta-editor-156.cjs": "abb6922cd723b7333a51ccdc6c455d94c80b8d3610d7d7942709a6f8d57b2554"
+  }
+}

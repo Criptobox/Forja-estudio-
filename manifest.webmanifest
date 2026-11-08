@@ -1,9 +1,0 @@
-{
-  "name": "FORJA STUDIO",
-  "short_name": "FORJA",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#100d1b",
-  "theme_color": "#100d1b",
-  "icons": []
-}

@@ -1,0 +1,39 @@
+{
+  "release": "Estilos 15.13",
+  "base": "Estilos 15.12",
+  "focus": "Planes estructurados, validación estricta y aplicación transaccional de operaciones del agente",
+  "service_worker": "tinta-2026.11.16",
+  "validation": {
+    "agent_core": "11 checks passed",
+    "agent_structure": "18 checks passed",
+    "agent_runtime": "6 checks passed",
+    "hsl": "passed",
+    "editor_regressions": "14+14+13+12+15+12 checks passed",
+    "library": "11 checks passed",
+    "versions_precache": "51 checks passed",
+    "browser_playwright": "not run; run-all had local port collision and is not a successful full-suite result",
+    "android_webview": "not tested on physical device"
+  },
+  "files_sha256": {
+    "web/index.html": "008e32a57f85259850cda1a8ed47f7a6da2324403ac0e445e2594580cf2a333c",
+    "web/crear.html": "008e32a57f85259850cda1a8ed47f7a6da2324403ac0e445e2594580cf2a333c",
+    "web/sw.js": "28511ce956eb1c149f4481af2892da47b770f8653be0f630d24408e4d21a54d5",
+    "web/js/crear.js": "4d5173c1473bfdec75d487ef7bae8e0ba51356ae6172259a6b858408f238bd31",
+    "web/js/tinta-agent-core.js": "7b76afe174930af279ab7159a9f345c9f150755ff3284102a0003e2222a391e5",
+    "web/js/tinta-palettes.js": "8f5fc54bea4f90772bf5536e0386ce3f0f0ac69837ced07fcaaf5e5e9d90a878",
+    "web/css/crear.css": "26e621b001363fbc9350c9f7bca29c5e121b301ae6bcde9ea467e432f4ba760f",
+    "README.md": "6fa0b792692b081a8a14553bf6f78e2fda25379c4a62ae5afc2882d4ba73d51d",
+    "docs/ESTILOS-15.13-OPERACIONES-AGENTE.md": "03109da1a7b698ba6b649e0d8cc2fc0dd64e81516594e81e564682daca31e419",
+    "tests/tinta-agent-1510.cjs": "5d10e8a30d8867d637cfc3d33219995e450ca5465a7476018080fb191cf55e59",
+    "tests/tinta-agent-1511.cjs": "7d9577b927864189e06e60455f4fa3ab75765837c575595c8510b732b1b6ebda",
+    "tests/tinta-agent-1511-runtime.cjs": "04bfa1a2373c387daf41531f8452317fb7de87403886f7eacd78af9086a9de87",
+    "tests/tinta-agent-1513.cjs": "9f260d27f3cdb8c4961496193616ea83cac2493adbc2be62ea9d5bf1b7d95cbf",
+    "tests/tinta-editor-159.cjs": "b9d4b515f4a1e1595106dc57560d7d0c99976f7e48c667e52370cb7d4bee4b36",
+    "tests/tinta-editor-158.cjs": "05972e4f9d9b4e2531d1c511f313d65c9b47622783ee861b28c34c1d09f19f0b",
+    "tests/tinta-editor-157.cjs": "e1ff8d82355bd56602fc83e69cbf48fd217bd58044a3b289cf9475eea2c655cd",
+    "tests/tinta-editor-156.cjs": "5ca71d234fc277140948a56b479816eaa06178e1868f92443f0ebb1b245e49fb",
+    "tests/tinta-hsl-palettes.cjs": "6a3452d0958114566a4c0ff1d95aa89cd508e0b786b5b99d1e5b9add49e82922",
+    "tests/versions.cjs": "82e94ba4978c3fd09c3d3fbec7954626a6b2a6a5a235ceb8fae6658931979f76",
+    "ABRIR-TINTA-15.13.html": "d8557ed1c886da85fd8682d0ff44411fcbff83b4f3e02d279d81330f2631d02a"
+  }
+}

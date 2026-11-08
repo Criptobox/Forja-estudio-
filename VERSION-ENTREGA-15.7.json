@@ -1,0 +1,32 @@
+{
+  "release": "Estilos 15.7",
+  "base": "Estilos 15.6",
+  "service_worker": "tinta-2026.11.9",
+  "features": [
+    "inspector interno avanzado",
+    "bordes, opacidad, relleno y ancho por elemento",
+    "presets de sombra",
+    "personalización SVG de relleno y trazo con activación explícita",
+    "descripciones en lista de capas internas",
+    "persistencia y exportación HTML"
+  ],
+  "known_limits": [
+    "sin editor SVG de nodos ni carga SVG externa",
+    "sin posicionamiento absoluto ni editor libre de sombras",
+    "restaurar estructura interna puede retirar todos los cambios internos del bloque",
+    "prueba Playwright no ejecutada por falta de dependencia",
+    "validación Android WebView pendiente"
+  ],
+  "files_sha256": {
+    "web/index.html": "6387201c6536bfde16429b71ea7003243225fbcaf7c49fa16543daf456ebfa17",
+    "web/crear.html": "6387201c6536bfde16429b71ea7003243225fbcaf7c49fa16543daf456ebfa17",
+    "web/css/crear.css": "2c8134a901f26570a76719ca2324147a65d2fde1d1fb36ef6e48a94e2f11cfe7",
+    "web/js/crear.js": "7de1861e72fec43002350de1ab32feb0cf2d413fac70fec303ba928c333fb8f1",
+    "web/js/tinta-assets.js": "aefc180b899f7737028a2da98ca9bd32ba1f67e64a045dd7dc3b05eb8eaa70e5",
+    "web/sw.js": "dbc7c2ea214eed35376475bc45415c4ee6f212c9c0dc9cacbec56fd5c6e5e565",
+    "docs/ESTILOS-15.7-INSPECTOR-AVANZADO.md": "17837f6393f0a6b4e9e3fb089f542660a1371cbf637d0f7db569001ed43636fd",
+    "tests/tinta-editor-157.cjs": "675aaf72312a15cf5316566fecff9db45783d00bbfcd734fbad429b797e920d6",
+    "tests/tinta-editor-156.cjs": "17e987adb6f19fd433f65fe3aceb88d0b0b797de20bede39e7e7bff4cfdc1661",
+    "ABRIR-TINTA-ACTUAL.html": "fbde13f5025e2099616b7341117e75d6d25d17d4d92aa64917253f968d6aeebd"
+  }
+}

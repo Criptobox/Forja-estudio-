@@ -1,0 +1,38 @@
+{
+  "release": "Estilos 15.12",
+  "base": "Estilos 15.11",
+  "focus": "Constructor HSL de paletas personalizadas con compatibilidad HEX",
+  "service_worker": "tinta-2026.11.15",
+  "files_sha256": {
+    "web/index.html": "742eb6da08ff6bd0664cdea820a553ca32ee02a91bcc282d6787d259411f57ea",
+    "web/crear.html": "742eb6da08ff6bd0664cdea820a553ca32ee02a91bcc282d6787d259411f57ea",
+    "web/sw.js": "79f39febb88d8253547454e9a5759a8f09a73568905f195a8c1a12e9cac60fa4",
+    "web/js/crear.js": "7afc34be47fb7db13f878e639deb3dcdf57a844ecb72dbfc7be3a5867a32eaf7",
+    "web/js/tinta-palettes.js": "8f5fc54bea4f90772bf5536e0386ce3f0f0ac69837ced07fcaaf5e5e9d90a878",
+    "web/css/crear.css": "26e621b001363fbc9350c9f7bca29c5e121b301ae6bcde9ea467e432f4ba760f",
+    "README.md": "cc5c73eca4a3e673cde9b3f4ca55e55a532d3d1d5bfe1022c7f48a64faf1444f",
+    "docs/ROADMAP.md": "f26ccd56119506416621184b771949b3be53706bc0057fe794fb7fa4204fc5fe",
+    "docs/ESTILOS-15.12-PALETAS-HSL.md": "6e4d1f19d46f71ff09748c94c57cfc0d24f24b1b24de0733ce89dd17688db9e2",
+    "tests/tinta-hsl-palettes.cjs": "6a3452d0958114566a4c0ff1d95aa89cd508e0b786b5b99d1e5b9add49e82922",
+    "tests/tinta-palettes.cjs": "7955fc4c37dcbbd25bc1e29b0c1857b89979e5aec92eabe8602d4092778c70d6",
+    "tests/tinta-agent-1511.cjs": "d0666ed2269c2ab2ca1683a2b1f2ece9d63481728aff4266546de9312daf4696",
+    "tests/tinta-editor-159.cjs": "3903db7206cd380db138e18d59d7e8d1130db4be50e33ab189b54a6c2acd53d9"
+  },
+  "validation": {
+    "hsl_unit": "passed",
+    "hsl_storage_reload": "passed",
+    "hsl_fuzz_cases": 10296,
+    "agent_1511_structure": 21,
+    "agent_1511_runtime": 6,
+    "editor_159": 14,
+    "editor_158": 14,
+    "editor_157": 13,
+    "editor_156": 12,
+    "editor_155": 15,
+    "editor_154": 12,
+    "library_151": 11,
+    "versions": 50,
+    "browser_playwright": "not run: Playwright is not installed in the current environment",
+    "android_webview": "not tested on a physical device"
+  }
+}

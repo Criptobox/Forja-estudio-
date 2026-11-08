@@ -1,0 +1,34 @@
+{
+  "release": "Estilos 15.8",
+  "base": "Estilos 15.7",
+  "service_worker": "tinta-2026.11.11",
+  "features": [
+    "desplazamiento visual X/Y mediante CSS translate",
+    "ajuste magnético configurable de 1, 4, 8, 16 o 24 px",
+    "alineación a izquierda, centro, derecha, arriba y abajo",
+    "restablecimiento independiente de posición",
+    "espaciado row-gap y column-gap en contenedores internos",
+    "personalización SVG de tamaño, rotación, relleno, trazo, extremos y uniones",
+    "persistencia en HTML interno y exportación"
+  ],
+  "known_limits": [
+    "no incluye editor de coordenadas absolutas ni reglas responsive avanzadas",
+    "la alineación usa el contenedor inmediato y no muestra guías magnéticas continuas durante el arrastre",
+    "el ajuste magnético se aplica al confirmar los valores",
+    "el editor SVG no permite editar nodos ni paths",
+    "pruebas de navegador Playwright y Android WebView pendientes"
+  ],
+  "files_sha256": {
+    "web/index.html": "27f4266e25c15f2a2fd05da7c7f63032f610b2adc993c9e30c2c0179aaa19f2b",
+    "web/crear.html": "27f4266e25c15f2a2fd05da7c7f63032f610b2adc993c9e30c2c0179aaa19f2b",
+    "web/css/crear.css": "a9227448d76e08a859308c5d9a832b51be163ca699ac9f7b271b1bfc978f4819",
+    "web/js/crear.js": "cd6e85a7d1b23f524167ef0216579c2c1db931933c35aa24b671a8f23619219f",
+    "web/js/tinta-assets.js": "aefc180b899f7737028a2da98ca9bd32ba1f67e64a045dd7dc3b05eb8eaa70e5",
+    "web/sw.js": "63420cc52c82a8d0aaeea4f27c0311503fe7a61bebbe031634877c041e56e186",
+    "docs/ESTILOS-15.8-POSICION-ICONOS.md": "b090f251a51c4add88a09bc3810e63f088579b666733f6f233df5a6fa7042509",
+    "tests/tinta-editor-158.cjs": "5fc826dac18eda0d655cecfd509db853e6eb0551548d509c145ba0c7796cc679",
+    "tests/tinta-editor-157.cjs": "4fb58665730d0db7169feeb97d5eccaf0460be59fe5033873ee8d8c0dd82de24",
+    "tests/tinta-editor-156.cjs": "83ad9e275fe871419fcefd2f2bd10e9b5022230e5c76df137ddbb5de822d39b5",
+    "ABRIR-TINTA-ACTUAL.html": "fdb0503529961e8fdd8dd4cfc315ddee9e8a0f7564285cbea1860a1740e4a814"
+  }
+}

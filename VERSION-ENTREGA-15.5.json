@@ -1,0 +1,31 @@
+{
+  "release": "Estilos 15.5",
+  "base": "Estilos 15.4",
+  "service_worker": "tinta-2026.11.7",
+  "features": [
+    "reordenación interna con botones y drag-and-drop de escritorio",
+    "selección múltiple interna con control táctil",
+    "duplicación, agrupación y desagrupación",
+    "lista de capas internas",
+    "indicadores de centrado y destino de arrastre",
+    "persistencia en borradores, historial, importación y exportación",
+    "normalización defensiva del HTML importado"
+  ],
+  "known_limits": [
+    "el arrastre nativo puede variar en navegadores móviles; botones arriba/abajo disponibles",
+    "agrupación limitada a elementos hermanos",
+    "restaurar cambios internos restaura la estructura completa del bloque",
+    "guías visuales sin ajuste magnético de coordenadas",
+    "suite integral y validación Android WebView pendientes"
+  ],
+  "files_sha256": {
+    "web/index.html": "71b380e0d8bed8dd41ddc7b0fd1c7ab893d2d93e0511df8e405b9d7cbf718110",
+    "web/crear.html": "71b380e0d8bed8dd41ddc7b0fd1c7ab893d2d93e0511df8e405b9d7cbf718110",
+    "web/css/crear.css": "26a3395870016ff56b5286f9c9756c282a3566dd143f7d238bb4f4a3dd8dc10c",
+    "web/js/crear.js": "b6b8ff85e234a41a0bde45e9df28ba680552fca03ce97a7318e25bb016a26dcf",
+    "web/sw.js": "f93b03665776f05d1c650ff15768a582a42c84c4660863ca7510370711cb9937",
+    "docs/ESTILOS-15.5-CAPAS-INTERNAS.md": "d2b89c4f5fb39bb521cf8bb2cb6b37360b2b468f52b08d9409e6c0e1dce2d3e2",
+    "tests/tinta-editor-155.cjs": "bfb9cb46c95f700456b52773b49e1636f4660c121d38e24a8c1447d0432ea804",
+    "ABRIR-TINTA-ACTUAL.html": "24dfc8d4e57aff374d43d517eb97c109170f06c02deec77ca3d2568334cb95bb"
+  }
+}

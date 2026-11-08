@@ -1,0 +1,31 @@
+{
+  "release": "Estilos 15.6",
+  "base": "Estilos 15.5",
+  "service_worker": "tinta-2026.11.8",
+  "features": [
+    "ajuste de imagen cover, contain y fill",
+    "posición horizontal y vertical de cada imagen",
+    "redondeo adicional configurable",
+    "texto alternativo editable",
+    "persistencia de ajustes en proyectos e HTML exportado",
+    "compatibilidad con proyectos anteriores"
+  ],
+  "known_limits": [
+    "no incluye recorte destructivo de píxeles",
+    "no incluye edición de nodos SVG",
+    "las imágenes externas requieren Internet",
+    "prueba Playwright no ejecutada: dependencia no instalada",
+    "validación Android WebView pendiente"
+  ],
+  "files_sha256": {
+    "web/index.html": "c2770442b5c373ccacfa5834af62c1898f5ee0e29d4e36ab679d5465aa336b8d",
+    "web/crear.html": "c2770442b5c373ccacfa5834af62c1898f5ee0e29d4e36ab679d5465aa336b8d",
+    "web/css/crear.css": "3e722fec323e86983cd9522f0b95907a69f589cd880ebc791ab0f09510ec1f94",
+    "web/js/crear.js": "30c35601a21a1774dd263fdbdaa3176822953aaab0ea159ddea981c5f04dc88e",
+    "web/js/tinta-assets.js": "aefc180b899f7737028a2da98ca9bd32ba1f67e64a045dd7dc3b05eb8eaa70e5",
+    "web/sw.js": "60f516544c9b12a33723284ac2e545ba90f88e7ae45f7281679f0ffda3c597f3",
+    "docs/ESTILOS-15.6-EDITOR-MEDIOS.md": "d2741ca070229e40f99e0abb77dbe439ac48f786b8162e163cb99731c82b206b",
+    "tests/tinta-editor-156.cjs": "d3fbdfa0cfa4ce6d26ab6c98da0e87a3eb14734d87c9d8de8db686bd121a6e85",
+    "ABRIR-TINTA-ACTUAL.html": "f3d12dc10b00cea98781ce5dd5055d24159682dd64c9aaa21cc5991a412dcc93"
+  }
+}

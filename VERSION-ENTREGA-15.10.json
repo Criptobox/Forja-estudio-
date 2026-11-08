@@ -1,0 +1,43 @@
+{
+  "release": "Estilos 15.10",
+  "base": "Estilos 15.9",
+  "service_worker": "tinta-2026.11.13",
+  "focus": "Modo de recomendación simple; interfaz principal sin saturación de controles",
+  "features": [
+    "entrada principal basada en descripción de la idea",
+    "recomendaciones locales para gastronomía, finanzas, comercio, bienestar y proyectos generales",
+    "resumen visible de estilo, paleta sugerida y estructura",
+    "selección automática de bloques y acceso directo a vista previa",
+    "biblioteca y personalización manual opcionales",
+    "editor profesional plegado en una sección avanzada",
+    "retorno a la idea para cambiar la dirección del diseño"
+  ],
+  "known_limits": [
+    "motor actual basado en reglas locales; no hay modelo de IA conectado todavía",
+    "recomendaciones por categorías y palabras clave, no razonamiento abierto",
+    "la propuesta se basa en el catálogo actual",
+    "validación visual en navegador y Android WebView pendiente"
+  ],
+  "tests": {
+    "new": 16,
+    "regressions_previous": 111,
+    "total": 127,
+    "versions": 50,
+    "full_suite": "No se considera aprobada: la suite global contiene pruebas antiguas que requieren módulos ausentes y aserciones desactualizadas."
+  },
+  "files_sha256": {
+    "web/index.html": "35c7aa2d3b2c28295af601f992f87e63aa28bc2b38412ad1eead151261f4ba1f",
+    "web/crear.html": "35c7aa2d3b2c28295af601f992f87e63aa28bc2b38412ad1eead151261f4ba1f",
+    "web/css/crear.css": "f8e33aa06be112248cc9ad13da125125761d8a9feb5533eb6515aaea707e88d4",
+    "web/js/crear.js": "e639e809e29370c9bf42f05820e261bb938573b8e89ca84e3923ace6c28b4f74",
+    "web/sw.js": "6c2e4c2d6e0a252dd6088f42aedb5af5b79d787c0242b98858243eed7e46103a",
+    "README.md": "29b5e663b41c144ba76db5370884d6d525f9d02dc81ff33821c847fc86179fc8",
+    "docs/ROADMAP.md": "b4bb503684653c1e03330dea2fbddebb91bebaa9120ec6457d05a3a75f461eb0",
+    "docs/ESTILOS-15.10-MODO-AGENTE.md": "5ed3d14a89be7246ead97ef4aff63f27fa3793db6d9dfdefe37f79224b07e5d5",
+    "tests/tinta-agent-1510.cjs": "bfb4c60366bd9ffb4ac72609523f02545b364533066ea6333d13ef82c628811d",
+    "tests/tinta-editor-159.cjs": "ff0bd3e9c94b1677cd50c8d90b64f6edc38d0f89fe1df2fd4f1d0ba6b52897a3",
+    "tests/tinta-editor-158.cjs": "f24c940bf26f213aa75162ee993bc7f3b760cd84972e815baf2f595afc059707",
+    "tests/tinta-editor-157.cjs": "6cf5c79306b15f33b8897471fab66b05393b890488d17a1bddc927ecb5ba81cf",
+    "tests/tinta-editor-156.cjs": "865436a71e6e6edbe17e55fd47ced85f72b0aa6e2a6d581dc184f54abe6cb254"
+  }
+}

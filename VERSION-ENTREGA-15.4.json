@@ -1,0 +1,28 @@
+{
+  "release": "Estilos 15.4",
+  "base": "Estilos 15.3",
+  "service_worker": "tinta-2026.11.6",
+  "features": [
+    "selección explícita de elementos internos dentro de cada bloque",
+    "edición de texto en elementos sin hijos internos",
+    "personalización de color, fondo, borde y radio",
+    "persistencia validada en borradores e historial",
+    "exportación HTML con ajustes internos",
+    "restauración individual de elementos"
+  ],
+  "known_limits": [
+    "sin drag and drop, agrupación ni guías inteligentes",
+    "el texto de elementos anidados no se reemplaza para proteger iconos y estructura",
+    "validación Android WebView y navegador automatizado pendiente"
+  ],
+  "files_sha256": {
+    "web/index.html": "17992305c8ec279e279183d971ee7fb304c4b8d8af6e90d147cef4cd97597ded",
+    "web/crear.html": "17992305c8ec279e279183d971ee7fb304c4b8d8af6e90d147cef4cd97597ded",
+    "web/css/crear.css": "748543716665c2a4a2956d6fad97df6666b0ea2108807a385225a1c836de8759",
+    "web/js/crear.js": "8afc86b6e213a2fdc06881b1789550b45b38bf9ef2bd67bb76b5cc51500faaa6",
+    "web/sw.js": "061c73f1e434cad9f8f4d4ce4706c453a400ce3722e5ca0b6e1db417f98d228d",
+    "docs/ESTILOS-15.4-EDICION-INTERNA.md": "bd53120f2ae1b183096474d21528a428e4bfbedc9059e5ea477ea2ef4ec29e40",
+    "tests/tinta-editor-154.cjs": "fd8397e4b3a6d9a38c7ae2096557ecb8be34f04284aa84167966333d062f84e7",
+    "ABRIR-TINTA-ACTUAL.html": "6311e014590432824bfc484c68077b216886d6370dbccb813bf05d171e91c5c4"
+  }
+}

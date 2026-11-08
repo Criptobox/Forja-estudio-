@@ -1,0 +1,22 @@
+{
+  "release": "Estilos 15.3",
+  "base": "Estilos 15.2",
+  "entry": "web/index.html",
+  "service_worker": "tinta-2026.11.5",
+  "features": [
+    "accesos contextuales a edición de texto, medios, tarjetas y botones",
+    "tipografía por bloque con familias permitidas",
+    "escala de encabezados 85–125 %",
+    "persistencia y validación de tipografía",
+    "vista previa y exportación HTML coherentes"
+  ],
+  "files_sha256": {
+    "web/index.html": "7443d430aa40fcac9ae6f60bafd13c37a08ada99bc6730a4842da39cad9992cb",
+    "web/crear.html": "7443d430aa40fcac9ae6f60bafd13c37a08ada99bc6730a4842da39cad9992cb",
+    "web/css/crear.css": "ad9bbe970e2552dc5a573e6c0dd0cc5bd8ab54ef98efa98e8601e4149ef0e9fa",
+    "web/js/crear.js": "2b3358ca04915aa34306336668d661f15a81603ea2b3ceba4077e7155aa6ec9b",
+    "web/sw.js": "43dbc5ea0c99cb948c15f8607609a206974733e107176e15208b12f0f66383a0",
+    "docs/ESTILOS-15.3-EDICION-INTERNA.md": "515752bd08512940bc94e90d932a68e4ea4c8ebcac46365313f132e480243a45",
+    "tests/tinta-editor-153.cjs": "d12a25671f1e51083610035e25ca52ea741a6cc816325add9d1e60944277dc51"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "version": "15.15",
+  "name": "Estilos 15.15 — Cerebro IA conectado",
+  "base": "15.14",
+  "features": [
+    "Conexión del agente a modelos probados",
+    "JSON estructurado validado",
+    "Contexto del catálogo y estado actual",
+    "Modo local seleccionable",
+    "Manejo de errores sin mutación"
+  ],
+  "security": [
+    "Claves solo en memoria de sesión",
+    "No se ejecuta código generado por el modelo",
+    "Validación local de operaciones"
+  ],
+  "serviceWorkerBuild": "tinta-2026.11.17",
+  "sha256": {
+    "web/index.html": "ea72282743799cba43a175f1b6d25dc22bb44d477a420ff5d4942cb8f90b1f33",
+    "web/crear.html": "ea72282743799cba43a175f1b6d25dc22bb44d477a420ff5d4942cb8f90b1f33",
+    "web/js/crear.js": "43d1cb081e31fa8fa9bc3c81152f8d321719f06389881f5a59c00f561dbcd565",
+    "web/js/tinta-provider-manager.js": "286cbf534304611be1434f51be4c517bc1b7d3a13657a6b5efb716fec205aaab",
+    "web/js/tinta-agent-core.js": "c3dddcde8c667951d0a4af948bbe17fd9b37c1329bb2683c132aa9c5cc6c940d",
+    "web/css/crear.css": "cd25e08a14b47dcb7d30bbb570ba4059ccd6097665c0697cb7f2b26dab6a91de",
+    "web/sw.js": "ff6b8b8b139116278bfaae0d283ddb65f75113845ee2f145edfd5bef94790191",
+    "docs/ESTILOS-15.15-CEREBRO-IA-REAL.md": "5f5ee6198a3a326395eb01fb7dcbea2a1698e834e7c7a9630ad0c0a26504f239",
+    "docs/CHANGELOG-15.15.md": "28086d699aa4b78ea8de5f8415f5e144986f319ae383614192505b04334fce5c"
+  },
+  "checks": {
+    "javascriptFilesSyntaxChecked": 42,
+    "javascriptSyntaxErrors": 0,
+    "duplicateHtmlIds": 0,
+    "focusedTestsPassed": 13,
+    "focusedTestsFailed": 0,
+    "previewBundleSyntax": "passed",
+    "zipIntegrity": "passed"
+  }
+}
