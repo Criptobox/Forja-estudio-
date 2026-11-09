@@ -14,7 +14,7 @@ const checks=[
 ['modelos se descubren desde el Worker',/TintaProviderManager\.discover\(\{providerId/.test(js)],
 ['pruebas de modelo pasan por el Worker',/TintaProviderManager\.testModel\(\{providerId/.test(js)],
 ['chat del agente envía ID de proveedor',/TintaProviderManager\.complete\(\{providerId:profile\.id/.test(js)],
-['la clave del proveedor se borra inmediatamente tras guardarla',/saveProvider\(\{id,name,endpoint,modelsPath,chatPath,authMode\},key\);\$\('aiProviderKey'\)\.value='';/.test(js)],
+['la clave del proveedor se borra inmediatamente tras guardarla',/saveProvider\(\{id,name,endpoint,modelsPath,chatPath,authMode,requestsPerDay,requestsPerMinute\},key\);\$\('aiProviderKey'\)\.value='';/.test(js)],
 ['cambiar endpoint limpia la clave anterior',/\['aiProviderEndpoint','aiProviderName'\]\.forEach\(id=>\$\(id\)\?\.addEventListener\('change',\(\)=>\{\$\('aiProviderKey'\)\.value='';/.test(js)],
 ['el chat no tiene clave de proveedor',!/aiCurrentKey|rememberKey|profile\.endpoint,chatPath,key/.test(js)],
 ['el Worker cifra con AES-GCM',/AES-GCM/.test(worker)&&/crypto\.subtle\.encrypt/.test(worker)],
@@ -22,6 +22,17 @@ const checks=[
 ['el Worker autentica sesión firmada',/HMAC/.test(worker)&&/Authorization/.test(worker)],
 ['el Worker bloquea redirects',/redirect:"manual"/.test(worker)],
 ['el Worker limita modelos no probados',/working\.includes\(model\)/.test(worker)],
-['service worker invalida caché antigua',/tinta-2026\.11\.08-private-ai/.test(sw)]
+['controles para límite por proveedor',/id="aiProviderRequestsPerDay"/.test(html)&&/id="aiProviderRequestsPerMinute"/.test(html)],
+['guardar límites no vuelve a probar modelos',/id="aiSaveUsageLimits"/.test(html)&&/function aiSaveUsageLimits\(\)/.test(js)],
+['tanda de pruebas se detiene cuando hay 429',/stoppedByLimit/.test(js)&&/Límite por minuto alcanzado/.test(js)],
+['panel de métricas visible',/id="aiUsageTotals"/.test(html)&&/id="aiUsageProviders"/.test(html)],
+['cliente solicita métricas de uso',/getUsage\(days=7\)/.test(provider)&&/\/api\/usage\?days=/.test(provider)],
+['interfaz renderiza consumo y modelos',/function aiRenderUsage\(data\)/.test(js)&&/ai-usage-model-details/.test(js)],
+['limites configurables enviados al servidor',/requestsPerDay/.test(js)&&/requestsPerMinute/.test(js)],
+['Worker aplica errores HTTP 429',/Límite diario alcanzado/.test(worker)&&/Límite por minuto alcanzado/.test(worker)&&/e.status=429/.test(worker)],
+['Worker reserva límites con SQL atómico',/ON CONFLICT\(provider_id,usage_date\) DO UPDATE SET/.test(worker)&&/RETURNING requests,requests_minute/.test(worker)],
+['métricas agrupadas por modelo',/provider_usage_models/.test(worker)&&/GROUP BY provider_id,model,action/.test(worker)],
+['retención de métricas acotada',/90\*86400000/.test(worker)],
+['service worker invalida caché antigua',/tinta-2026\.11\.08-usage-v1/.test(sw)]
 ];
 let fail=0;for(const [name,ok] of checks){console.log((ok?'OK ':'FAIL ')+name);if(!ok)fail++;}if(fail)process.exit(1);console.log(checks.length+' comprobaciones UI y seguridad completadas.');

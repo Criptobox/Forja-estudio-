@@ -189,12 +189,23 @@
   <label>Clave API del proveedor<input id="aiProviderKey" type="password" autocomplete="off" placeholder="Nueva clave o reemplazo (opcional al editar)"></label>
   <label>Autenticación<select id="aiAuthMode"><option value="bearer">Authorization: Bearer</option><option value="x-api-key">x-api-key</option><option value="api-key">api-key</option></select></label>
   <div class="ai-endpoint-advanced"><label>Ruta de modelos<input id="aiModelsPath" value="/models" placeholder="/models"></label><label>Ruta de chat<input id="aiChatPath" value="/chat/completions" placeholder="/chat/completions"></label></div>
-  <div class="ai-provider-actions"><button class="button dark" type="submit" id="aiDiscoverButton">Cargar y probar modelos</button><button class="button light" type="button" id="aiAddManualToggle">Añadir modelo manualmente</button></div>
+  <div class="ai-usage-limits">
+   <label>Peticiones máximas al día<input id="aiProviderRequestsPerDay" type="number" min="1" max="100000" step="1" value="300" required></label>
+   <label>Peticiones máximas por minuto<input id="aiProviderRequestsPerMinute" type="number" min="1" max="600" step="1" value="60" required></label>
+  </div>
+  <p class="ai-limit-help">Se cuentan las consultas de modelos, pruebas y mensajes del agente. Cada proveedor tiene su propio límite.</p>
+  <div class="ai-provider-actions"><button class="button dark" type="submit" id="aiDiscoverButton">Cargar y probar modelos</button><button class="button light" type="button" id="aiSaveUsageLimits">Guardar conexión y límites</button><button class="button light" type="button" id="aiAddManualToggle">Añadir modelo manualmente</button></div>
  </form>
  <form id="aiManualModelForm" class="ai-manual-model" hidden><label>ID exacto del modelo<input id="aiManualModelId" required maxlength="160" placeholder="model-id"></label><button class="button light" type="submit">Probar este modelo</button></form>
  <div id="aiConnectionStatus" class="ai-connection-status" role="status" aria-live="polite">Conecta el servidor privado, selecciona o agrega un proveedor y prueba sus modelos.</div>
  <section class="ai-model-section"><div class="ai-model-section-head"><h3>Modelos que funcionan</h3><span id="aiWorkingCount">0</span></div><div id="aiWorkingModels" class="ai-model-list"><p class="ai-empty">Todavía no hay modelos probados.</p></div></section>
  <details class="ai-failed-details"><summary>Modelos que no superaron la prueba</summary><div id="aiFailedModels" class="ai-model-list"><p class="ai-empty">Sin pruebas fallidas.</p></div></details>
+ <section class="ai-usage-section">
+  <div class="ai-model-section-head"><h3>Consumo de IA</h3><span>Últimos 7 días</span></div>
+  <div id="aiUsageTotals" class="ai-usage-totals"><p class="ai-empty">Conecta el servidor privado para ver el consumo.</p></div>
+  <div id="aiUsageProviders" class="ai-usage-providers"></div>
+  <div class="ai-usage-actions"><button class="button light" id="aiUsageRefresh" type="button">Actualizar métricas</button><small id="aiUsageNote">Las fechas se calculan en UTC. Los tokens dependen de lo que informe cada proveedor.</small></div>
+ </section>
  <section class="ai-saved-section"><div class="ai-model-section-head"><h3>Conexiones guardadas</h3></div><div id="aiSavedProviders" class="ai-saved-list"><p class="ai-empty">Aún no hay conexiones guardadas.</p></div></section>
  <p class="ai-connection-footnote">La detección consulta el catálogo del endpoint y después envía una petición breve a cada modelo; cada prueba consume una solicitud de tu cuota, aunque el proveedor sea gratuito. Un resultado correcto confirma respuesta de texto, no garantiza funciones avanzadas, visión ni disponibilidad futura. Los proveedores que no publiquen /models permiten añadir IDs manualmente.</p>
 </dialog>

@@ -7,8 +7,9 @@ const ctx={URL,localStorage,AbortController,setTimeout,clearTimeout,Map,JSON,Arr
  calls.push({url,options,body});
  if(p==='/auth/login')return new Response(JSON.stringify({token:'session-token-not-provider-key',expiresIn:28800}),{status:200});
  if(p==='/api/providers'&&method==='GET')return new Response(JSON.stringify({providers:profiles}),{status:200});
+ if(p==='/api/usage')return new Response(JSON.stringify({days:7,totals:{requests:5,totalTokens:250,errors:1},providers:[]}),{status:200});
  if(p==='/api/providers'&&options.method==='POST'){
-  const item={id:body.id,name:body.name,endpoint:body.endpoint,modelsPath:body.modelsPath,chatPath:body.chatPath,authMode:body.authMode,workingModels:[],connected:true};
+  const item={id:body.id,name:body.name,endpoint:body.endpoint,modelsPath:body.modelsPath,chatPath:body.chatPath,authMode:body.authMode,requestsPerDay:body.requestsPerDay,requestsPerMinute:body.requestsPerMinute,workingModels:[],connected:true};
   const i=profiles.findIndex(x=>x.id===item.id);if(i>=0)profiles[i]=item;else profiles.push(item);
   return new Response(JSON.stringify({provider:item}),{status:200});
  }
@@ -28,9 +29,11 @@ ctx.globalThis=ctx;vm.runInNewContext(source,ctx);
  assert.equal(M.list().length,0);
  assert.equal(storage.get('tinta-private-ai-backend-v1'),base);
  assert.equal([...storage.values()].some(v=>String(v).includes(admin)||String(v).includes(providerKey)||String(v).includes('session-token')),false,'ni la contraseña ni el token ni la API key se persisten');
- await M.saveProvider({id,name:'Proveedor test',endpoint:'https://api.example.test/v1',modelsPath:'/models',chatPath:'/chat/completions',authMode:'bearer'},providerKey);
+ await M.saveProvider({id,name:'Proveedor test',endpoint:'https://api.example.test/v1',modelsPath:'/models',chatPath:'/chat/completions',authMode:'bearer',requestsPerDay:250,requestsPerMinute:45},providerKey);
  assert.equal(M.list()[0].id,id);
  assert.equal(calls.at(-1).body.key,providerKey,'la clave solo se envía al endpoint privado de alta');
+ assert.equal(calls.at(-1).body.requestsPerDay,250,'se envía el límite diario');
+ assert.equal(calls.at(-1).body.requestsPerMinute,45,'se envía el límite por minuto');
  assert.ok(calls.at(-1).url.startsWith(base+'/api/providers'));
  const found=await M.discover({providerId:id});assert.deepEqual(Array.from(found.models),['model-safe','model-second']);
  const tested=await M.testModel({providerId:id,model:'model-safe'});assert.equal(tested.ok,true);
@@ -40,6 +43,7 @@ ctx.globalThis=ctx;vm.runInNewContext(source,ctx);
  const chatCall=calls.at(-1);assert.ok(chatCall.url.startsWith(base+'/api/providers/'+id+'/chat'));
  assert.equal(JSON.stringify(chatCall.body).includes(providerKey),false,'el chat envía solo ID, modelo y contexto');
  assert.equal(chatCall.options.headers.Authorization,'Bearer session-token-not-provider-key','el navegador autentica la sesión, no adjunta la clave del proveedor');
+ const usage=await M.getUsage(7);assert.equal(usage.totals.requests,5);assert.equal(new URL(calls.at(-1).url).pathname,'/api/usage');assert.equal(new URL(calls.at(-1).url).searchParams.get('days'),'7');
  assert.equal(typeof M.getKey,'undefined','el cliente no mantiene getter de API keys');
  assert.equal(calls.every(x=>x.url.startsWith(base+'/')),true,'no hay llamadas directas al proveedor');
  await M.remove(id);assert.equal(M.list().length,0);

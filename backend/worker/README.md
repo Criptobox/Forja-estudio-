@@ -18,11 +18,13 @@ npx wrangler d1 create tinta-private-ai
 
 Copia el database_id que devuelve Wrangler y reemplaza el UUID 00000000-0000-0000-0000-000000000000 de wrangler.toml. No publiques secretos ni .dev.vars.
 
-Aplica el esquema:
+Aplica todas las migraciones pendientes (incluida la 0002 de límites y métricas):
 
 ```sh
 npx wrangler d1 migrations apply tinta-private-ai --remote
 ```
+
+En una instalación ya existente, vuelve a ejecutar este comando antes de desplegar el Worker actualizado.
 
 ## 2. Crear secretos
 
@@ -84,3 +86,12 @@ npx wrangler dev
 ```
 
 La URL local suele ser http://127.0.0.1:8787. Añade http://127.0.0.1:18080 a ALLOWED_ORIGINS para probar desde el servidor estático de Tinta.
+
+
+## Límites y estadísticas de consumo
+
+Cada proveedor tiene dos límites editables desde Tinta: **300 peticiones al día** y **60 por minuto** por defecto. Puedes ajustar el diario entre 1 y 100 000 y el límite por minuto entre 1 y 600. El Worker reserva cada llamada de forma atómica en D1; la interfaz no puede saltarse estos límites.
+
+Se cuentan las llamadas al catálogo, las pruebas individuales y los mensajes del agente. Las llamadas que llegan al proveedor y fallan cuentan como consumo; las peticiones que el Worker rechaza por límite no incrementan el contador. El día se calcula en UTC y se restablece a las 00:00 UTC. El panel muestra los últimos 7 días, el uso diario y por minuto, solicitudes, errores y tokens por modelo cuando el proveedor devuelve el objeto `usage`. No se almacenan prompts ni respuestas; los agregados se conservan durante un máximo de 90 días.
+
+Para una instalación anterior a esta versión, aplica la migración `0002_usage_limits.sql` antes de desplegar el Worker nuevo. Sin ella no estarán creadas las columnas y tablas que necesita esta función.

@@ -14,6 +14,6 @@ const checks=[
 ['marcas visuales de alineación',/editor-snap-match/.test(css)&&/editor-snap-guide/.test(css)],
 ['panel táctil optimizado',/@media\(max-width:640px\)[\s\S]*?editor-layer-tree-item/.test(css)],
 ['versión 15.14 visible',/ESTILOS 15\.(?:13|14) · EDITOR/.test(html)],
-['actualización de cache',/tinta-2026\.11\.08-private-ai/.test(fs.readFileSync(path.join(root,'web/sw.js'),'utf8'))]
+['actualización de cache',/tinta-2026\.11\.08-usage-v1/.test(fs.readFileSync(path.join(root,'web/sw.js'),'utf8'))]
 ];
 let failed=0;for(const [name,pass] of checks){console.log((pass?'OK ':'FAIL ')+name);if(!pass)failed++;}if(failed)process.exit(1);console.log(checks.length+' comprobaciones de 15.14 superadas.');
