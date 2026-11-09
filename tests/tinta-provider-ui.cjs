@@ -27,7 +27,7 @@ const checks=[
 ['cliente solicita métricas de uso',/getUsage\(days=7\)/.test(provider)&&/\/api\/usage\?days=/.test(provider)],
 ['interfaz renderiza consumo y modelos',/function aiRenderUsage\(data\)/.test(js)&&/ai-usage-model-details/.test(js)],
 ['limites configurables enviados al servidor',/requestsPerDay/.test(js)&&/requestsPerMinute/.test(js)],
-['Worker aplica errores HTTP 429',/Límite diario alcanzado/.test(worker)&&/Límite por minuto alcanzado/.test(worker)&&/error.status=429/.test(worker)],
+['Worker aplica errores HTTP 429',/Límite diario alcanzado/.test(worker)&&/Límite por minuto alcanzado/.test(worker)&&/e.status=429/.test(worker)],
 ['Worker reserva límites con SQL atómico',/ON CONFLICT\(provider_id,usage_date\) DO UPDATE SET/.test(worker)&&/RETURNING requests,requests_minute/.test(worker)],
 ['métricas agrupadas por modelo',/provider_usage_models/.test(worker)&&/GROUP BY provider_id,model,action/.test(worker)],
 ['retención de métricas acotada',/90\*86400000/.test(worker)]
