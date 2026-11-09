@@ -11,7 +11,7 @@ for (const id of ['editorFont','editorFontScale','editorFontScaleValue']) has(ne
 for (const action of ['editor-edit-text','editor-edit-media','editor-edit-card','editor-edit-button','editor-reset-type']) has(new RegExp("case '"+action+"'"), js, action+' is wired');
 has(/function typographyCSS\(id\)/, js, 'typography CSS is generated from allowlisted values');
 has(/typeStyles:state\.typeStyles/, js, 'typography settings are saved in project snapshots');
-has(/typeStyles,layout,layerOrder/, js, 'typography settings are restored from project data');
+has(/typeStyles,innerStyles,innerHtml,layout,layerOrder/, js, 'typography settings are restored with the current project snapshot');
 has(/Math\.min\(125,Math\.max\(85/, js, 'imported typography scale is clamped');
 has(/openText\(editorActiveId\)/, js, 'internal text editor is reachable from inspector');
 has(/openMedia\(editorActiveId\)/, js, 'media and link editor is reachable from inspector');
@@ -19,4 +19,4 @@ has(/openCardStyle\(editorActiveId\)/, js, 'card style editor is reachable from 
 has(/openButtonStyle\(editorActiveId\)/, js, 'button style editor is reachable from inspector');
 has(/typographyCSS\(block\.id\)/, js, 'typography is included in preview and exported block markup');
 has(/\.editor-subactions\{display:grid/, css, 'internal editing actions use a responsive grid');
-console.log('Estilos 15.3: 16 comprobaciones de herramientas internas, tipografía, persistencia y exportación correctas.');
+console.log('Estilos: 16 comprobaciones de herramientas internas, tipografía, persistencia y exportación correctas.');
