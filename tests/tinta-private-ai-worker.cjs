@@ -49,7 +49,7 @@ class FakeStatement{
   r=await send('/health',{originValue:'https://evil.example'});assert.equal(r.status,403,'CORS rechaza orígenes externos');
   r=await send('/auth/login',{method:'POST',body:{password:'bad'},ip:'192.0.2.11'});assert.equal(r.status,401,'contraseña incorrecta denegada');
   r=await send('/auth/login',{method:'POST',body:{password:admin}});assert.equal(r.status,200);const login=await r.json(),token=login.token;assert.ok(token.length>40);
-  r=await send('/api/providers',{method:'POST',token,body:{id:'provider-test-12345',name:'Proveedor test',endpoint:'https://api.example.test/v1',modelsPath:'/models',chatPath:'/chat/completions',authMode:'bearer',key:apiKey}});
+  r=await send('/api/providers',{method:'POST',token,body:{id:'provider-test-12345',name:'Proveedor test',endpoint:'https://api.example.com/v1',modelsPath:'/models',chatPath:'/chat/completions',authMode:'bearer',key:apiKey}});
   assert.equal(r.status,200);const saved=await r.json();assert.equal(saved.provider.id,'provider-test-12345');
   assert.equal(JSON.stringify(saved).includes(apiKey),false,'la respuesta de alta nunca devuelve la clave');
   const stored=db.providers.get('provider-test-12345');assert.ok(stored.key_ciphertext);assert.notEqual(stored.key_ciphertext,apiKey);assert.notEqual(stored.key_iv,apiKey);
