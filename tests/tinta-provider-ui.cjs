@@ -30,7 +30,7 @@ const checks=[
 ['Worker aplica errores HTTP 429',/Límite diario alcanzado/.test(worker)&&/Límite por minuto alcanzado/.test(worker)&&/e.status=429/.test(worker)],
 ['Worker reserva límites con SQL atómico',/ON CONFLICT\(provider_id,usage_date\) DO UPDATE SET/.test(worker)&&/RETURNING requests,requests_minute/.test(worker)],
 ['métricas agrupadas por modelo',/provider_usage_models/.test(worker)&&/GROUP BY provider_id,model,action/.test(worker)],
-['retención de métricas acotada',/90\*86400000/.test(worker)]
-['service worker invalida caché antigua',/tinta-2026\.11\.08-private-ai/.test(sw)]
+['retención de métricas acotada',/90\*86400000/.test(worker)],
+['service worker invalida caché antigua',/tinta-2026\.11\.08-usage-v1/.test(sw)]
 ];
 let fail=0;for(const [name,ok] of checks){console.log((ok?'OK ':'FAIL ')+name);if(!ok)fail++;}if(fail)process.exit(1);console.log(checks.length+' comprobaciones UI y seguridad completadas.');
