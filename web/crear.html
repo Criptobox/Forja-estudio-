@@ -194,7 +194,7 @@
    <label>Peticiones máximas por minuto<input id="aiProviderRequestsPerMinute" type="number" min="1" max="600" step="1" value="60" required></label>
   </div>
   <p class="ai-limit-help">Se cuentan las consultas de modelos, pruebas y mensajes del agente. Cada proveedor tiene su propio límite.</p>
-  <div class="ai-provider-actions"><button class="button dark" type="submit" id="aiDiscoverButton">Cargar y probar modelos</button><button class="button light" type="button" id="aiAddManualToggle">Añadir modelo manualmente</button></div>
+  <div class="ai-provider-actions"><button class="button dark" type="submit" id="aiDiscoverButton">Cargar y probar modelos</button><button class="button light" type="button" id="aiSaveUsageLimits">Guardar conexión y límites</button><button class="button light" type="button" id="aiAddManualToggle">Añadir modelo manualmente</button></div>
  </form>
  <form id="aiManualModelForm" class="ai-manual-model" hidden><label>ID exacto del modelo<input id="aiManualModelId" required maxlength="160" placeholder="model-id"></label><button class="button light" type="submit">Probar este modelo</button></form>
  <div id="aiConnectionStatus" class="ai-connection-status" role="status" aria-live="polite">Conecta el servidor privado, selecciona o agrega un proveedor y prueba sus modelos.</div>
