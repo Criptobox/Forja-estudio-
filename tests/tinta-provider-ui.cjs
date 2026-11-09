@@ -22,6 +22,6 @@ const checks=[
 ['el Worker autentica sesión firmada',/HMAC/.test(worker)&&/Authorization/.test(worker)],
 ['el Worker bloquea redirects',/redirect:"manual"/.test(worker)],
 ['el Worker limita modelos no probados',/working\.includes\(model\)/.test(worker)],
-['service worker invalida caché antigua',/tinta-2026\.11\.09-private-ai/.test(sw)]
+['service worker invalida caché antigua',/tinta-2026\.11\.08-private-ai/.test(sw)]
 ];
 let fail=0;for(const [name,ok] of checks){console.log((ok?'OK ':'FAIL ')+name);if(!ok)fail++;}if(fail)process.exit(1);console.log(checks.length+' comprobaciones UI y seguridad completadas.');
