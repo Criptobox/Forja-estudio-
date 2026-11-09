@@ -1,125 +1,75 @@
-## Estilos 15.15 — Cerebro IA conectado
+# Estilos · Tinta
 
-El agente «Habla con Tinta» puede usar un modelo compatible configurado y probado en el Centro de conexiones. La IA propone operaciones JSON restringidas; Tinta valida cada operación antes de modificar el diseño. El modo local continúa disponible. Consulta `docs/ESTILOS-15.15-CEREBRO-IA-REAL.md` para límites y seguridad.
+**Versión web publicada en este repositorio: 15.15 — Cerebro IA conectado.**
 
-# Estilos · Tinta actual + biblioteca y editor clásicos
+Estilos es una biblioteca de diseño y un constructor visual multipantalla, pensado para móvil. La aplicación web se publica desde `web/` como PWA; Android se compila desde `app/`.
 
-Biblioteca UI y constructor visual multipantalla, pensado para móvil y disponible como PWA y envoltorio Android.
+## Versiones publicadas
 
-## Entrega actual: Estilos 15.12
+- **Web:** 15.15. Referencia canónica: [VERSION-ENTREGA.json](VERSION-ENTREGA.json).
+- **Manifiesto detallado:** [VERSION-ENTREGA-15.15.json](releases/manifests/VERSION-ENTREGA-15.15.json).
+- **Android:** versión independiente en `version.json`.
+- **Entrada web:** `web/index.html` y `web/crear.html` deben ser idénticos.
+- **Despliegue:** GitHub Pages publica exclusivamente `web/`.
+- **Histórico:** previews y manifiestos antiguos están archivados en `releases/`.
 
-### Experiencia principal
-- El usuario describe qué quiere crear y recibe una propuesta local según el sector.
-- La vista previa aparece directamente; la biblioteca y el editor profesional siguen disponibles como herramientas opcionales.
+> La versión 15.16 no está integrada en la rama `main` auditada. No debe anunciarse como publicada hasta incorporarla y verificarla.
 
-### Constructor de paletas HSL (15.12)
-- Paletas personalizadas mediante matiz, saturación y luminosidad.
-- Derivación de fondos, superficies, acentos, texto y bordes.
-- Guardado local, vista previa, aplicación y eliminación.
-- Compatibilidad HEX con proyectos anteriores.
+## Funciones de 15.15
 
-### Agente interactivo
-- Panel de instrucciones dentro de la pantalla de revisión.
-- Cambios de paleta por lenguaje natural.
-- Añadir y quitar componentes por categoría.
-- Sustituir cabecera o barra inferior cuando se identifica una alternativa en el catálogo.
-- Cambiar el título principal y el texto de una acción.
-- Confirmación en conversación, guardado en historial y actualización de vista previa.
-- Las instrucciones no reconocidas no modifican el proyecto.
+- «Habla con Tinta» puede enviar el contexto del diseño a un modelo compatible configurado y probado.
+- La respuesta utiliza operaciones JSON restringidas y validación local antes de modificar el diseño.
+- El modo local determinista sigue disponible como alternativa explícita.
+- Las claves del proveedor permanecen en memoria de sesión; no se guardan en proyectos ni en `localStorage`.
+- No se ejecuta HTML, CSS ni JavaScript generado por el modelo.
 
-### Límites
-El motor de interpretación es local y determinista, basado en patrones y coincidencias con el catálogo. No se conecta todavía a ChatGPT, Claude, Gemini ni otro modelo. La siguiente etapa será incorporar un proveedor de IA real con control de cambios y validación.
+Consulta [Cerebro IA conectado · 15.15](docs/ESTILOS-15.15-CEREBRO-IA-REAL.md) para conocer compatibilidad y límites. Las llamadas directas desde el navegador dependen de CORS; para un servicio público se recomienda un proxy backend.
 
-Pruebas dirigidas 15.11: 21 comprobaciones de interfaz/estructura y 6 pruebas funcionales del intérprete, además de 111 regresiones seleccionadas y 50 comprobaciones de versión.
+## Estructura
 
-Ver [`docs/ESTILOS-15.11-AGENTE-INTERACTIVO.md`](docs/ESTILOS-15.11-AGENTE-INTERACTIVO.md).
+| Ruta | Contenido |
+|---|---|
+| `web/` | Aplicación web, PWA y recursos publicados |
+| `app/` | Proyecto Android |
+| `design-library/` | Catálogo y documentación de recursos |
+| `docs/` | Documentación técnica, changelogs y operación |
+| `tests/` | Pruebas automatizadas |
+| `tools/` | Herramientas de sincronización y generación |
+| `releases/previews/` | Previews HTML históricos |
+| `releases/manifests/` | Manifiestos de entregas históricas |
 
-## Entrega 15.12 · Constructor de paletas HSL
+## Ejecutar y verificar
 
-- Crear paletas desde un color principal con controles HSL (matiz, saturación y luminosidad).
-- Derivación automática de fondo, superficie, acento, acento secundario, texto y borde.
-- Vista previa de muestras, indicador de contraste, guardado local y eliminación de paletas propias.
-- Compatibilidad conservada: las paletas se convierten a HEX para renderizado, exportación y proyectos previos.
-- HSL es el modo de edición; OKLCH queda como posible mejora para escalas perceptualmente uniformes.
+Sirve la carpeta `web/` mediante HTTP(S); no abras el HTML con `file://`, porque el service worker necesita un origen HTTP(S).
 
-Ver [`docs/ESTILOS-15.12-PALETAS-HSL.md`](docs/ESTILOS-15.12-PALETAS-HSL.md).
+```sh
+python tools/sync-tinta-entry.py --check
+for f in web/js/*.js web/sw.js; do node --check "$f" || exit 1; done
+cd tests
+npm ci
+npx playwright install chromium
+npm test
+```
 
-## Entrada de esta entrega
+La publicación PWA depende de que pase la batería E2E completa. No se debe omitir la batería para declarar una versión estable.
 
-**La portada publicada es ahora Tinta**, con la mancha 3D, modo oscuro, estilos de botones/tarjetas y Deshacer/Rehacer. `web/index.html` contiene la misma versión que `web/crear.html`. Ya no abre la interfaz clásica por defecto.
+## Compilar Android
 
-- Tinta: `/` o `/index.html`; alias compatible: `/crear.html`.
-- Biblioteca clásica preservada: `/biblioteca.html`.
-- Editor clásico y sus proyectos: `/agente.html`.
-- GitHub Pages publica la carpeta `web` mediante `.github/workflows/pages.yml`. Ver [`LEEME-SUBIR-A-GITHUB.md`](LEEME-SUBIR-A-GITHUB.md).
-- La caché PWA cambia de versión y precarga los recursos de Tinta; se conserva el almacenamiento de proyectos. La navegación busca primero la versión de red y usa la caché sin conexión.
-- Fuente de la portada: `web/crear.html`. Tras editarla, ejecutar `python tools/sync-tinta-entry.py`; CI verifica que ambas entradas coincidan.
+```sh
+gradle :app:assembleDebug
+```
 
-## Especificación maestra de la biblioteca
+El workflow `.github/workflows/android.yml` genera el APK debug como artefacto.
 
-El documento aportado por el usuario se conserva en [`docs/BIBLIOTECA-MAESTRA-UI-UX.md`](docs/BIBLIOTECA-MAESTRA-UI-UX.md). Define 26 módulos de alcance objetivo, no funciones ya completadas.
+## Documentación operativa
 
-La cobertura actual, las carencias y las entregas incrementales se registran en [`docs/PLAN-BIBLIOTECA-MAESTRA.md`](docs/PLAN-BIBLIOTECA-MAESTRA.md). La primera entrega del catálogo verificable está disponible: fichas, familias, etiquetas, módulos, estados documentados/detectados y calidad pendiente, preservando los 158 registros e IDs existentes. Detalles y generación del inventario: [`design-library/README.md`](design-library/README.md). No se consideran auditados los recursos por tener una ficha.
+- [Publicación y actualización del repositorio](docs/DEPLOYMENT.md)
+- [Biblioteca de diseño](design-library/README.md)
+- [Auditoría CI y organización · noviembre 2026](docs/REPO-AUDIT-2026-11.md)
 
-Preview de desarrollo: `python tools/tinta-preview.py` → puerto 8081, ruta `/crear.html`. El proceso puede detenerse entre sesiones; no es un hosting permanente.
+## Historial
 
-## En validación · Tinta y el recorrido de tres pasos
-
-Abrir **`web/crear.html`** (o `/crear.html` en el servidor web). Es un prototipo independiente: no sustituye el editor ni modifica sus proyectos.
-
-- **Idea:** avatar 3D basado en la mancha aportada, breve descripción y acceso directo a explorar.
-- **Bloques:** biblioteca completa conectada al mismo recorrido (126 diseños originales + 32 nuevos de Tinta), con búsqueda, 19 categorías, filtro de colección, vista ampliada y selección persistente.
-- **Pantalla:** revisión por función, orden de tarjetas y resolución explícita de encabezados o barras alternativos. Composición real y descarga de HTML estático autónomo, sin servicios ni IA remota.
-- Acabado blanco cálido/grafito/coral, sombras de contacto, relieve y degradados locales. No carga Lavender Glass.
-- La selección usa `estilos-tinta-prototype-v1`, independiente de las claves del editor. El brief propone recetas por palabras; no interpreta instrucciones arbitrarias con un modelo de lenguaje.
-- El HTML descargado utiliza Shadow DOM declarativo (navegadores modernos). Es visual, no una app con pagos o autenticación.
-
-**Conectado:** catálogo completo y motor de renderizado `designParts`, con las altas, cambios de ficha y borrados guardados en la biblioteca de este navegador. El código propio se muestra como HTML/CSS saneado, sin ejecutar JavaScript. Las categorías adicionales participan en revisión, composición y exportación; no se descartan al crear. El avatar ya no lleva círculo decorativo.
-
-**Edición y proyectos disponibles:**
-- En revisión, **Texto** permite cambiar textos y placeholders de cada bloque (hasta 500 caracteres por campo), aplicar o restaurar los originales. La vista, la exportación HTML y los proyectos usan el mismo contenido editado.
-- **Mis proyectos** guarda hasta 30 copias de Tinta, con nombres de hasta 80 caracteres. Abrir, actualizar y eliminar piden confirmación; renombrar no altera la composición. Usa la clave independiente `estilos-tinta-projects-v1`.
-- Descarga/importación de proyecto JSON `estilos-tinta-project` versión 1 (máximo 8 MB). Importar crea una copia; no reemplaza el trabajo en curso. Un bloque ausente se informa y no se elimina silenciosamente del proyecto.
-- Los proyectos clásicos de este navegador se muestran por separado. Su enlace abre el editor original con la confirmación del proyecto seleccionado; no convierte formatos ni sobrescribe su copia guardada.
-- El visor aislado puede bloquear el almacenamiento o las descargas. Para guardar de forma persistente, usar la app en el navegador; JSON permite llevar la composición a otra instalación con los mismos bloques.
-
-**Color, estilo de botones y tema de Tinta:**
-- **Color / estilo** está disponible en revisión y en la ficha ampliada de los 13 diseños de la categoría Botones. Permite elegir un botón o enlace dentro del bloque y ajustar fondo, texto/iconos, acabado sólido/borde/tonal/degradado, radio, espaciado, tamaño de texto y sombra.
-- Vista temporal, Aplicar y Restaurar original. No selecciona recursos ni cambia texto, destino o estados. Se guarda un estilo personal para un botón concreto por bloque; los demás conservan su diseño. El estilo personal tiene prioridad sobre el acabado del laboratorio de estados.
-- Persistencia en borrador, proyectos, JSON y HTML exportado. Los proyectos anteriores siguen siendo compatibles; las propiedades importadas están tipadas y no admiten CSS arbitrario.
-- El botón **◐** de la cabecera alterna claro/oscuro y recuerda la preferencia en `estilos-tinta-ui-theme-v1`. Cambia la interfaz, no recolorea los componentes del diseño ni su HTML exportado.
-- En el visor aislado el tema y el estilo funcionan durante la sesión; se informa si el almacenamiento está bloqueado. El editor de estilos aplica directamente con JavaScript, sin depender de envíos de formulario bloqueados por el sandbox.
-
-**Inspector de tarjetas disponible:**
-- En revisión, **Diseño / estilo**, y en la ficha ampliada, **Diseño de la tarjeta**. Cubre los 25 recursos de Tarjetas, sin añadir ni sustituir diseños.
-- Fondo sólido o degradado de dos colores y ángulo, borde (color/grosor), radio, sombra y espaciado interior. Los valores iniciales de geometría se leen del diseño real. El texto conserva sus colores, salvo que elijas explícitamente un color personal; los enlaces y botones no se recolorean.
-- En mosaicos, pasteles y tarjetas superpuestas se elige la superficie concreta. Se guarda un estilo para una superficie por bloque; no se acumulan estilos para todas sus celdas. Fotos, ilustraciones y capas interiores permanecen y pueden cubrir el fondo exterior.
-- Previsualizar no selecciona recursos. Cancelar descarta cambios temporales; Aplicar y Restaurar son acciones explícitas. El original del catálogo no se modifica.
-- `draft.cardStyles` es opcional en borradores/proyectos/JSON v1. Se valida sin CSS ni selectores importados; los proyectos anteriores son compatibles. HTML de pantalla y componente individual incluyen el estilo, manteniendo los controladores existentes.
-- Funciona en tema claro/oscuro y en el visor aislado. Si el navegador bloquea almacenamiento, informa que solo se aplicó a la sesión y recomienda JSON.
-- Detalles y límites: [`design-library/INSPECTOR-TARJETAS.md`](design-library/INSPECTOR-TARJETAS.md). Encabezados, inspector general y estilos reutilizables siguen pendientes. Deshacer/rehacer de Tinta ya está disponible (ver abajo).
-
-**Deshacer / Rehacer en Tinta:**
-- Botones visibles en los tres pasos; muestran en su descripción la próxima acción que recuperan. Atajos Ctrl/⌘+Z y Ctrl/⌘+Mayús+Z; también Ctrl+Y.
-- Historial de sesión de hasta 50 cambios aplicados: idea, selección, alternativas, orden, textos, fotos, destinos, estados/variantes y estilos de botones/tarjetas. Escribir la idea se agrupa hasta salir del campo.
-- Previews sin aplicar, filtros, navegación, tema y demostraciones transitorias no se incluyen. No se intercepta el deshacer nativo dentro de campos de texto; con diálogos abiertos no se ejecuta el historial global.
-- Un cambio nuevo después de deshacer descarta la rama de rehacer. «Empezar una selección nueva» es reversible; abrir un proyecto confirmado inicia un historial independiente.
-- El borrador recuperado se guarda si el navegador lo permite. El historial no se exporta ni se conserva al recargar; las copias con nombre y los proyectos clásicos no se deshacen.
-- Presupuesto de memoria aproximado de 16 MiB, además del límite de 50 pasos; se liberan los más antiguos y se informa. Se conserva al menos el último cambio, que puede superar ese presupuesto si contiene fotos grandes. Detalles: [`design-library/HISTORIAL-TINTA.md`](design-library/HISTORIAL-TINTA.md).
-
-**Imágenes y destinos disponibles:**
-- En revisión, **Foto / enlace** permite cambiar imágenes compatibles por URL HTTPS o archivo PNG/JPEG/WebP de hasta 5 MB. Se redimensiona a 1024 px, se aplana la transparencia sobre blanco cálido y se incorpora como JPEG (hasta 750 000 caracteres por foto; máximo 6 MB de imágenes por pantalla). Se puede editar su descripción accesible y restaurar el original.
-- Zonas compatibles: Producto con aire de Tinta; Producto clara, Texto sobre foto, Categoría con ilustración y Comida de la biblioteca; etiquetas `img` de diseños propios. No se sustituyen arbitrariamente los iconos ni los gráficos.
-- Destinos HTTP(S), `mailto:`, `tel:` y `#seccion` (requiere que exista ese ID). Se rechazan JavaScript, credenciales y esquemas no permitidos. Los enlaces externos llevan `noopener noreferrer`. Los botones conservan su diseño al convertirse en enlaces reales.
-- La vista previa no navega; los enlaces se activan en el HTML descargado. No se añaden servicios de pagos, reservas o autenticación.
-- Las fotos locales, descripciones y destinos se conservan en borrador, proyectos, JSON y HTML. Las fotos por URL requieren conexión; no se descargan automáticamente. Los proyectos JSON anteriores, sin imágenes, siguen siendo válidos.
-- Cada diálogo permite cancelar sin aplicar; restaurar es una acción explícita. Los errores de archivo, URL o almacenamiento se informan sin fingir que se ha guardado una copia.
-
-**Pendiente:** unificación de formatos con el editor clásico. No se ha hecho push.
-
-Estados y variantes locales disponibles en los tres botones nuevos de Tinta, Producto con aire y Campo con validación: laboratorio de pruebas, configuración explícita y controlador incluido en el HTML. No se extiende esta capacidad al resto del catálogo sin implementarla. Detalles: [`design-library/ESTADOS-INTERACTIVOS.md`](design-library/ESTADOS-INTERACTIVOS.md).
-
-Pruebas del prototipo: `node tests/tinta.cjs`, `node tests/tinta-library.cjs`, `node tests/tinta-workflow.cjs`, `node tests/tinta-assets.cjs`, `node tests/tinta-catalog.cjs`, `node tests/tinta-states.cjs`, `node tests/tinta-button-style.cjs`, `node tests/tinta-card-style.cjs`, `node tests/tinta-history.cjs` y `python tools/build-tinta.py && node tests/tinta-standalone.cjs` (requiere servir `web` en el puerto 8080). Se comprueban navegación, selección, conflictos, persistencia, reordenación, exportación real y tamaños 320/390/768/1440 px.
+Las notas siguientes describen etapas anteriores. Para conocer lo que está publicado actualmente, prevalecen `VERSION-ENTREGA.json` y la documentación de la versión vigente.
 
 ## Nuevo en 14.1 · Lavender Glass y Luma
 
