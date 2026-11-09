@@ -15,7 +15,7 @@ const ctx={URL,localStorage,AbortController,setTimeout,clearTimeout,Map,JSON,Arr
  }
  if(p.endsWith('/models'))return new Response(JSON.stringify({models:['model-safe','model-second']}),{status:200});
  if(p.endsWith('/test')){const item=profiles.find(x=>p.includes(x.id));item.workingModels=[body.model];return new Response(JSON.stringify({ok:true,model:body.model,workingModels:item.workingModels}),{status:200});}
- if(p.endsWith('/chat'))return new Response(JSON.stringify({text:'{"operations":[],"summary":["ok"]}',model:body.model}),{status:200});
+ if(p.endsWith('/chat')){if(body.model==='model-down')return new Response(JSON.stringify({error:'HTTP 503: upstream unavailable'}),{status:502});return new Response(JSON.stringify({text:'{"operations":[],"summary":["ok"]}',model:body.model}),{status:200});}
  if(method==='DELETE'){const id=p.split('/').at(-1);const i=profiles.findIndex(x=>x.id===id);if(i>=0)profiles.splice(i,1);return new Response(JSON.stringify({ok:true}),{status:200});}
  return new Response(JSON.stringify({error:'route not found'}),{status:404});
 }};
@@ -43,6 +43,7 @@ ctx.globalThis=ctx;vm.runInNewContext(source,ctx);
  const chatCall=calls.at(-1);assert.ok(chatCall.url.startsWith(base+'/api/providers/'+id+'/chat'));
  assert.equal(JSON.stringify(chatCall.body).includes(providerKey),false,'el chat envía solo ID, modelo y contexto');
  assert.equal(chatCall.options.headers.Authorization,'Bearer session-token-not-provider-key','el navegador autentica la sesión, no adjunta la clave del proveedor');
+ const routed=await M.completeWithFallback({candidates:[{providerId:id,model:'model-down'},{providerId:id,model:'model-safe'}],messages:[{role:'user',content:'prueba'}]});assert.equal(routed.model,'model-safe','el router cambia a un modelo probado tras un fallo recuperable');assert.equal(routed.attempts.length,1,'el router registra el intento fallido');assert.equal(routed.attempts[0].model,'model-down');
  const usage=await M.getUsage(7);assert.equal(usage.totals.requests,5);assert.equal(new URL(calls.at(-1).url).pathname,'/api/usage');assert.equal(new URL(calls.at(-1).url).searchParams.get('days'),'7');
  assert.equal(typeof M.getKey,'undefined','el cliente no mantiene getter de API keys');
  assert.equal(calls.every(x=>x.url.startsWith(base+'/')),true,'no hay llamadas directas al proveedor');
