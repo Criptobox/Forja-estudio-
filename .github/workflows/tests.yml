@@ -32,4 +32,4 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Pruebas de extremo a extremo
         working-directory: tests
-        run: npm test  # run-all.cjs: las pruebas activas del proyecto
+        run: npm test  # run-all.cjs: todas las pruebas activas
