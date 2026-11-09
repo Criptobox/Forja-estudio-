@@ -25,7 +25,7 @@ const assert=require('node:assert/strict');
  await page.waitForFunction(()=>document.getElementById('aiBackendStatus').dataset.kind==='success',null,{timeout:10000});
  await page.locator('#aiProviderEndpoint').fill('https://api.example.com/v1');await page.locator('#aiProviderKey').fill(apiKey);await page.locator('#aiProviderForm').evaluate(form=>form.requestSubmit());
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('#agentAIModel option')).some(o=>o.value==='model-ok'),null,{timeout:20000});
- assert.ok(providerId.length>=8,'se crea un identificador de proveedor válido');assert.equal(savedKeySeen,true,'la API key se envía al Worker solo al guardar');assert.equal(await page.locator('#aiProviderKey').inputValue(),'','el campo se vacía inmediatamente tras el guardado cifrado');assert.equal(await page.locator('#agentAIModel option').count(),2,'el modelo aparece junto al modo local');
+ assert.ok(providerId.length>=8,'se crea un identificador de proveedor válido');assert.equal(savedKeySeen,true,'la API key se envía al Worker solo al guardar');assert.equal(await page.locator('#aiProviderKey').inputValue(),'','el campo se vacía inmediatamente tras el guardado cifrado');assert.equal(await page.locator('#agentAIModel option').count(),3,'modo local, Auto y modelo manual aparecen en el selector');
  await page.evaluate(()=>{const s=document.getElementById('agentAIModel');s.value='model-ok';s.dispatchEvent(new Event('change',{bubbles:true}));});
  await page.locator('#aiConnectionsDialog [data-act=close-ai-connections]').click();await page.locator('#aiConnectionsDialog').waitFor({state:'hidden'});
  const initial=JSON.parse(await page.evaluate(()=>localStorage.getItem('estilos-tinta-prototype-v1'))).palette;
