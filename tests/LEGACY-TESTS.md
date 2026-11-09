@@ -1,6 +1,6 @@
 # Pruebas históricas pendientes de adaptación
 
-Estos 16 archivos se conservan íntegros como referencia de regresión de etapas anteriores de Tinta. Se excluyen del conjunto obligatorio porque sus expectativas ya no coinciden con el flujo web 15.15: algunas abren directamente `#bloques` aunque el flujo actual usa Idea → Pantalla; otras esperan que la propuesta automática abra la galería, conteos antiguos del catálogo, identificadores o versiones de caché anteriores.
+Estos 15 archivos se conservan íntegros como referencia de regresión de etapas anteriores de Tinta. Se excluyen del conjunto obligatorio porque sus expectativas ya no coinciden con el flujo web 15.15: algunas abren directamente `#bloques` aunque el flujo actual usa Idea → Pantalla; otras esperan que la propuesta automática abra la galería, conteos antiguos del catálogo, identificadores o versiones de caché anteriores.
 
 **No se han borrado ni se declara que pasen.** Requieren adaptación individual a la UI y a los contratos vigentes.
 
@@ -24,11 +24,12 @@ Los fallos que permanezcan se deben resolver uno por uno, verificando primero si
 
 - `tinta-card-style.cjs` — reactivada tras adaptar navegación Idea → Bloques, catálogo de 158 piezas y apertura del panel manual. Mantiene las comprobaciones del inspector, gradientes, contraste, variantes, exportaciones, accesibilidad y 25 diseños de tarjeta.
 
+- `tinta-catalog.cjs` — reactivada tras adaptar la entrada al flujo Idea → Bloques. Mantiene las comprobaciones del catálogo de 158 registros, sus 26 módulos, filtros, búsqueda, familias, variantes, procedencia/licencias, exportación JSON y de componentes, proyectos y responsive.
+
 ## Inventario conservado
 
 - `legacy-android-back.cjs`
 - `tinta-agent-1510.cjs` — reactivada tras actualizar solo las dos expectativas de versión/caché obsoletas.
-- `legacy-tinta-catalog.cjs`
 - `legacy-tinta-entry.cjs`
 - `legacy-tinta-history.cjs`
 - `legacy-tinta-library.cjs`
