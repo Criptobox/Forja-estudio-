@@ -4,7 +4,7 @@ La versión actual incluye la mancha 3D sin círculo decorativo, el recorrido Id
 
 ## Comprobar antes de subir
 
-1. Para verla de inmediato, abre **ABRIR-TINTA-ACTUAL.html**, incluido en el ZIP de entrega. Es una copia autónoma para visualizar; NO es la raíz del código fuente.
+1. Para verla de inmediato, abre **releases/previews/ABRIR-TINTA-ACTUAL.html**, incluido en el ZIP de entrega. Es una copia autónoma para visualizar; NO es la raíz del código fuente.
 2. En el código fuente, **web/index.html** y **web/crear.html** contienen Tinta actual.
 3. La interfaz clásica se conserva aparte en **web/biblioteca.html** y **web/agente.html**, accesible desde el menú de Tinta. No hay conversión ni borrado de proyectos clásicos.
 
