@@ -53,7 +53,7 @@ npx wrangler deploy
 Comprueba la URL workers.dev que entrega Wrangler:
 
 ```sh
-curl https://TU-WORKER.workers.dev/health
+curl -H 'Origin: https://criptobox.github.io' https://TU-WORKER.workers.dev/health
 ```
 
 ## 4. Conectar Tinta

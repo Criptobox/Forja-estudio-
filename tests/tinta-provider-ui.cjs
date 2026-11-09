@@ -14,6 +14,8 @@ const checks=[
 ['modelos se descubren desde el Worker',/TintaProviderManager\.discover\(\{providerId/.test(js)],
 ['pruebas de modelo pasan por el Worker',/TintaProviderManager\.testModel\(\{providerId/.test(js)],
 ['chat del agente envía ID de proveedor',/TintaProviderManager\.complete\(\{providerId:profile\.id/.test(js)],
+['la clave del proveedor se borra inmediatamente tras guardarla',/saveProvider\(\{id,name,endpoint,modelsPath,chatPath,authMode\},key\);\$\('aiProviderKey'\)\.value='';/.test(js)],
+['cambiar endpoint limpia la clave anterior',/\['aiProviderEndpoint','aiProviderName'\]\.forEach\(id=>\$\(id\)\?\.addEventListener\('change',\(\)=>\{\$\('aiProviderKey'\)\.value='';/.test(js)],
 ['el chat no tiene clave de proveedor',!/aiCurrentKey|rememberKey|profile\.endpoint,chatPath,key/.test(js)],
 ['el Worker cifra con AES-GCM',/AES-GCM/.test(worker)&&/crypto\.subtle\.encrypt/.test(worker)],
 ['el Worker limita orígenes',/ALLOWED_ORIGINS/.test(worker)&&/Access-Control-Allow-Origin/.test(worker)],
