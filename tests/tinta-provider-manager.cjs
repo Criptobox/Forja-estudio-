@@ -9,7 +9,7 @@ const ctx={URL,localStorage,AbortController,setTimeout,clearTimeout,Map,JSON,Arr
  if(p==='/api/providers'&&method==='GET')return new Response(JSON.stringify({providers:profiles}),{status:200});
  if(p==='/api/usage')return new Response(JSON.stringify({days:7,totals:{requests:5,totalTokens:250,errors:1},providers:[]}),{status:200});
  if(p==='/api/providers'&&options.method==='POST'){
-  const item={id:body.id,name:body.name,endpoint:body.endpoint,modelsPath:body.modelsPath,chatPath:body.chatPath,authMode:body.authMode,workingModels:[],connected:true};
+  const item={id:body.id,name:body.name,endpoint:body.endpoint,modelsPath:body.modelsPath,chatPath:body.chatPath,authMode:body.authMode,requestsPerDay:body.requestsPerDay,requestsPerMinute:body.requestsPerMinute,workingModels:[],connected:true};
   const i=profiles.findIndex(x=>x.id===item.id);if(i>=0)profiles[i]=item;else profiles.push(item);
   return new Response(JSON.stringify({provider:item}),{status:200});
  }
