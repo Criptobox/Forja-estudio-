@@ -1,0 +1,14 @@
+name = "tinta-private-ai"
+main = "src/index.mjs"
+compatibility_date = "2026-11-08"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "https://criptobox.github.io,http://127.0.0.1:18080,http://localhost:18080"
+SESSION_TTL_SECONDS = "28800"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tinta-private-ai"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"

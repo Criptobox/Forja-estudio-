@@ -1,49 +1,27 @@
-/* Gestor de proveedores OpenAI-compatible. Las claves viven solo en memoria de sesión. */
+/* Cliente del gateway privado de Tinta. No guarda tokens ni claves de proveedores. */
 (function(root){
  'use strict';
- const STORAGE='tinta-ai-providers-v1', keys=new Map();
- const read=()=>{try{const x=JSON.parse(root.localStorage.getItem(STORAGE)||'[]');return Array.isArray(x)?x:[];}catch(_){return[];}};
- const write=x=>{try{root.localStorage.setItem(STORAGE,JSON.stringify(x));return true;}catch(_){return false;}};
- const cleanBase=v=>{const u=new URL(String(v||'').trim());if(u.username||u.password||u.search||u.hash)throw Error('El endpoint no debe incluir credenciales, parámetros ni fragmentos.');if(!['https:','http:'].includes(u.protocol))throw Error('Usa una URL HTTPS. HTTP solo se permite en localhost.');if(u.protocol==='http:'&&!['localhost','127.0.0.1'].includes(u.hostname))throw Error('HTTP solo se permite para localhost.');return u.href.replace(/\/+$/,'');};
- const path=(base,p)=>base+'/'+String(p||'').trim().replace(/^\/+/, '');
- const parseModels=data=>{const list=Array.isArray(data?.data)?data.data:Array.isArray(data?.models)?data.models:Array.isArray(data)?data:[];return [...new Set(list.map(x=>typeof x==='string'?x:x?.id).filter(x=>typeof x==='string'&&x.trim()).map(x=>x.trim()))];};
- async function request(url,key,options={},timeout=18000,authMode='bearer'){
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout);
-  try{const response=await fetch(url,{...options,signal:controller.signal,headers:{...(authMode==='x-api-key'?{'x-api-key':key}:authMode==='api-key'?{'api-key':key}:{Authorization:'Bearer '+key}),'Content-Type':'application/json',...(options.headers||{})}});
-   const body=await response.text();let data;try{data=body?JSON.parse(body):{};}catch(_){data={raw:body.slice(0,500)};}
-   if(!response.ok)throw Error('HTTP '+response.status+': '+String(data?.error?.message||data?.message||body||response.statusText).slice(0,220));
-   return data;
-  }catch(e){if(e.name==='AbortError')throw Error('Tiempo de espera agotado.');if(e instanceof TypeError)throw Error('No se pudo conectar. Comprueba CORS, endpoint y red.');throw e;}
-  finally{clearTimeout(timer);}
- }
- async function discover({endpoint,modelsPath='/models',key,authMode='bearer'}){
-  const base=cleanBase(endpoint);if(!key)throw Error('Falta la clave API.');
-  const data=await request(path(base,modelsPath),key,{method:'GET'},18000,authMode);
-  return {base,models:parseModels(data)};
- }
- async function testModel({endpoint,chatPath='/chat/completions',key,model,authMode='bearer'}){
-  const base=cleanBase(endpoint);if(!key)throw Error('Falta la clave API.');
-  const data=await request(path(base,chatPath),key,{method:'POST',body:JSON.stringify({model,messages:[{role:'user',content:'Responde únicamente: TINTA_OK'}],max_tokens:12,temperature:0})},25000,authMode);
-  const content=data?.choices?.[0]?.message?.content??data?.output_text??data?.message?.content;
-  const text=typeof content==='string'?content:Array.isArray(content)?content.map(x=>x?.text||'').join(' '):'';
-  if(!text.trim())throw Error('El endpoint respondió, pero no devolvió texto compatible.');
-  return {ok:true,model,text:text.trim().slice(0,80),reportedModel:data?.model||model};
- }
-
- async function complete({endpoint,chatPath='/chat/completions',key,model,authMode='bearer',messages,maxTokens=1400}){
-  const base=cleanBase(endpoint);if(!key)throw Error('Falta la clave API.');
-  const data=await request(path(base,chatPath),key,{method:'POST',body:JSON.stringify({model,messages,max_tokens:maxTokens,temperature:0.2})},45000,authMode);
-  const content=data?.choices?.[0]?.message?.content??data?.output_text??data?.message?.content;
-  const text=typeof content==='string'?content:Array.isArray(content)?content.map(x=>x?.text||'').join(' '):'';
-  if(!text.trim())throw Error('El modelo no devolvió contenido de texto.');
-  return text.trim();
- }
- function saveProvider(profile){const list=read(),i=list.findIndex(x=>x.id===profile.id);if(i>=0)list[i]={...list[i],...profile};else list.unshift(profile);write(list);return list;}
- function rememberKey(id,key){keys.set(id,key);}
- function getKey(id){return keys.get(id)||'';}
- function list(){return read().map(x=>({...x,connected:keys.has(x.id)}));}
- function remove(id){keys.delete(id);write(read().filter(x=>x.id!==id));}
- function updateWorking(id,models){const list=read(),p=list.find(x=>x.id===id);if(!p)return; p.workingModels=[...new Set(models)];write(list);}
- root.TintaProviderManager={discover,testModel,complete,saveProvider,rememberKey,getKey,list,remove,updateWorking,cleanBase};
+ const URL_STORAGE='tinta-private-ai-backend-v1',ACTIVE_STORAGE='tinta-private-ai-active-provider-v1';
+ let backendUrl='',token='',profiles=[];
+ function readStorage(k){try{return root.localStorage.getItem(k)||'';}catch(_){return '';}}
+ function writeStorage(k,v){try{if(v)root.localStorage.setItem(k,v);else root.localStorage.removeItem(k);}catch(_){}}
+ function cleanBackendUrl(v){let u;try{u=new URL(String(v||'').trim());}catch(_){throw Error('Escribe la URL HTTPS del servidor privado.');}if(u.username||u.password||u.search||u.hash||!['https:','http:'].includes(u.protocol))throw Error('La URL del servidor debe ser HTTP(S) y no contener credenciales, parámetros ni fragmentos.');if(u.protocol==='http:'&&!['localhost','127.0.0.1'].includes(u.hostname))throw Error('HTTP solo se permite para desarrollo local.');if(u.protocol==='https:'&&u.port&&u.port!=='443')throw Error('Usa el puerto HTTPS estándar del Worker.');return u.href.replace(/\/+$/,'');}
+ function setBackendUrl(v){backendUrl=cleanBackendUrl(v);writeStorage(URL_STORAGE,backendUrl);return backendUrl;}
+ function getBackendUrl(){return backendUrl||readStorage(URL_STORAGE);}
+ function isAuthenticated(){return !!token;}
+ function getActiveProviderId(){return readStorage(ACTIVE_STORAGE);}
+ function setActiveProviderId(id){writeStorage(ACTIVE_STORAGE,String(id||''));}
+ async function request(path,options={},timeout=20000,unauth=false){const base=getBackendUrl();if(!base)throw Error('Configura primero la URL del servidor privado.');const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeout),headers={'Content-Type':'application/json',...(options.headers||{})};if(token&&!unauth)headers.Authorization='Bearer '+token;try{const response=await fetch(base+path,{...options,headers,signal:controller.signal,cache:'no-store',credentials:'omit'}),raw=await response.text();let data={};try{data=raw?JSON.parse(raw):{};}catch(_){data={error:raw.slice(0,180)};}if(!response.ok){if(response.status===401&&!unauth)token='';throw Error(String(data.error||'El servidor privado devolvió HTTP '+response.status).slice(0,240));}return data;}catch(e){if(e?.name==='AbortError')throw Error('El servidor privado tardó demasiado en responder.');if(e instanceof TypeError)throw Error('No se pudo conectar con el servidor privado. Comprueba URL, CORS y red.');throw e;}finally{clearTimeout(timer);}}
+ async function login({url,password}){token='';setBackendUrl(url);if(!String(password||'').trim())throw Error('Introduce la contraseña del servidor privado.');const r=await request('/auth/login',{method:'POST',body:JSON.stringify({password:String(password)})},15000,true);if(typeof r.token!=='string'||r.token.length<20)throw Error('El servidor no devolvió una sesión válida.');token=r.token;try{await refreshProviders();}catch(e){token='';throw e;}return{ok:true,expiresIn:r.expiresIn||28800,providers:profiles.length};}
+ function logout(){token='';profiles=[];}
+ async function refreshProviders(){if(!token)throw Error('Conecta primero con el servidor privado.');const r=await request('/api/providers');profiles=Array.isArray(r.providers)?r.providers:[];if(!profiles.some(p=>p.id===getActiveProviderId()))setActiveProviderId('');return list();}
+ function list(){return profiles.map(p=>({...p,connected:isAuthenticated()}));}
+ function get(id){const p=profiles.find(x=>x.id===id);return p?{...p,connected:isAuthenticated()}:null;}
+ async function saveProvider(profile,key){if(!token)throw Error('Conecta primero con el servidor privado.');const payload={...profile};if(key)payload.key=String(key);const r=await request('/api/providers',{method:'POST',body:JSON.stringify(payload)});if(!r.provider?.id)throw Error('El servidor no confirmó el guardado del proveedor.');const i=profiles.findIndex(p=>p.id===r.provider.id);if(i>=0)profiles[i]=r.provider;else profiles.unshift(r.provider);return{...r.provider,connected:true};}
+ async function discover({providerId}){if(!providerId)throw Error('Selecciona una conexión.');return request('/api/providers/'+encodeURIComponent(providerId)+'/models',{method:'POST',body:'{}'},25000);}
+ async function testModel({providerId,model}){if(!providerId||!model)throw Error('Selecciona un proveedor y un modelo.');try{const r=await request('/api/providers/'+encodeURIComponent(providerId)+'/test',{method:'POST',body:JSON.stringify({model})},35000),p=profiles.find(x=>x.id===providerId);if(p)p.workingModels=Array.isArray(r.workingModels)?r.workingModels:[...new Set([...(p.workingModels||[]),model])];return r;}catch(e){await refreshProviders().catch(()=>{});throw e;}}
+ async function complete({providerId,model,messages,maxTokens=1400}){const r=await request('/api/providers/'+encodeURIComponent(providerId)+'/chat',{method:'POST',body:JSON.stringify({model,messages,maxTokens})},60000);if(typeof r.text!=='string'||!r.text.trim())throw Error('El modelo no devolvió contenido de texto.');return r.text.trim();}
+ async function remove(id){await request('/api/providers/'+encodeURIComponent(id),{method:'DELETE'});profiles=profiles.filter(p=>p.id!==id);if(getActiveProviderId()===id)setActiveProviderId('');}
+ root.TintaProviderManager={setBackendUrl,getBackendUrl,isAuthenticated,login,logout,refreshProviders,list,get,setActiveProviderId,getActiveProviderId,saveProvider,discover,testModel,complete,remove};
  if(typeof module!=='undefined')module.exports=root.TintaProviderManager;
 })(typeof window!=='undefined'?window:globalThis);

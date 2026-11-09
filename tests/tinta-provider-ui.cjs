@@ -1,24 +1,27 @@
 const fs=require('node:fs'),path=require('node:path'),root=path.resolve(__dirname,'..');
-const html=fs.readFileSync(path.join(root,'web/crear.html'),'utf8'),js=fs.readFileSync(path.join(root,'web/js/crear.js'),'utf8'),provider=fs.readFileSync(path.join(root,'web/js/tinta-provider-manager.js'),'utf8'),sw=fs.readFileSync(path.join(root,'web/sw.js'),'utf8');
+const html=fs.readFileSync(path.join(root,'web/crear.html'),'utf8'),index=fs.readFileSync(path.join(root,'web/index.html'),'utf8'),js=fs.readFileSync(path.join(root,'web/js/crear.js'),'utf8'),provider=fs.readFileSync(path.join(root,'web/js/tinta-provider-manager.js'),'utf8'),sw=fs.readFileSync(path.join(root,'web/sw.js'),'utf8'),worker=fs.readFileSync(path.join(root,'backend/worker/src/index.mjs'),'utf8');
 const checks=[
-['panel de conexiones accesible',/id="aiConnectionsDialog"/.test(html)&&/aria-labelledby="aiConnectionsTitle"/.test(html)],
-['endpoint y clave configurables',/id="aiProviderEndpoint"/.test(html)&&/id="aiProviderKey"/.test(html)],
-['rutas de modelos y chat editables',/id="aiModelsPath"/.test(html)&&/id="aiChatPath"/.test(html)],
-['modos de autenticación configurables',/id="aiAuthMode"/.test(html)&&/x-api-key/.test(html)&&/api-key/.test(html)],
-['descubrimiento desde endpoint',/TintaProviderManager\.discover/.test(js)],
-['prueba individual por modelo',/TintaProviderManager\.testModel/.test(js)],
-['alta manual de modelo',/id="aiManualModelForm"/.test(html)],
-['separación de modelos fallidos',/id="aiFailedModels"/.test(html)],
-['claves solo en memoria',/const STORAGE/.test(provider)&&/keys=new Map/.test(provider)&&!/apiKey\s*:/.test(provider)],
-['perfiles sin clave',/workingModels/.test(js)&&/rememberKey/.test(js)],
-['campo de clave se limpia tras la prueba',/aiProviderKey'\)\.value=''/.test(js)],
-['protocolo seguro',/HTTPS/.test(provider)&&/localhost/.test(provider)],
-['estado de CORS informado',/CORS/.test(provider)&&/CORS/.test(html)],
-['archivo incluido en PWA',/js\/tinta-provider-manager\.js/.test(sw)],
-['caché nueva',/tinta-2026\.11\.17/.test(sw)],
-['completar chat real',/async function complete/.test(provider)&&/TintaProviderManager\.complete/.test(js)],
-['selector de modelo del agente',/id="agentAIModel"/.test(html)&&/aiRefreshAgentModels/.test(js)],
-['validación antes de aplicar',/agentApplyPlan\(plan\)/.test(js)&&/JSON\.parse/.test(js)],
-['entrada sincronizada',fs.readFileSync(path.join(root,'web/index.html'),'utf8')===html]
+['entradas web idénticas',html===index],
+['panel del servidor privado',/id="aiBackendLoginForm"/.test(html)&&/id="aiBackendUrl"/.test(html)&&/id="aiBackendPassword"/.test(html)],
+['logout del servidor',/id="aiBackendLogout"/.test(html)],
+['clave se describe como cifrada en servidor',/Claves cifradas en servidor/.test(html)&&/AES-256-GCM/.test(html)],
+['clave API no es parte del perfil persistido',/id="aiProviderKey"/.test(html)&&/nueva clave o reemplazo/i.test(html)],
+['cliente tiene login de servidor',/async function login/.test(provider)&&/\/auth\/login/.test(provider)],
+['token solo vive en variable de memoria',/let backendUrl='',token='',profiles=\[\]/.test(provider)&&!/localStorage\.setItem\([^,]*token/i.test(provider)],
+['URL pública del Worker sí se recuerda',/tinta-private-ai-backend-v1/.test(provider)],
+['el cliente no expone getter de claves',!/getKey|rememberKey/.test(provider)],
+['alta envía clave solo al proxy',/payload\.key=String\(key\)/.test(provider)&&/\/api\/providers/.test(provider)],
+['modelos se descubren desde el Worker',/TintaProviderManager\.discover\(\{providerId/.test(js)],
+['pruebas de modelo pasan por el Worker',/TintaProviderManager\.testModel\(\{providerId/.test(js)],
+['chat del agente envía ID de proveedor',/TintaProviderManager\.complete\(\{providerId:profile\.id/.test(js)],
+['la clave del proveedor se borra inmediatamente tras guardarla',/saveProvider\(\{id,name,endpoint,modelsPath,chatPath,authMode\},key\);\$\('aiProviderKey'\)\.value='';/.test(js)],
+['cambiar endpoint limpia la clave anterior',/\['aiProviderEndpoint','aiProviderName'\]\.forEach\(id=>\$\(id\)\?\.addEventListener\('change',\(\)=>\{\$\('aiProviderKey'\)\.value='';/.test(js)],
+['el chat no tiene clave de proveedor',!/aiCurrentKey|rememberKey|profile\.endpoint,chatPath,key/.test(js)],
+['el Worker cifra con AES-GCM',/AES-GCM/.test(worker)&&/crypto\.subtle\.encrypt/.test(worker)],
+['el Worker limita orígenes',/ALLOWED_ORIGINS/.test(worker)&&/Access-Control-Allow-Origin/.test(worker)],
+['el Worker autentica sesión firmada',/HMAC/.test(worker)&&/Authorization/.test(worker)],
+['el Worker bloquea redirects',/redirect:"manual"/.test(worker)],
+['el Worker limita modelos no probados',/working\.includes\(model\)/.test(worker)],
+['service worker invalida caché antigua',/tinta-2026\.11\.08-private-ai/.test(sw)]
 ];
-let fail=0;for(const [name,ok] of checks){console.log((ok?'OK ':'FAIL ')+name);if(!ok)fail++;}if(fail)process.exit(1);console.log(checks.length+' comprobaciones estructurales 15.14 superadas.');
+let fail=0;for(const [name,ok] of checks){console.log((ok?'OK ':'FAIL ')+name);if(!ok)fail++;}if(fail)process.exit(1);console.log(checks.length+' comprobaciones UI y seguridad completadas.');

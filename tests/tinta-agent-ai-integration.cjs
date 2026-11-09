@@ -2,40 +2,38 @@ const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
 (async()=>{
  const browser=await chromium.launch(),page=await browser.newPage({viewport:{width:390,height:900}});
- const pageErrors=[];let inferenceCalls=0,planMode='valid';page.on('pageerror',e=>pageErrors.push(e.message));
-;
+ const pageErrors=[];let inferenceCalls=0,planMode='valid',savedKeySeen=false,providerId='';
+ const apiKey='provider-key-never-leaves-private-save',backend='https://tinta-private-ai.example.workers.dev',session='test-session-token-only',requests=[];
+ page.on('pageerror',e=>pageErrors.push(e.message));
  await page.goto('http://127.0.0.1:18080/crear.html');
  const testPaletteId=await page.evaluate(()=>TintaPalettes.all()[0].id);
- await page.route('https://api.example.test/**',async route=>{
-  const req=route.request(),method=req.method(),headers={'access-control-allow-origin':'*','access-control-allow-methods':'GET, POST, OPTIONS','access-control-allow-headers':'authorization, content-type, x-api-key, api-key','content-type':'application/json'};
+ await page.route(backend+'/**',async route=>{
+  const req=route.request(),url=new URL(req.url()),method=req.method(),headers={'access-control-allow-origin':'*','access-control-allow-methods':'GET, POST, DELETE, OPTIONS','access-control-allow-headers':'authorization, content-type','access-control-max-age':'600','content-type':'application/json'};
   if(method==='OPTIONS')return route.fulfill({status:204,headers});
-  if(method==='GET')return route.fulfill({status:200,headers,body:JSON.stringify({data:[{id:'model-ok'}]})});
-  const body=req.postDataJSON(),content=body.messages?.[0]?.content||'';
-  if(content.includes('Responde únicamente: TINTA_OK'))return route.fulfill({status:200,headers,body:JSON.stringify({choices:[{message:{content:'TINTA_OK'}}],model:'model-ok'})});
-  inferenceCalls++;const paletteId=testPaletteId;
-  const plan=planMode==='valid'?{operations:[{type:'set_palette',paletteId}],summary:['Paleta de prueba aplicada.']}:{operations:[{type:'set_palette',paletteId:'palette-no-existe'}],summary:['Plan inválido.']};
-  return route.fulfill({status:200,headers,body:JSON.stringify({choices:[{message:{content:JSON.stringify(plan)}}],model:'model-ok'})});
- })
- await page.locator('#idea').fill('Una cafetería moderna con pedidos y tarjetas de producto.');
- await page.locator('#briefForm button[type=submit]').click();
- await page.locator('#agentChatInput').waitFor({state:'visible'});
- await page.locator('.menu-button').click();
- await page.locator('#siteMenu [data-act=open-ai-connections]').click();
- await page.locator('#aiConnectionsDialog').waitFor({state:'visible'});
- await page.locator('#aiProviderEndpoint').fill('https://api.example.test/v1');await page.locator('#aiProviderKey').fill('test-key-not-real');await page.locator('#aiProviderForm').evaluate(form=>form.requestSubmit());
+  const body=req.postDataJSON?.()||{};requests.push({path:url.pathname,method,headers:req.headers(),body});
+  if(url.pathname==='/auth/login'&&method==='POST'){assert.ok(body.password.length>=24,'el formulario envía la contraseña privada');return route.fulfill({status:200,headers,body:JSON.stringify({token:session,expiresIn:28800})});}
+  if(url.pathname==='/api/providers'&&method==='GET')return route.fulfill({status:200,headers,body:JSON.stringify({providers:[]})});
+  if(url.pathname==='/api/providers'&&method==='POST'){providerId=body.id;savedKeySeen=body.key===apiKey;const profile={id:providerId,name:body.name,endpoint:body.endpoint,modelsPath:body.modelsPath,chatPath:body.chatPath,authMode:body.authMode,workingModels:[],connected:true};return route.fulfill({status:200,headers,body:JSON.stringify({provider:profile})});}
+  const match=url.pathname.match(/^\/api\/providers\/([^/]+)\/(models|test|chat)$/);
+  if(match){const [,id,action]=match;if(!providerId||id!==providerId)return route.fulfill({status:404,headers,body:JSON.stringify({error:'Proveedor desconocido'})});if(action==='models')return route.fulfill({status:200,headers,body:JSON.stringify({models:['model-ok']})});if(action==='test')return route.fulfill({status:200,headers,body:JSON.stringify({ok:true,model:body.model,workingModels:[body.model]})});if(action==='chat'){inferenceCalls++;const plan=planMode==='valid'?{operations:[{type:'set_palette',paletteId:testPaletteId}],summary:['Paleta de prueba aplicada.']}:{operations:[{type:'set_palette',paletteId:'palette-no-existe'}],summary:['Plan inválido.']};return route.fulfill({status:200,headers,body:JSON.stringify({text:JSON.stringify(plan),model:body.model})});}}
+  return route.fulfill({status:404,headers,body:JSON.stringify({error:'Ruta de prueba no implementada: '+url.pathname})});
+ });
+ await page.locator('#idea').fill('Una cafetería moderna con pedidos y tarjetas de producto.');await page.locator('#briefForm button[type=submit]').click();await page.locator('#agentChatInput').waitFor({state:'visible'});
+ await page.locator('.menu-button').click();await page.locator('#siteMenu [data-act=open-ai-connections]').click();await page.locator('#aiConnectionsDialog').waitFor({state:'visible'});
+ await page.locator('#aiBackendUrl').fill(backend);await page.locator('#aiBackendPassword').fill('admin-password-for-private-worker-123456');await page.locator('#aiBackendLoginForm').evaluate(form=>form.requestSubmit());
+ await page.waitForFunction(()=>document.getElementById('aiBackendStatus').dataset.kind==='success',null,{timeout:10000});
+ await page.locator('#aiProviderEndpoint').fill('https://api.example.com/v1');await page.locator('#aiProviderKey').fill(apiKey);await page.locator('#aiProviderForm').evaluate(form=>form.requestSubmit());
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('#agentAIModel option')).some(o=>o.value==='model-ok'),null,{timeout:20000});
- assert.equal(await page.locator('#agentAIModel option').count(),2,'el modelo aparece junto al modo local');
+ assert.ok(providerId.length>=8,'se crea un identificador de proveedor válido');assert.equal(savedKeySeen,true,'la API key se envía al Worker solo al guardar');assert.equal(await page.locator('#aiProviderKey').inputValue(),'','el campo se vacía inmediatamente tras el guardado cifrado');assert.equal(await page.locator('#agentAIModel option').count(),2,'el modelo aparece junto al modo local');
  await page.evaluate(()=>{const s=document.getElementById('agentAIModel');s.value='model-ok';s.dispatchEvent(new Event('change',{bubbles:true}));});
- await page.locator('#aiConnectionsDialog [data-act=close-ai-connections]').click();
- await page.locator('#aiConnectionsDialog').waitFor({state:'hidden'});
+ await page.locator('#aiConnectionsDialog [data-act=close-ai-connections]').click();await page.locator('#aiConnectionsDialog').waitFor({state:'hidden'});
  const initial=JSON.parse(await page.evaluate(()=>localStorage.getItem('estilos-tinta-prototype-v1'))).palette;
  await page.locator('#agentChatInput').fill('Cambia a una paleta de prueba');await page.locator('#agentChatSend').click();
  await page.waitForFunction(()=>document.getElementById('agentChatLog').innerText.includes('Modelo model-ok'),null,{timeout:20000});
  const applied=JSON.parse(await page.evaluate(()=>localStorage.getItem('estilos-tinta-prototype-v1'))).palette;assert.notEqual(applied,initial,'el plan válido modifica el diseño');assert.equal(inferenceCalls,1,'el modelo recibe la instrucción del agente');
- assert.ok((await page.locator('#agentChatLog').innerText()).includes('Modelo model-ok'),'el chat identifica el modelo utilizado');
+ const call=requests.filter(x=>x.path.endsWith('/chat')).at(-1);assert.ok(call,'existe una petición al chat del Worker');assert.equal(call.headers.authorization,'Bearer '+session,'el chat autentica la sesión privada');assert.equal(JSON.stringify(call.body).includes(apiKey),false,'la API key no se envía en la conversación');assert.equal(requests.every(x=>x.path==='/auth/login'||x.path.startsWith('/api/providers')),true,'todas las solicitudes pasan por el gateway privado');
  planMode='invalid';await page.locator('#agentChatInput').fill('Haz otro cambio');await page.locator('#agentChatSend').click();
  await page.waitForFunction(()=>document.getElementById('agentChatLog').innerText.includes('No se aplicó ningún cambio'),null,{timeout:20000});
- assert.deepEqual(JSON.parse(await page.evaluate(()=>localStorage.getItem('estilos-tinta-prototype-v1'))).palette,applied,'el plan inválido no modifica el diseño');
- assert.ok((await page.locator('#agentChatLog').innerText()).includes('No se aplicó ningún cambio'),'el chat informa el rechazo del plan');
- assert.deepEqual(pageErrors,[],'sin errores JavaScript');await browser.close();console.log('Integración IA: conexión, prueba, selector, aplicación y rechazo de planes correctos.');
+ assert.deepEqual(JSON.parse(await page.evaluate(()=>localStorage.getItem('estilos-tinta-prototype-v1'))).palette,applied,'un plan inválido no modifica el diseño');assert.equal(inferenceCalls,2,'la segunda petición también pasa por el Worker');assert.deepEqual(pageErrors,[],'sin errores JavaScript');
+ await browser.close();console.log('Integración IA privada: login, guardado cifrado, prueba, selector, chat proxy y rechazo de planes correctos.');
 })().catch(error=>{console.error(error);process.exit(1);});

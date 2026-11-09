@@ -17,3 +17,7 @@ keystore.properties
 node_modules/
 
 .DS_Store
+
+# Cloudflare Worker local secrets
+backend/worker/.dev.vars
+backend/worker/.wrangler/
