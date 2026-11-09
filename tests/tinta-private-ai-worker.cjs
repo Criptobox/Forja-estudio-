@@ -64,6 +64,6 @@ class FakeStatement{
   r=await send('/api/providers',{method:'POST',token,body:{id:'provider-invalid-123',name:'local',endpoint:'https://127.0.0.1/v1',key:apiKey}});assert.equal(r.status,400,'el proxy bloquea endpoints con IP local');
   r=await send('/api/providers/provider-test-12345',{method:'DELETE',token});assert.equal(r.status,200);assert.equal(db.providers.size,0);
   const opts=await worker.fetch(new Request(base+'/health',{method:'OPTIONS',headers:{Origin:origin}}),env);assert.equal(opts.status,204);
-  console.log('Worker privado: 20 comprobaciones de auth, CORS, AES-GCM, proxy y validación superadas.');
+  console.log('Worker privado: 25 comprobaciones de auth, CORS, AES-GCM, proxy y validación superadas.');
  }finally{globalThis.fetch=originalFetch;}
 })().catch(e=>{console.error(e);process.exit(1);});

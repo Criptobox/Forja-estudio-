@@ -16,7 +16,7 @@ const checks=[
 ['operaciones con lista permitida',/const TYPES=/.test(core)&&/hasOwnProperty\.call\(TYPES/.test(core)],
 ['rechazo de propiedades extra',/propiedades no permitidas/.test(core)],
 ['sin evaluación de código arbitrario',!/eval\(|new Function\(/.test(core)],
-['caché 15.15',/tinta-2026\.11\.17/.test(sw)&&/js\/tinta-agent-core\.js/.test(sw)],
+['caché 15.15',/tinta-2026\.11\.08-private-ai/.test(sw)&&/js\/tinta-agent-core\.js/.test(sw)],
 ['módulo cargado antes del editor',html.indexOf('js/tinta-agent-core.js')<html.indexOf('js/crear.js')],
 ['diseño adaptable en móvil',/@media\(max-width:520px\)\{\.agent-chat/.test(css)],
 ];

@@ -3,10 +3,10 @@ const source=fs.readFileSync(path.join(__dirname,'../web/js/tinta-provider-manag
 const storage=new Map(),calls=[],profiles=[];
 const localStorage={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)};
 const ctx={URL,localStorage,AbortController,setTimeout,clearTimeout,Map,JSON,Array,String,Error,fetch:async(url,options={})=>{
- const parsed=new URL(url),p=parsed.pathname,body=options.body?JSON.parse(options.body):{};
+ const parsed=new URL(url),p=parsed.pathname,method=options.method||(options.body?'POST':'GET'),body=options.body?JSON.parse(options.body):{};
  calls.push({url,options,body});
  if(p==='/auth/login')return new Response(JSON.stringify({token:'session-token-not-provider-key',expiresIn:28800}),{status:200});
- if(p==='/api/providers'&&options.method==='GET')return new Response(JSON.stringify({providers:profiles}),{status:200});
+ if(p==='/api/providers'&&method==='GET')return new Response(JSON.stringify({providers:profiles}),{status:200});
  if(p==='/api/providers'&&options.method==='POST'){
   const item={id:body.id,name:body.name,endpoint:body.endpoint,modelsPath:body.modelsPath,chatPath:body.chatPath,authMode:body.authMode,workingModels:[],connected:true};
   const i=profiles.findIndex(x=>x.id===item.id);if(i>=0)profiles[i]=item;else profiles.push(item);
@@ -15,7 +15,7 @@ const ctx={URL,localStorage,AbortController,setTimeout,clearTimeout,Map,JSON,Arr
  if(p.endsWith('/models'))return new Response(JSON.stringify({models:['model-safe','model-second']}),{status:200});
  if(p.endsWith('/test')){const item=profiles.find(x=>p.includes(x.id));item.workingModels=[body.model];return new Response(JSON.stringify({ok:true,model:body.model,workingModels:item.workingModels}),{status:200});}
  if(p.endsWith('/chat'))return new Response(JSON.stringify({text:'{"operations":[],"summary":["ok"]}',model:body.model}),{status:200});
- if(options.method==='DELETE'){const id=p.split('/').at(-1);const i=profiles.findIndex(x=>x.id===id);if(i>=0)profiles.splice(i,1);return new Response(JSON.stringify({ok:true}),{status:200});}
+ if(method==='DELETE'){const id=p.split('/').at(-1);const i=profiles.findIndex(x=>x.id===id);if(i>=0)profiles.splice(i,1);return new Response(JSON.stringify({ok:true}),{status:200});}
  return new Response(JSON.stringify({error:'route not found'}),{status:404});
 }};
 ctx.globalThis=ctx;vm.runInNewContext(source,ctx);
