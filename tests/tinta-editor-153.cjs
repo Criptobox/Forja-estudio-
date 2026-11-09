@@ -19,4 +19,4 @@ has(/openCardStyle\(editorActiveId\)/, js, 'card style editor is reachable from 
 has(/openButtonStyle\(editorActiveId\)/, js, 'button style editor is reachable from inspector');
 has(/typographyCSS\(block\.id\)/, js, 'typography is included in preview and exported block markup');
 has(/\.editor-subactions\{display:grid/, css, 'internal editing actions use a responsive grid');
-console.log('Estilos: 16 comprobaciones de herramientas internas, tipografía, persistencia y exportación correctas.');
+console.log('Estilos: 23 comprobaciones de herramientas internas, tipografía, persistencia y exportación correctas.');
