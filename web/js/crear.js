@@ -346,45 +346,38 @@ function agentApplyInstruction(raw){
  save('Agente: '+String(raw||'').slice(0,60),'agent-command');paintPalettes();renderReview();renderPhone();
  return {ok:true,message:result.message,plan};
 }
+let agentRequestBusy=false;
+function agentStateSignature(){return JSON.stringify({brief:state.brief||'',selected:state.selected,choices:state.choices,content:state.content,palette:state.palette,composed:state.composed});}
 async function submitAgentInstruction(value){
- const input=$('agentChatInput'),raw=String(value??input?.value??'').trim();if(!raw)return;
- agentSay(raw,'user');if(input)input.value='';
- const model=$('agentAIModel')?.value||'';
- let result;
- if(model){
-  const profile=TintaProviderManager.list().find(p=>p.id===aiCurrentProfileId);
-  const status=$('agentAIStatus');
-  if(!profile||!aiCurrentKey||!aiWorking.has(model)){
-   result={ok:false,message:'Ese modelo no está probado en esta sesión. Abre Conexiones IA, introduce la clave y vuelve a probarlo.'};
-  }else{
+ if(agentRequestBusy)return;const input=$('agentChatInput'),raw=String(value??input?.value??'').trim();if(!raw)return;
+ agentRequestBusy=true;const send=$('agentChatSend'),sendMarkup=send?.innerHTML;if(send){send.disabled=true;send.textContent='Procesando…';}if(input)input.disabled=true;
+ agentSay(raw,'user');if(input)input.value='';let result={ok:false,message:'No se pudo procesar la instrucción.'};
+ try{
+  const model=$('agentAIModel')?.value||'';
+  if(model){
+   const profile=TintaProviderManager.list().find(p=>p.id===aiCurrentProfileId),key=aiCurrentKey,status=$('agentAIStatus');
+   if(!profile||!key||!aiWorking.has(model))throw Error('Ese modelo no está probado en esta sesión. Abre Conexiones IA, introduce la clave y vuelve a probarlo.');
    if(status){status.textContent='Tinta está consultando '+model+'…';status.dataset.kind='info';}
-   const catalog=Object.values(BY_ID).map(b=>({id:b.id,name:b.name,role:b.role,description:String(b.desc||'').slice(0,180),fields:(contentModel(b).fields||[]).map((field,index)=>({index,label:field.label||field.name||('Campo '+(index+1)),value:String(field.value||'').slice(0,80)}))}));
+   const before=agentStateSignature(),catalog=Object.values(BY_ID).map(b=>({id:b.id,name:b.name,role:b.role,description:String(b.desc||'').slice(0,180),fields:(contentModel(b).fields||[]).map((field,index)=>({index,label:field.label||field.name||('Campo '+(index+1)),value:String(field.value||'').slice(0,80)}))}));
    const current={brief:state.brief||'',selected:state.selected.map(id=>({id,name:BY_ID[id]?.name,role:BY_ID[id]?.role})),palette:state.palette||null};
    const system='Eres el motor de diseño de Tinta. Devuelve exclusivamente un objeto JSON válido con forma {"operations":[...],"summary":["..."]}. No uses Markdown ni texto externo. Solo puedes proponer hasta 12 operaciones permitidas: {"type":"set_palette","paletteId":ID|null}; {"type":"add_component","blockId":ID,"role":ROL}; {"type":"remove_component","role":ROL}; {"type":"replace_component","role":ROL,"blockId":ID}; {"type":"update_text","blockId":ID,"fieldIndex":N,"value":"texto"}. Roles válidos: '+TintaAgentCore.ROLES.join(', ')+'. Usa únicamente IDs exactos del catálogo y paletas disponibles. No inventes IDs. No incluyas HTML, CSS, JavaScript, URLs, instrucciones ni propiedades adicionales. Si no puedes resolverlo, devuelve {"operations":[],"summary":["Explica brevemente qué falta"]}. El plan se validará localmente antes de aplicarse.';
    const user='INSTRUCCIÓN DEL USUARIO:\n'+raw+'\n\nESTADO ACTUAL:\n'+JSON.stringify(current)+'\n\nPALETAS DISPONIBLES:\n'+JSON.stringify((TintaPalettes.all?.()||[]).map(p=>({id:p.id,name:p.name})))+'\n\nCATÁLOGO DE COMPONENTES DISPONIBLES:\n'+JSON.stringify(catalog);
-   try{
-    const answer=await TintaProviderManager.complete({endpoint:profile.endpoint,chatPath:profile.chatPath,key:aiCurrentKey,model,authMode:profile.authMode,messages:[{role:'system',content:system},{role:'user',content:user}]});
-    let payload=answer.replace(/^\s*```(?:json)?\s*/i,'').replace(/\s*```\s*$/,'').trim();
-    const first=payload.indexOf('{'),last=payload.lastIndexOf('}');if(first<0||last<=first)throw Error('La respuesta no contiene un JSON reconocible.');
-    const plan=JSON.parse(payload.slice(first,last+1));
-    if(!plan||typeof plan!=='object'||Array.isArray(plan)||Object.keys(plan).some(k=>!['operations','summary'].includes(k))||!Array.isArray(plan.operations)||plan.summary!==undefined&&!Array.isArray(plan.summary))throw Error('El formato JSON del plan no es válido.');
-    if(!plan.operations.length){result={ok:false,message:(plan.summary||['El modelo no propuso cambios.']).join(' ')};}
-    else{
-     const applied=agentApplyPlan(plan);
-     if(!applied.ok)throw Error(applied.message);
-     save('Tinta IA: '+raw.slice(0,60),'agent-command');paintPalettes();renderReview();renderPhone();
-     result={ok:true,message:'Modelo '+model+': '+(Array.isArray(plan.summary)?plan.summary.join(' '):'Plan validado y aplicado.')+' '+applied.message,plan};
-    }
-    if(status){status.textContent=result.ok?'Modelo activo · '+model+' · plan validado':'Modelo activo · '+model+' · '+result.message;status.dataset.kind=result.ok?'success':'error';}
-   }catch(error){
-    result={ok:false,message:'No se aplicó ningún cambio. '+error.message};
-    if(status){status.textContent='Error del modelo · '+error.message;status.dataset.kind='error';}
+   const answer=await TintaProviderManager.complete({endpoint:profile.endpoint,chatPath:profile.chatPath,key,model,authMode:profile.authMode,messages:[{role:'system',content:system},{role:'user',content:user}]});
+   let payload=answer.replace(/^\s*\x60{3}(?:json)?\s*/i,'').replace(/\s*\x60{3}\s*$/,'').trim();const first=payload.indexOf('{'),last=payload.lastIndexOf('}');
+   if(first<0||last<=first)throw Error('La respuesta no contiene un JSON reconocible.');const plan=JSON.parse(payload.slice(first,last+1));
+   if(!plan||typeof plan!=='object'||Array.isArray(plan)||Object.keys(plan).some(k=>!['operations','summary'].includes(k))||!Array.isArray(plan.operations))throw Error('El formato JSON del plan no es válido.');
+   if(plan.summary!==undefined&&(!Array.isArray(plan.summary)||plan.summary.length>12||plan.summary.some(item=>typeof item!=='string'||item.length>180)))throw Error('El resumen del plan contiene datos no válidos.');
+   if(!plan.operations.length)result={ok:false,message:(plan.summary||['El modelo no propuso cambios.']).join(' ')};
+   else{
+    if(agentStateSignature()!==before)throw Error('El diseño cambió mientras la IA respondía. No he aplicado su respuesta para proteger tus ediciones. Vuelve a enviar la instrucción.');
+    if(aiCurrentProfileId!==profile.id||!aiCurrentKey||$('agentAIModel')?.value!==model||!aiWorking.has(model))throw Error('La conexión o el modelo activo cambió mientras la IA respondía. Vuelve a enviar la instrucción.');
+    const applied=agentApplyPlan(plan);if(!applied.ok)throw Error(applied.message);save('Tinta IA: '+raw.slice(0,60),'agent-command');paintPalettes();renderReview();renderPhone();
+    result={ok:true,message:'Modelo '+model+': '+(plan.summary?.join(' ')||'Plan validado y aplicado.')+' '+applied.message,plan};
    }
-  }
- }else result=agentApplyInstruction(raw);
- agentSay(result.message,'bot');
- const note=$('agentChatNote');if(note)note.textContent=result.ok?'Cambio aplicado y guardado en el borrador.':'No se aplicó ningún cambio.';
- toast(result.ok?'Cambio aplicado.':'No se aplicó ningún cambio.');
+   if(status){status.textContent=result.ok?'Modelo activo · '+model+' · plan validado':'Modelo activo · '+model+' · '+result.message;status.dataset.kind=result.ok?'success':'error';}
+  }else{result=agentApplyInstruction(raw);const status=$('agentAIStatus');if(status){status.textContent=result.ok?'Modo local · cambio aplicado':'Modo local · '+result.message;status.dataset.kind=result.ok?'success':'error';}}
+ }catch(error){result={ok:false,message:'No se aplicó ningún cambio. '+String(error?.message||'Error desconocido.')};const status=$('agentAIStatus');if(status){status.textContent=result.message;status.dataset.kind='error';}}
+ finally{agentSay(result.message,'bot');const note=$('agentChatNote');if(note)note.textContent=result.ok?'Cambio aplicado y guardado en el borrador.':'No se aplicó ningún cambio.';toast(result.ok?'Cambio aplicado.':'No se aplicó ningún cambio.');agentRequestBusy=false;if(input)input.disabled=false;if(send){send.disabled=false;if(sendMarkup!==undefined)send.innerHTML=sendMarkup;}}
 }
 
 function suggest(){
@@ -469,11 +462,18 @@ document.addEventListener('change',ev=>{const input=ev.target.closest('[data-cho
 $('agentChatForm')?.addEventListener('submit',ev=>{ev.preventDefault();submitAgentInstruction();});
 
 /* Centro de conexiones: catálogo real + prueba de inferencia por modelo. */
-const aiDialog=$('aiConnectionsDialog'),aiWorking=new Map(),aiFailed=new Map();
+const aiDialog=$('aiConnectionsDialog'),aiWorking=new Map(),aiFailed=new Map(),aiSessionResults=new Map();
 let aiCurrentProfileId=null,aiCurrentKey='';
 function aiStatus(message,kind='info'){const el=$('aiConnectionStatus');if(el){el.textContent=message;el.dataset.kind=kind;}}
 function aiEsc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function aiProfileId(endpoint,name){return 'provider-'+btoa(unescape(encodeURIComponent(endpoint+'|'+name))).replace(/[^a-z0-9]/gi,'').slice(0,22).toLowerCase();}
+function aiSaveSessionResults(){
+ if(!aiCurrentProfileId)return;aiSessionResults.set(aiCurrentProfileId,{working:[...aiWorking.keys()],failed:[...aiFailed.entries()]});
+}
+function aiLoadSessionResults(id){
+ aiWorking.clear();aiFailed.clear();const saved=aiSessionResults.get(id);if(!saved||!TintaProviderManager.getKey(id))return;
+ (saved.working||[]).forEach(model=>aiWorking.set(model,''));(saved.failed||[]).forEach(([model,reason])=>aiFailed.set(model,reason));
+}
 function aiRefreshAgentModels(){
  const select=$('agentAIModel');if(!select)return;
  const chosen=select.value;select.replaceChildren();
@@ -483,7 +483,7 @@ function aiRefreshAgentModels(){
  }
  if([...select.options].some(o=>o.value===chosen))select.value=chosen;
  const status=$('agentAIStatus');
- if(status){status.textContent=select.options.length>1?'Modelo(s) probados en esta sesión disponibles.':'Modo local activo. Para usar IA real, conecta y prueba un modelo.';status.dataset.kind='info';}
+ if(status){const available=select.options.length>1;status.textContent=select.value?'Cerebro IA activo · '+select.value:available?'Hay modelos probados. Selecciona uno para activar la IA.':aiCurrentProfileId&&aiCurrentKey?'Clave disponible; vuelve a probar modelos para habilitar la IA.':'Modo local activo. Conecta y prueba un modelo para usar IA real.';status.dataset.kind=select.value?'success':'info';}
 }
 function aiRenderModels(){
  const good=$('aiWorkingModels'),bad=$('aiFailedModels'),count=$('aiWorkingCount');
@@ -497,22 +497,23 @@ function aiRenderModels(){
 function aiRenderSaved(){
  const host=$('aiSavedProviders');host.replaceChildren();const list=TintaProviderManager.list();
  if(!list.length){const p=document.createElement('p');p.className='ai-empty';p.textContent='Aún no hay conexiones guardadas.';host.appendChild(p);return;}
- list.forEach(profile=>{const row=document.createElement('div');row.className='ai-saved-row';const info=document.createElement('div'),title=document.createElement('strong'),sub=document.createElement('small');title.textContent=profile.name;sub.textContent=profile.endpoint+' · '+(profile.workingModels||[]).length+' modelos probados · '+(profile.connected?'clave en memoria':'clave no cargada');info.append(title,sub);const remove=document.createElement('button');remove.type='button';remove.className='button light';remove.textContent='Eliminar';remove.addEventListener('click',()=>{TintaProviderManager.remove(profile.id);if(aiCurrentProfileId===profile.id){aiCurrentProfileId=null;aiCurrentKey='';aiWorking.clear();aiFailed.clear();aiRenderModels();}aiRenderSaved();});row.append(info,remove);host.appendChild(row);});
+ list.forEach(profile=>{const row=document.createElement('div');row.className='ai-saved-row';const info=document.createElement('div'),title=document.createElement('strong'),sub=document.createElement('small');title.textContent=profile.name;sub.textContent=profile.endpoint+' · '+(profile.workingModels||[]).length+' modelos probados · '+(profile.connected?'clave en memoria':'clave no cargada');info.append(title,sub);const remove=document.createElement('button');remove.type='button';remove.className='button light';remove.textContent='Eliminar';remove.addEventListener('click',()=>{TintaProviderManager.remove(profile.id);aiSessionResults.delete(profile.id);if(aiCurrentProfileId===profile.id){aiCurrentProfileId=null;aiCurrentKey='';aiWorking.clear();aiFailed.clear();aiRenderModels();aiRefreshAgentModels();}aiRenderSaved();});row.append(info,remove);host.appendChild(row);});
 }
 function aiOpen(){aiDialog?.showModal();aiRenderSaved();}
 function aiRestoreProfile(profile){
  aiCurrentProfileId=profile.id;aiCurrentKey=TintaProviderManager.getKey(profile.id);
  $('aiProviderName').value=profile.name||'Mi proveedor';$('aiProviderEndpoint').value=profile.endpoint||'';
  $('aiModelsPath').value=profile.modelsPath||'/models';$('aiChatPath').value=profile.chatPath||'/chat/completions';$('aiAuthMode').value=profile.authMode||'bearer';
- $('aiProviderKey').value='';aiWorking.clear();aiFailed.clear();
- aiRenderModels();aiStatus(aiCurrentKey?'Clave disponible en memoria. Puedes volver a cargar y probar los modelos.':'Conexión guardada. Introduce la clave y vuelve a cargar/probar para confirmar qué modelos funcionan ahora.','info');
+ $('aiProviderKey').value='';aiLoadSessionResults(profile.id);
+ aiRenderModels();aiRefreshAgentModels();
+ aiStatus(aiCurrentKey?(aiWorking.size?'Clave y modelos probados disponibles en esta sesión.':'Clave disponible; prueba los modelos para habilitar el agente.'):'Conexión guardada. Introduce la clave y vuelve a probar los modelos en esta sesión.','info');
 }
 async function aiDiscoverAndTest(){
  const name=$('aiProviderName').value.trim()||'Mi proveedor',endpoint=$('aiProviderEndpoint').value.trim(),key=$('aiProviderKey').value.trim()||aiCurrentKey;
  const modelsPath=$('aiModelsPath').value.trim()||'/models',chatPath=$('aiChatPath').value.trim()||'/chat/completions',authMode=$('aiAuthMode').value;
  if(!key){aiStatus('Introduce la clave API.','error');return;}
  const id=aiProfileId(endpoint,name);aiCurrentProfileId=id;aiCurrentKey=key;TintaProviderManager.rememberKey(id,key);
- $('aiDiscoverButton').disabled=true;aiWorking.clear();aiFailed.clear();aiRenderModels();aiStatus('Consultando el catálogo de modelos…');
+ $('aiDiscoverButton').disabled=true;aiWorking.clear();aiFailed.clear();aiSaveSessionResults();aiRenderModels();aiRefreshAgentModels();aiStatus('Consultando el catálogo de modelos…');
  try{
   const result=await TintaProviderManager.discover({endpoint,modelsPath,key,authMode});
   if(!result.models.length)throw Error('El endpoint respondió, pero no publicó modelos reconocibles. Prueba a añadir el ID manualmente.');
@@ -524,11 +525,10 @@ async function aiDiscoverAndTest(){
    done++;aiRenderModels();aiStatus('Probados '+done+' de '+result.models.length+' modelos. Funcionan: '+aiWorking.size+'.');
   }
   const profile={id,name,endpoint:result.base,modelsPath,chatPath,authMode,workingModels:[...aiWorking.keys()],lastTestAt:new Date().toISOString()};
-  TintaProviderManager.saveProvider(profile);TintaProviderManager.updateWorking(id,[...aiWorking.keys()]);
-  aiStatus('Prueba terminada: '+aiWorking.size+' modelos respondieron correctamente y '+aiFailed.size+' fallaron. Solo los que respondieron quedan en la lista utilizable.','success');
-  aiRenderSaved();
- }catch(e){aiStatus(e.message,'error');}
- finally{$('aiDiscoverButton').disabled=false;$('aiProviderKey').value='';}
+  TintaProviderManager.saveProvider(profile);TintaProviderManager.updateWorking(id,[...aiWorking.keys()]);aiSaveSessionResults();
+  aiStatus('Prueba terminada: '+aiWorking.size+' modelos respondieron correctamente y '+aiFailed.size+' fallaron. Solo los que respondieron quedan en la lista utilizable.','success');aiRenderSaved();
+ }catch(e){aiSaveSessionResults();aiStatus(e.message,'error');}
+ finally{$('aiDiscoverButton').disabled=false;$('aiProviderKey').value='';aiRefreshAgentModels();}
 }
 async function aiTestOne(model){
  const endpoint=$('aiProviderEndpoint').value.trim(),key=$('aiProviderKey').value.trim()||aiCurrentKey,chatPath=$('aiChatPath').value.trim()||'/chat/completions',authMode=$('aiAuthMode').value,name=$('aiProviderName').value.trim()||'Mi proveedor';
@@ -542,13 +542,14 @@ async function aiTestOne(model){
   aiFailed.delete(model);aiWorking.set(model,'');aiStatus(model+' respondió correctamente.','success');
  }catch(e){aiWorking.delete(model);aiFailed.set(model,e.message);aiStatus(model+': '+e.message,'error');}
  aiRenderModels();
- if(aiCurrentProfileId)TintaProviderManager.updateWorking(aiCurrentProfileId,[...aiWorking.keys()]);
- aiRenderSaved();
+ if(aiCurrentProfileId){TintaProviderManager.updateWorking(aiCurrentProfileId,[...aiWorking.keys()]);aiSaveSessionResults();}
+ aiRenderSaved();aiRefreshAgentModels();
 }
 $('aiProviderForm')?.addEventListener('submit',ev=>{ev.preventDefault();aiDiscoverAndTest();});
 $('aiManualModelForm')?.addEventListener('submit',ev=>{ev.preventDefault();const model=$('aiManualModelId').value.trim();if(model)aiTestOne(model);});
 $('aiAddManualToggle')?.addEventListener('click',()=>{$('aiManualModelForm').hidden=!$('aiManualModelForm').hidden;if(!$('aiManualModelForm').hidden)$('aiManualModelId').focus();});
-$('aiProviderEndpoint')?.addEventListener('change',()=>{aiCurrentProfileId=null;aiCurrentKey='';});
+['aiProviderEndpoint','aiProviderName'].forEach(id=>$(id)?.addEventListener('change',()=>{aiCurrentProfileId=null;aiCurrentKey='';aiWorking.clear();aiFailed.clear();aiRenderModels();aiRefreshAgentModels();aiStatus('La conexión cambió. Vuelve a probar los modelos antes de usarlos.','info');}));
+$('agentAIModel')?.addEventListener('change',()=>aiRefreshAgentModels());
 document.addEventListener('click',ev=>{
  const open=ev.target.closest?.('[data-act="open-ai-connections"]');if(open){ev.preventDefault();$('siteMenu').hidden=true;aiOpen();}
  if(ev.target.closest?.('[data-act="close-ai-connections"]'))aiDialog?.close();

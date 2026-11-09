@@ -22,7 +22,7 @@ El modo automático espera una respuesta de modelos tipo `{data:[{id:"..."}]}` o
 - La clave no se guarda persistentemente y se pierde al recargar.
 - La conexión directa expone la clave al contexto del navegador y al proveedor. Para producción se recomienda un backend proxy propio con secretos del lado servidor, controles de acceso y límites de uso.
 - Una prueba correcta confirma respuesta de texto en ese momento, no visión, herramientas, contexto largo ni disponibilidad futura.
-- La integración de chat del agente con el modelo seleccionado queda para una fase posterior; esta versión configura, descubre y prueba proveedores.
+- La fase 15.14 incorpora el gestor de conexiones; la integración del modelo seleccionado en el agente se añadió en 15.15.
 
 ## Prueba
 `node tests/tinta-provider-manager.cjs`
