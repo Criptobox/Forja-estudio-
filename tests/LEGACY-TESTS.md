@@ -1,6 +1,6 @@
 # Pruebas históricas pendientes de adaptación
 
-Estos 19 archivos se conservan íntegros como referencia de regresión de etapas anteriores de Tinta. Se excluyen del conjunto obligatorio porque sus expectativas ya no coinciden con el flujo web 15.15: algunas abren directamente `#bloques` aunque el flujo actual usa Idea → Pantalla; otras esperan que la propuesta automática abra la galería, conteos antiguos del catálogo, identificadores o versiones de caché anteriores.
+Estos 18 archivos se conservan íntegros como referencia de regresión de etapas anteriores de Tinta. Se excluyen del conjunto obligatorio porque sus expectativas ya no coinciden con el flujo web 15.15: algunas abren directamente `#bloques` aunque el flujo actual usa Idea → Pantalla; otras esperan que la propuesta automática abra la galería, conteos antiguos del catálogo, identificadores o versiones de caché anteriores.
 
 **No se han borrado ni se declara que pasen.** Requieren adaptación individual a la UI y a los contratos vigentes.
 
@@ -13,7 +13,10 @@ npm run test:legacy
 
 Los fallos que permanezcan se deben resolver uno por uno, verificando primero si el problema está en el producto o en la expectativa antigua. No aumentar timeouts ni cambiar conteos a ciegas.
 
-## Prueba reactivada
+## Pruebas reactivadas
+
+- `tinta-assets.cjs` — recuperada tras adaptar la navegación al flujo actual Idea → Bloques → Pantalla. Conserva las comprobaciones de compresión, accesibilidad, destinos seguros, persistencia, importación/exportación y diseño responsive.
+
 
 - `tinta-editor-153.cjs` — recuperada tras alinear la comprobación de restauración tipográfica con el formato actual del snapshot (`typeStyles`, `innerStyles`, `innerHtml`, `layout`, `layerOrder`). Se mantienen las comprobaciones de controles, eventos, guardado, restauración, escala y salida.
 
@@ -21,7 +24,6 @@ Los fallos que permanezcan se deben resolver uno por uno, verificando primero si
 
 - `legacy-android-back.cjs`
 - `tinta-agent-1510.cjs` — reactivada tras actualizar solo las dos expectativas de versión/caché obsoletas.
-- `legacy-tinta-assets.cjs`
 - `legacy-tinta-button-style.cjs`
 - `legacy-tinta-card-style.cjs`
 - `legacy-tinta-catalog.cjs`
