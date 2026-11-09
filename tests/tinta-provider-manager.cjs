@@ -15,7 +15,7 @@ const ctx={URL,localStorage,AbortController,setTimeout,clearTimeout,Map,JSON,Arr
  }
  if(p.endsWith('/models'))return new Response(JSON.stringify({models:['model-safe','model-second']}),{status:200});
  if(p.endsWith('/test')){const item=profiles.find(x=>p.includes(x.id));item.workingModels=[body.model];return new Response(JSON.stringify({ok:true,model:body.model,workingModels:item.workingModels}),{status:200});}
- if(p.endsWith('/chat')){if(body.model==='model-down')return new Response(JSON.stringify({error:{message:'upstream unavailable'}}),{status:503});return new Response(JSON.stringify({text:'{"operations":[],"summary":["ok"]}',model:body.model}),{status:200});}
+ if(p.endsWith('/chat')){if(body.model==='model-down')return new Response(JSON.stringify({error:'HTTP 503: upstream unavailable'}),{status:502});return new Response(JSON.stringify({text:'{"operations":[],"summary":["ok"]}',model:body.model}),{status:200});}
  if(method==='DELETE'){const id=p.split('/').at(-1);const i=profiles.findIndex(x=>x.id===id);if(i>=0)profiles.splice(i,1);return new Response(JSON.stringify({ok:true}),{status:200});}
  return new Response(JSON.stringify({error:'route not found'}),{status:404});
 }};
