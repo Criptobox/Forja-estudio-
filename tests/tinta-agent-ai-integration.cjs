@@ -16,7 +16,7 @@ const assert=require('node:assert/strict');
   const plan=planMode==='valid'?{operations:[{type:'set_palette',paletteId}],summary:['Paleta de prueba aplicada.']}:{operations:[{type:'set_palette',paletteId:'palette-no-existe'}],summary:['Plan inválido.']};
   return route.fulfill({status:200,headers,body:JSON.stringify({choices:[{message:{content:JSON.stringify(plan)}}],model:'model-ok'})});
  })
- await page.evaluate(()=>aiOpen());
+ await page.locator('#aiConnectionsDialog').evaluate(dialog=>dialog.showModal());
  await page.locator('#aiProviderEndpoint').fill('https://api.example.test/v1');await page.locator('#aiProviderKey').fill('test-key-not-real');await page.locator('#aiProviderForm').evaluate(form=>form.requestSubmit());
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('#agentAIModel option')).some(o=>o.value==='model-ok'),null,{timeout:20000});
  assert.equal(await page.locator('#agentAIModel option').count(),2,'el modelo aparece junto al modo local');
