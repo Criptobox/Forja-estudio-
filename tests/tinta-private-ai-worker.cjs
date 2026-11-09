@@ -40,7 +40,7 @@ class FakeStatement{
  async all(){
   const s=this.sql,a=this.args;
   if(s.includes('from providers'))return{results:[...this.db.providers.values()].map(p=>({id:p.id,name:p.name,endpoint:p.endpoint,models_path:p.models_path,chat_path:p.chat_path,auth_mode:p.auth_mode,working_models:p.working_models,requests_per_day:p.requests_per_day,requests_per_minute:p.requests_per_minute,created_at:p.created_at,updated_at:p.updated_at}))};
-  if(s.startsWith('select provider_id,sum(requests) as requests from provider_usage_daily')){
+  if(s.startsWith('select provider_id,sum(requests) as requests')&&s.includes('from provider_usage_daily')){
    const grouped=new Map();for(const row of this.db.daily.values()){if(row.usage_date<a[0])continue;const x=grouped.get(row.provider_id)||{provider_id:row.provider_id,requests:0,successes:0,errors:0,prompt_tokens:0,completion_tokens:0};for(const k of ['requests','successes','errors','prompt_tokens','completion_tokens'])x[k]+=row[k];grouped.set(row.provider_id,x);}return{results:[...grouped.values()]};
   }
   if(s.startsWith('select provider_id,requests,requests_minute,minute_bucket from provider_usage_daily'))return{results:[...this.db.daily.values()].filter(x=>x.usage_date===a[0]).map(x=>({provider_id:x.provider_id,requests:x.requests,requests_minute:x.requests_minute,minute_bucket:x.minute_bucket}))};
