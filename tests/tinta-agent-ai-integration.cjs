@@ -26,6 +26,8 @@ const assert=require('node:assert/strict');
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('#agentAIModel option')).some(o=>o.value==='model-ok'),null,{timeout:20000});
  assert.equal(await page.locator('#agentAIModel option').count(),2,'el modelo aparece junto al modo local');
  await page.evaluate(()=>{const s=document.getElementById('agentAIModel');s.value='model-ok';s.dispatchEvent(new Event('change',{bubbles:true}));});
+ await page.locator('#aiConnectionsDialog [data-act=close-ai-connections]').click();
+ await page.locator('#aiConnectionsDialog').waitFor({state:'hidden'});
  const initial=JSON.parse(await page.evaluate(()=>localStorage.getItem('estilos-tinta-prototype-v1'))).palette;
  await page.locator('#agentChatInput').fill('Cambia a una paleta de prueba');await page.locator('#agentChatSend').click();
  await page.waitForFunction(()=>document.getElementById('agentChatLog').innerText.includes('Modelo model-ok'),null,{timeout:20000});
