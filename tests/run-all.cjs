@@ -7,10 +7,11 @@ const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '
 const serve = port => new Promise(res => { const s = http.createServer((q, r) => { let p = decodeURIComponent(q.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html'; const f = path.join(web, path.normalize(p)); if (!f.startsWith(web) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { r.writeHead(404); return r.end(); } r.writeHead(200, { 'content-type': types[path.extname(f)] || 'application/octet-stream' }); fs.createReadStream(f).pipe(r); }).listen(port, '127.0.0.1', () => res(s)); });
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'estilos-tests-'));
 const env = { ...process.env, SHOTS_DIR: tmp, STANDALONE_HTML: path.join(tmp, 'Estilos-Tinta.html') };
-const only = process.argv[2];
+const legacy = process.argv.includes('--legacy');
+const only = process.argv.slice(2).find(arg => arg !== '--legacy');
 (async () => {
   execFileSync('python3', [path.join(root, 'tools/build-tinta.py'), '--output', env.STANDALONE_HTML], { stdio: 'inherit' });
-  const files = fs.readdirSync(__dirname).filter(f => f.endsWith('.cjs') && f !== 'run-all.cjs' && (!only || f.includes(only))).sort();
+  const files = fs.readdirSync(__dirname).filter(f => f.endsWith('.cjs') && f !== 'run-all.cjs' && (legacy ? f.startsWith('legacy-') : !f.startsWith('legacy-')) && (!only || f.includes(only))).sort();
   const failed = [];
   for (const f of files) {
     const src = fs.readFileSync(path.join(__dirname, f), 'utf8'), needs = !/listen\(/.test(src);
