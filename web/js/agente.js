@@ -589,7 +589,12 @@ function proposalState(i) {
   SLOTS.forEach(sl => {
     if (S.locked[sl.key] && S.blocks[sl.key]) return;
     const c = rec[sl.key] || [];
-    const id = c.length ? c[i % c.length] : null;
+    let id = c.length ? c[i % c.length] : null;
+    // La propuesta C debe ofrecer una alternativa real, no repetir por azar
+    // el bloque que ya está seleccionado en el borrador.
+    if (i === 2 && c.length > 1 && id === S.blocks[sl.key]) {
+      id = c.find(candidate => candidate !== S.blocks[sl.key]) || id;
+    }
     st.blocks[sl.key] = id; st.hidden[sl.key] = !id;
   });
   if (["enc-3", "enc-5"].includes(st.blocks.header) && st.blocks.search && !S.locked.search) st.hidden.search = true;
