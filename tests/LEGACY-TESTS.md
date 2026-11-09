@@ -26,12 +26,13 @@ Los fallos que permanezcan se deben resolver uno por uno, verificando primero si
 
 - `tinta-catalog.cjs` — reactivada tras adaptar la entrada al flujo Idea → Bloques. Mantiene las comprobaciones del catálogo de 158 registros, sus 26 módulos, filtros, búsqueda, familias, variantes, procedencia/licencias, exportación JSON y de componentes, proyectos y responsive.
 
+- `tinta-history.cjs` — reactivada tras desplegar el panel manual de revisión antes de usar controles de estilos, medios y proyectos. Conserva las comprobaciones de agrupación, ramas, undo/redo, teclado, persistencia, proyectos y reinicio reversible.
+
 ## Inventario conservado
 
 - `legacy-android-back.cjs`
 - `tinta-agent-1510.cjs` — reactivada tras actualizar solo las dos expectativas de versión/caché obsoletas.
 - `legacy-tinta-entry.cjs`
-- `legacy-tinta-history.cjs`
 - `legacy-tinta-library.cjs`
 - `legacy-tinta-motion.cjs`
 - `legacy-tinta-palettes.cjs`

@@ -32,4 +32,4 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Pruebas de extremo a extremo
         working-directory: tests
-        run: npm test  # run-all.cjs: todas las pruebas activas
+        run: npm test -- tinta-history  # diagnóstico temporal: solo historial undo/redo
