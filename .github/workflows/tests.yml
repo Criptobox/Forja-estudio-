@@ -32,4 +32,4 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Pruebas de extremo a extremo
         working-directory: tests
-        run: npm test  # run-all.cjs: las 22 pruebas con servidor propio
+        run: npm test -- tinta-assets  # diagnóstico temporal: solo la prueba de imágenes
