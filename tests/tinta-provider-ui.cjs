@@ -23,6 +23,8 @@ const checks=[
 ['el Worker bloquea redirects',/redirect:"manual"/.test(worker)],
 ['el Worker limita modelos no probados',/working\.includes\(model\)/.test(worker)],
 ['controles para límite por proveedor',/id="aiProviderRequestsPerDay"/.test(html)&&/id="aiProviderRequestsPerMinute"/.test(html)],
+['guardar límites no vuelve a probar modelos',/id="aiSaveUsageLimits"/.test(html)&&/function aiSaveUsageLimits\(\)/.test(js)],
+['tanda de pruebas se detiene cuando hay 429',/stoppedByLimit/.test(js)&&/Límite por minuto alcanzado/.test(js)],
 ['panel de métricas visible',/id="aiUsageTotals"/.test(html)&&/id="aiUsageProviders"/.test(html)],
 ['cliente solicita métricas de uso',/getUsage\(days=7\)/.test(provider)&&/\/api\/usage\?days=/.test(provider)],
 ['interfaz renderiza consumo y modelos',/function aiRenderUsage\(data\)/.test(js)&&/ai-usage-model-details/.test(js)],
