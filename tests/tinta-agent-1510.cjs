@@ -15,7 +15,7 @@ const checks=[
 ['usuario puede volver a cambiar la idea',/data-act="agent-new-idea"/.test(html)&&/agent-new-idea/.test(js)],
 ['sin prometer IA conectada',/reglas de diseño locales/.test(html)],
 ['estilos de interfaz simplificada',/\.agent-recommendation/.test(css)&&/\.agent-advanced>summary/.test(css)],
-['versión 15.10 visible',/ESTILOS 15\.13 · EDITOR/.test(html)],
-['caché actualizada',/tinta-2026\.11\.16/.test(sw)]
+['versión vigente visible',/ESTILOS 15\.14 · EDITOR/.test(html)],
+['caché vigente actualizada',/tinta-2026\.11\.17/.test(sw)]
 ];
 let failed=0;for(const [name,ok] of checks){console.log((ok?'OK ':'FAIL ')+name);if(!ok)failed++;}if(failed)process.exit(1);console.log(checks.length+' comprobaciones de 15.10 superadas.');

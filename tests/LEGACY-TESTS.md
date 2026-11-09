@@ -16,7 +16,7 @@ Los fallos que permanezcan se deben resolver uno por uno, verificando primero si
 ## Inventario conservado
 
 - `legacy-android-back.cjs`
-- `legacy-tinta-agent-1510.cjs`
+- `tinta-agent-1510.cjs` — reactivada tras actualizar solo las dos expectativas de versión/caché obsoletas.
 - `legacy-tinta-assets.cjs`
 - `legacy-tinta-button-style.cjs`
 - `legacy-tinta-card-style.cjs`
