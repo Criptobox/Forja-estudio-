@@ -16,6 +16,6 @@ const checks=[
 ['sin prometer IA conectada',/reglas de diseño locales/.test(html)],
 ['estilos de interfaz simplificada',/\.agent-recommendation/.test(css)&&/\.agent-advanced>summary/.test(css)],
 ['versión vigente visible',/ESTILOS 15\.14 · EDITOR/.test(html)],
-['caché vigente actualizada',/tinta-2026\.11\.08-private-ai/.test(sw)]
+['caché vigente actualizada',/tinta-2026\.11\.08-usage-v1/.test(sw)]
 ];
 let failed=0;for(const [name,ok] of checks){console.log((ok?'OK ':'FAIL ')+name);if(!ok)failed++;}if(failed)process.exit(1);console.log(checks.length+' comprobaciones de 15.10 superadas.');
