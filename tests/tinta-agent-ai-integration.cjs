@@ -3,17 +3,20 @@ const assert=require('node:assert/strict');
 (async()=>{
  const browser=await chromium.launch(),page=await browser.newPage({viewport:{width:390,height:900}});
  const pageErrors=[];let inferenceCalls=0,planMode='valid';page.on('pageerror',e=>pageErrors.push(e.message));
+;
+ await page.goto('http://127.0.0.1:18080/crear.html');
+ const testPaletteId=await page.evaluate(()=>TintaPalettes.all()[0].id);
  await page.route('https://api.example.test/**',async route=>{
   const req=route.request(),method=req.method(),headers={'access-control-allow-origin':'*','access-control-allow-methods':'GET, POST, OPTIONS','access-control-allow-headers':'authorization, content-type, x-api-key, api-key','content-type':'application/json'};
   if(method==='OPTIONS')return route.fulfill({status:204,headers});
   if(method==='GET')return route.fulfill({status:200,headers,body:JSON.stringify({data:[{id:'model-ok'}]})});
   const body=req.postDataJSON(),content=body.messages?.[0]?.content||'';
   if(content.includes('Responde únicamente: TINTA_OK'))return route.fulfill({status:200,headers,body:JSON.stringify({choices:[{message:{content:'TINTA_OK'}}],model:'model-ok'})});
-  inferenceCalls++;const paletteId=await page.evaluate(()=>TintaPalettes.all()[0].id);
+  inferenceCalls++;const paletteId=testPaletteId;
   const plan=planMode==='valid'?{operations:[{type:'set_palette',paletteId}],summary:['Paleta de prueba aplicada.']}:{operations:[{type:'set_palette',paletteId:'palette-no-existe'}],summary:['Plan inválido.']};
   return route.fulfill({status:200,headers,body:JSON.stringify({choices:[{message:{content:JSON.stringify(plan)}}],model:'model-ok'})});
- });
- await page.goto('http://127.0.0.1:18080/crear.html');await page.evaluate(()=>aiOpen());
+ })
+ await page.evaluate(()=>aiOpen());
  await page.locator('#aiProviderEndpoint').fill('https://api.example.test/v1');await page.locator('#aiProviderKey').fill('test-key-not-real');await page.locator('#aiProviderForm').evaluate(form=>form.requestSubmit());
  await page.waitForFunction(()=>Array.from(document.querySelectorAll('#agentAIModel option')).some(o=>o.value==='model-ok'),null,{timeout:20000});
  assert.equal(await page.locator('#agentAIModel option').count(),2,'el modelo aparece junto al modo local');
