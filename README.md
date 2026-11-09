@@ -20,10 +20,11 @@ Estilos es una biblioteca de diseño y un constructor visual multipantalla, pens
 - «Habla con Tinta» puede enviar el contexto del diseño a un modelo compatible configurado y probado.
 - La respuesta utiliza operaciones JSON restringidas y validación local antes de modificar el diseño.
 - El modo local determinista sigue disponible como alternativa explícita.
-- Las claves de proveedores pueden gestionarse mediante el gateway privado opcional: cifrado AES-256-GCM en D1, sesión temporal y llamadas servidor-a-servidor. El modo local sigue disponible sin configurar el Worker.
+- Las claves de proveedores se gestionan mediante el gateway privado: cifrado AES-256-GCM en D1, sesión temporal y llamadas servidor-a-servidor.
+- Límites de peticiones por proveedor y estadísticas de consumo por modelo.
 - No se ejecuta HTML, CSS ni JavaScript generado por el modelo.
 
-Consulta [Cerebro IA conectado · 15.15](docs/ESTILOS-15.15-CEREBRO-IA-REAL.md) y la guía [Tinta Private AI](backend/worker/README.md). El Worker es opcional y se despliega de forma independiente; no requiere secretos en GitHub.
+Consulta [Cerebro IA conectado · 15.15](docs/ESTILOS-15.15-CEREBRO-IA-REAL.md) y la guía [Tinta Private AI](backend/worker/README.md). El Worker se despliega de forma independiente; no requiere secretos en GitHub.
 
 ## Estructura
 
