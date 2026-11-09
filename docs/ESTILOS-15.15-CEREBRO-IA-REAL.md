@@ -10,6 +10,8 @@
 - Si la respuesta no es válida, el modelo falla o el plan no supera la validación, no se aplican cambios.
 - El modo local sigue disponible seleccionando «Modo local · reglas integradas».
 - Estado del modelo visible en el chat; acceso directo al Centro de conexiones.
+- El selector se actualiza al terminar las pruebas y conserva los modelos probados al cambiar entre conexiones durante la misma sesión; los resultados de sesiones anteriores no se reutilizan.
+- Mientras el modelo responde, el envío se bloquea para evitar solicitudes duplicadas. Si el diseño o la conexión cambian durante la espera, se descarta la respuesta para proteger las ediciones recientes.
 
 ## Seguridad y límites
 - No se ejecuta HTML, CSS ni JavaScript generado por el modelo.
@@ -22,4 +24,4 @@
 - No hay fallback silencioso: si el modelo falla, el usuario ve el error y puede volver al modo local manualmente.
 
 ## Pruebas
-Se ejecutan comprobaciones de sintaxis, contrato del agente, pruebas específicas de integración mock y validación del paquete. No se afirma compatibilidad universal con todos los proveedores ni prueba en dispositivo físico.
+La batería incluye pruebas del contrato, gestor de proveedores y recorrido de integración en navegador con un endpoint simulado: descubrimiento, prueba, aparición del modelo en el selector, aplicación de un plan válido y rechazo de un plan inválido. No se afirma compatibilidad universal con todos los proveedores ni prueba en dispositivo físico.
